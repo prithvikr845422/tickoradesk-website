@@ -1,0 +1,1144 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:"Segoe UI Emoji";
+	panose-1:2 11 5 2 4 2 4 2 2 3;}
+@font-face
+	{font-family:"Segoe UI Symbol";
+	panose-1:2 11 5 2 4 2 4 2 2 3;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:8.0pt;
+	margin-left:0in;
+	line-height:115%;
+	font-size:12.0pt;
+	font-family:"Calibri",sans-serif;}
+.MsoChpDefault
+	{font-size:12.0pt;
+	font-family:"Calibri",sans-serif;}
+.MsoPapDefault
+	{margin-bottom:8.0pt;
+	line-height:115%;}
+@page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US style='word-wrap:break-word'>
+
+<div class=WordSection1>
+
+<p class=MsoNormal>&lt;!DOCTYPE html&gt;</p>
+
+<p class=MsoNormal>&lt;html lang=&quot;en&quot;&gt;</p>
+
+<p class=MsoNormal>&lt;head&gt;</p>
+
+<p class=MsoNormal>    &lt;meta charset=&quot;UTF-8&quot;&gt;</p>
+
+<p class=MsoNormal>    &lt;meta name=&quot;viewport&quot;
+content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</p>
+
+<p class=MsoNormal>    &lt;title&gt;Tickoradesk — AI-Powered Customer Support
+Ticketing Platform&lt;/title&gt;</p>
+
+<p class=MsoNormal>    &lt;link rel=&quot;preconnect&quot;
+href=&quot;https://fonts.googleapis.com&quot;&gt;</p>
+
+<p class=MsoNormal>    &lt;link rel=&quot;preconnect&quot;
+href=&quot;https://fonts.gstatic.com&quot; crossorigin&gt;</p>
+
+<p class=MsoNormal>    &lt;link
+href=&quot;https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap&quot;
+rel=&quot;stylesheet&quot;&gt;</p>
+
+<p class=MsoNormal>    </p>
+
+<p class=MsoNormal>    &lt;style&gt;</p>
+
+<p class=MsoNormal>        :root {</p>
+
+<p class=MsoNormal>            --dark-navy: #0A1128;</p>
+
+<p class=MsoNormal>            --cool-grey: #F7F9FC;</p>
+
+<p class=MsoNormal>            --neon-cyan: #00E5FF;</p>
+
+<p class=MsoNormal>            --deep-teal: #00BACF;</p>
+
+<p class=MsoNormal>            --pure-white: #FFFFFF;</p>
+
+<p class=MsoNormal>            --muted-text: #4A5568;</p>
+
+<p class=MsoNormal>            --border-color: #E2E8F0;</p>
+
+<p class=MsoNormal>            --max-width: 1200px;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        * {</p>
+
+<p class=MsoNormal>            margin: 0;</p>
+
+<p class=MsoNormal>            padding: 0;</p>
+
+<p class=MsoNormal>            box-sizing: border-box;</p>
+
+<p class=MsoNormal>            font-family: 'Inter', sans-serif;</p>
+
+<p class=MsoNormal>            scroll-behavior: smooth;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        body {</p>
+
+<p class=MsoNormal>            background-color: var(--pure-white);</p>
+
+<p class=MsoNormal>            color: var(--dark-navy);</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .container {</p>
+
+<p class=MsoNormal>            width: 100%;</p>
+
+<p class=MsoNormal>            max-width: var(--max-width);</p>
+
+<p class=MsoNormal>            margin: 0 auto;</p>
+
+<p class=MsoNormal>            padding: 0 24px;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        /* NAVBAR SYSTEM (ZIMYO LOOK WITH WHITE BG) */</p>
+
+<p class=MsoNormal>        header {</p>
+
+<p class=MsoNormal>            background-color: var(--pure-white);</p>
+
+<p class=MsoNormal>            border-bottom: 1px solid var(--border-color);</p>
+
+<p class=MsoNormal>            position: sticky;</p>
+
+<p class=MsoNormal>            top: 0;</p>
+
+<p class=MsoNormal>            z-index: 1000;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .navbar {</p>
+
+<p class=MsoNormal>            display: flex;</p>
+
+<p class=MsoNormal>            justify-content: space-between;</p>
+
+<p class=MsoNormal>            align-items: center;</p>
+
+<p class=MsoNormal>            height: 80px;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .logo {</p>
+
+<p class=MsoNormal>            font-size: 24px;</p>
+
+<p class=MsoNormal>            font-weight: 800;</p>
+
+<p class=MsoNormal>            color: var(--dark-navy);</p>
+
+<p class=MsoNormal>            text-decoration: none;</p>
+
+<p class=MsoNormal>            display: flex;</p>
+
+<p class=MsoNormal>            align-items: center;</p>
+
+<p class=MsoNormal>            gap: 8px;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .logo span {</p>
+
+<p class=MsoNormal>            color: var(--deep-teal);</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .nav-links {</p>
+
+<p class=MsoNormal>            display: flex;</p>
+
+<p class=MsoNormal>            gap: 32px;</p>
+
+<p class=MsoNormal>            list-style: none;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .nav-links a {</p>
+
+<p class=MsoNormal>            text-decoration: none;</p>
+
+<p class=MsoNormal>            color: var(--muted-text);</p>
+
+<p class=MsoNormal>            font-weight: 500;</p>
+
+<p class=MsoNormal>            font-size: 15px;</p>
+
+<p class=MsoNormal>            transition: all 0.3s ease;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .nav-links a:hover {</p>
+
+<p class=MsoNormal>            color: var(--dark-navy);</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .nav-actions {</p>
+
+<p class=MsoNormal>            display: flex;</p>
+
+<p class=MsoNormal>            align-items: center;</p>
+
+<p class=MsoNormal>            gap: 20px;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .btn {</p>
+
+<p class=MsoNormal>            padding: 12px 24px;</p>
+
+<p class=MsoNormal>            border-radius: 6px;</p>
+
+<p class=MsoNormal>            font-size: 15px;</p>
+
+<p class=MsoNormal>            font-weight: 600;</p>
+
+<p class=MsoNormal>            text-decoration: none;</p>
+
+<p class=MsoNormal>            transition: all 0.3s ease;</p>
+
+<p class=MsoNormal>            cursor: pointer;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .btn-login {</p>
+
+<p class=MsoNormal>            color: var(--dark-navy);</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .btn-signup {</p>
+
+<p class=MsoNormal>            background-color: var(--dark-navy);</p>
+
+<p class=MsoNormal>            color: var(--pure-white);</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .btn-signup:hover {</p>
+
+<p class=MsoNormal>            background-color: #1a264d;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        /* HERO SECTION */</p>
+
+<p class=MsoNormal>        .hero {</p>
+
+<p class=MsoNormal>            padding: 100px 0;</p>
+
+<p class=MsoNormal>            display: grid;</p>
+
+<p class=MsoNormal>            grid-template-columns: 1fr 1fr;</p>
+
+<p class=MsoNormal>            gap: 48px;</p>
+
+<p class=MsoNormal>            align-items: center;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .hero-left h1 {</p>
+
+<p class=MsoNormal>            font-size: 48px;</p>
+
+<p class=MsoNormal>            font-weight: 800;</p>
+
+<p class=MsoNormal>            line-height: 1.2;</p>
+
+<p class=MsoNormal>            margin-bottom: 24px;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .hero-left p {</p>
+
+<p class=MsoNormal>            font-size: 18px;</p>
+
+<p class=MsoNormal>            color: var(--muted-text);</p>
+
+<p class=MsoNormal>            line-height: 1.6;</p>
+
+<p class=MsoNormal>            margin-bottom: 32px;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .btn-demo {</p>
+
+<p class=MsoNormal>            background-color: var(--neon-cyan);</p>
+
+<p class=MsoNormal>            color: var(--dark-navy);</p>
+
+<p class=MsoNormal>            border: none;</p>
+
+<p class=MsoNormal>            font-size: 16px;</p>
+
+<p class=MsoNormal>            padding: 16px 32px;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .btn-demo:hover {</p>
+
+<p class=MsoNormal>            background-color: var(--deep-teal);</p>
+
+<p class=MsoNormal>            color: var(--pure-white);</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .hero-right .mockup-box {</p>
+
+<p class=MsoNormal>            background-color: var(--cool-grey);</p>
+
+<p class=MsoNormal>            border: 2px dashed var(--border-color);</p>
+
+<p class=MsoNormal>            border-radius: 12px;</p>
+
+<p class=MsoNormal>            height: 380px;</p>
+
+<p class=MsoNormal>            display: flex;</p>
+
+<p class=MsoNormal>            justify-content: center;</p>
+
+<p class=MsoNormal>            align-items: center;</p>
+
+<p class=MsoNormal>            font-weight: 600;</p>
+
+<p class=MsoNormal>            color: var(--muted-text);</p>
+
+<p class=MsoNormal>            box-shadow: 0 20px 40px rgba(0,0,0,0.05);</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        /* SOCIAL PROOF */</p>
+
+<p class=MsoNormal>        .social-proof {</p>
+
+<p class=MsoNormal>            background-color: var(--cool-grey);</p>
+
+<p class=MsoNormal>            padding: 40px 0;</p>
+
+<p class=MsoNormal>            text-align: center;</p>
+
+<p class=MsoNormal>            border-top: 1px solid var(--border-color);</p>
+
+<p class=MsoNormal>            border-bottom: 1px solid var(--border-color);</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .social-proof p {</p>
+
+<p class=MsoNormal>            font-size: 14px;</p>
+
+<p class=MsoNormal>            text-transform: uppercase;</p>
+
+<p class=MsoNormal>            letter-spacing: 1px;</p>
+
+<p class=MsoNormal>            color: var(--muted-text);</p>
+
+<p class=MsoNormal>            font-weight: 600;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        /* PRICING SECTION */</p>
+
+<p class=MsoNormal>        .pricing {</p>
+
+<p class=MsoNormal>            padding: 100px 0;</p>
+
+<p class=MsoNormal>            background-color: var(--pure-white);</p>
+
+<p class=MsoNormal>            text-align: center;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .section-title {</p>
+
+<p class=MsoNormal>            font-size: 36px;</p>
+
+<p class=MsoNormal>            font-weight: 800;</p>
+
+<p class=MsoNormal>            margin-bottom: 48px;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .pricing-grid {</p>
+
+<p class=MsoNormal>            display: grid;</p>
+
+<p class=MsoNormal>            grid-template-columns: 1fr 1fr;</p>
+
+<p class=MsoNormal>            gap: 32px;</p>
+
+<p class=MsoNormal>            max-width: 800px;</p>
+
+<p class=MsoNormal>            margin: 0 auto;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .price-card {</p>
+
+<p class=MsoNormal>            background: var(--pure-white);</p>
+
+<p class=MsoNormal>            border: 1px solid var(--border-color);</p>
+
+<p class=MsoNormal>            border-radius: 12px;</p>
+
+<p class=MsoNormal>            padding: 40px;</p>
+
+<p class=MsoNormal>            text-align: left;</p>
+
+<p class=MsoNormal>            transition: all 0.3s ease;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .price-card.featured {</p>
+
+<p class=MsoNormal>            border: 2px solid var(--dark-navy);</p>
+
+<p class=MsoNormal>            position: relative;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .price-card h3 { font-size: 22px; margin-bottom:
+12px; }</p>
+
+<p class=MsoNormal>        .price-card .cost { font-size: 36px; font-weight:
+800; margin-bottom: 24px; color: var(--dark-navy); }</p>
+
+<p class=MsoNormal>        .price-card ul { list-style: none; margin-bottom:
+32px; }</p>
+
+<p class=MsoNormal>        .price-card ul li { margin-bottom: 12px; color:
+var(--muted-text); font-size: 15px; }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        /* TEAM SECTION */</p>
+
+<p class=MsoNormal>        .team {</p>
+
+<p class=MsoNormal>            padding: 100px 0;</p>
+
+<p class=MsoNormal>            background-color: var(--cool-grey);</p>
+
+<p class=MsoNormal>            text-align: center;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .team-grid {</p>
+
+<p class=MsoNormal>            display: grid;</p>
+
+<p class=MsoNormal>            grid-template-columns: repeat(3, 1fr);</p>
+
+<p class=MsoNormal>            gap: 32px;</p>
+
+<p class=MsoNormal>            margin-top: 48px;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .team-card {</p>
+
+<p class=MsoNormal>            background: var(--pure-white);</p>
+
+<p class=MsoNormal>            border: 1px solid var(--border-color);</p>
+
+<p class=MsoNormal>            border-radius: 12px;</p>
+
+<p class=MsoNormal>            padding: 32px;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .team-card .avatar {</p>
+
+<p class=MsoNormal>            width: 80px;</p>
+
+<p class=MsoNormal>            height: 80px;</p>
+
+<p class=MsoNormal>            background: var(--cool-grey);</p>
+
+<p class=MsoNormal>            border-radius: 50%;</p>
+
+<p class=MsoNormal>            margin: 0 auto 20px;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .team-card h4 { font-size: 20px; margin-bottom: 6px;
+}</p>
+
+<p class=MsoNormal>        .team-card p { color: var(--deep-teal); font-weight:
+600; font-size: 14px; }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        /* CONTACT &amp; DEMO FORM */</p>
+
+<p class=MsoNormal>        .contact-section {</p>
+
+<p class=MsoNormal>            padding: 100px 0;</p>
+
+<p class=MsoNormal>            display: grid;</p>
+
+<p class=MsoNormal>            grid-template-columns: 1.2fr 0.8fr;</p>
+
+<p class=MsoNormal>            gap: 64px;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .demo-form {</p>
+
+<p class=MsoNormal>            background: var(--cool-grey);</p>
+
+<p class=MsoNormal>            padding: 40px;</p>
+
+<p class=MsoNormal>            border-radius: 12px;</p>
+
+<p class=MsoNormal>            border: 1px solid var(--border-color);</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .form-group {</p>
+
+<p class=MsoNormal>            margin-bottom: 20px;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .form-group label {</p>
+
+<p class=MsoNormal>            display: block;</p>
+
+<p class=MsoNormal>            margin-bottom: 8px;</p>
+
+<p class=MsoNormal>            font-weight: 500;</p>
+
+<p class=MsoNormal>            font-size: 14px;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .form-group input, .form-group select {</p>
+
+<p class=MsoNormal>            width: 100%;</p>
+
+<p class=MsoNormal>            padding: 12px;</p>
+
+<p class=MsoNormal>            border: 1px solid var(--border-color);</p>
+
+<p class=MsoNormal>            border-radius: 6px;</p>
+
+<p class=MsoNormal>            font-size: 15px;</p>
+
+<p class=MsoNormal>            background: var(--pure-white);</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .contact-info-box {</p>
+
+<p class=MsoNormal>            background: var(--dark-navy);</p>
+
+<p class=MsoNormal>            color: var(--pure-white);</p>
+
+<p class=MsoNormal>            padding: 40px;</p>
+
+<p class=MsoNormal>            border-radius: 12px;</p>
+
+<p class=MsoNormal>            display: flex;</p>
+
+<p class=MsoNormal>            flex-direction: column;</p>
+
+<p class=MsoNormal>            justify-content: center;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .contact-info-box h3 { font-size: 28px;
+margin-bottom: 24px; }</p>
+
+<p class=MsoNormal>        .contact-info-box p { margin-bottom: 16px; color:
+#a0aec0; font-size: 16px; }</p>
+
+<p class=MsoNormal>        .contact-info-box span { color: var(--neon-cyan);
+font-weight: 600; }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        /* FOOTER */</p>
+
+<p class=MsoNormal>        footer {</p>
+
+<p class=MsoNormal>            background: var(--dark-navy);</p>
+
+<p class=MsoNormal>            color: var(--pure-white);</p>
+
+<p class=MsoNormal>            padding: 60px 0 30px;</p>
+
+<p class=MsoNormal>            border-top: 1px solid #1a264d;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .footer-grid {</p>
+
+<p class=MsoNormal>            display: grid;</p>
+
+<p class=MsoNormal>            grid-template-columns: 1.5fr 1fr 1fr;</p>
+
+<p class=MsoNormal>            gap: 48px;</p>
+
+<p class=MsoNormal>            margin-bottom: 40px;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .footer-col h4 { font-size: 16px; margin-bottom:
+20px; color: var(--neon-cyan); text-transform: uppercase; letter-spacing: 1px;}</p>
+
+<p class=MsoNormal>        .footer-col p { color: #a0aec0; line-height: 1.6;
+font-size: 14px; }</p>
+
+<p class=MsoNormal>        .footer-links { list-style: none; }</p>
+
+<p class=MsoNormal>        .footer-links li { margin-bottom: 12px; }</p>
+
+<p class=MsoNormal>        .footer-links a { color: #a0aec0; text-decoration:
+none; font-size: 14px; }</p>
+
+<p class=MsoNormal>        .footer-links a:hover { color: var(--pure-white); }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        .footer-bottom {</p>
+
+<p class=MsoNormal>            border-top: 1px solid #1a264d;</p>
+
+<p class=MsoNormal>            padding-top: 30px;</p>
+
+<p class=MsoNormal>            text-align: center;</p>
+
+<p class=MsoNormal>            color: #718096;</p>
+
+<p class=MsoNormal>            font-size: 14px;</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>        @media (max-width: 768px) {</p>
+
+<p class=MsoNormal>            .hero, .pricing-grid, .team-grid,
+.contact-section, .footer-grid {</p>
+
+<p class=MsoNormal>                grid-template-columns: 1fr;</p>
+
+<p class=MsoNormal>            }</p>
+
+<p class=MsoNormal>            .nav-links { display: none; }</p>
+
+<p class=MsoNormal>        }</p>
+
+<p class=MsoNormal>    &lt;/style&gt;</p>
+
+<p class=MsoNormal>&lt;/head&gt;</p>
+
+<p class=MsoNormal>&lt;body&gt;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>    &lt;header&gt;</p>
+
+<p class=MsoNormal>        &lt;div class=&quot;container navbar&quot;&gt;</p>
+
+<p class=MsoNormal>            &lt;a href=&quot;#&quot;
+class=&quot;logo&quot;&gt;<span style='font-family:"Segoe UI Emoji",sans-serif'>☑️</span>
+Tickora&lt;span&gt;Desk&lt;/span&gt;&lt;/a&gt;</p>
+
+<p class=MsoNormal>            &lt;ul class=&quot;nav-links&quot;&gt;</p>
+
+<p class=MsoNormal>                &lt;li&gt;&lt;a href=&quot;#features&quot;&gt;Features&lt;/a&gt;&lt;/li&gt;</p>
+
+<p class=MsoNormal>                &lt;li&gt;&lt;a
+href=&quot;#pricing&quot;&gt;Pricing&lt;/a&gt;&lt;/li&gt;</p>
+
+<p class=MsoNormal>                &lt;li&gt;&lt;a
+href=&quot;#&quot;&gt;Resources&lt;/a&gt;&lt;/li&gt;</p>
+
+<p class=MsoNormal>            &lt;/ul&gt;</p>
+
+<p class=MsoNormal>            &lt;div class=&quot;nav-actions&quot;&gt;</p>
+
+<p class=MsoNormal>                &lt;a href=&quot;#&quot; class=&quot;btn
+btn-login&quot;&gt;Login&lt;/a&gt;</p>
+
+<p class=MsoNormal>                &lt;a href=&quot;#demo&quot; class=&quot;btn
+btn-signup&quot;&gt;Sign Up&lt;/a&gt;</p>
+
+<p class=MsoNormal>            &lt;/div&gt;</p>
+
+<p class=MsoNormal>        &lt;/div&gt;</p>
+
+<p class=MsoNormal>    &lt;/header&gt;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>    &lt;section class=&quot;container hero&quot;&gt;</p>
+
+<p class=MsoNormal>        &lt;div class=&quot;hero-left&quot;&gt;</p>
+
+<p class=MsoNormal>            &lt;span class=&quot;badge&quot;&gt;AI-Powered
+Support Engine&lt;/span&gt;</p>
+
+<p class=MsoNormal>            &lt;h1&gt;Turn Support Emails Into Intelligent
+Tickets Instantly&lt;/h1&gt;</p>
+
+<p class=MsoNormal>            &lt;p&gt;Stop drowning in messy inbox threads.
+Tickoradesk uses advanced LLMs to prioritize, categorize, and draft precise
+enterprise support solutions in real-time.&lt;/p&gt;</p>
+
+<p class=MsoNormal>            &lt;a href=&quot;#demo&quot; class=&quot;btn
+btn-demo&quot;&gt;Request for Demo&lt;/a&gt;</p>
+
+<p class=MsoNormal>        &lt;/div&gt;</p>
+
+<p class=MsoNormal>        &lt;div class=&quot;hero-right&quot;&gt;</p>
+
+<p class=MsoNormal>            &lt;div class=&quot;mockup-box&quot;&gt;</p>
+
+<p class=MsoNormal>                [ AI Ticket Dashboard Interactive Mockup
+Visualization ]</p>
+
+<p class=MsoNormal>            &lt;/div&gt;</p>
+
+<p class=MsoNormal>        &lt;/div&gt;</p>
+
+<p class=MsoNormal>    &lt;/section&gt;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>    &lt;section class=&quot;social-proof&quot;&gt;</p>
+
+<p class=MsoNormal>        &lt;div class=&quot;container&quot;&gt;</p>
+
+<p class=MsoNormal>            &lt;p&gt;Trusted by 50+ High-Growth Indian Tech
+Brands&lt;/p&gt;</p>
+
+<p class=MsoNormal>        &lt;/div&gt;</p>
+
+<p class=MsoNormal>    &lt;/section&gt;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>    &lt;section id=&quot;pricing&quot;
+class=&quot;pricing&quot;&gt;</p>
+
+<p class=MsoNormal>        &lt;div class=&quot;container&quot;&gt;</p>
+
+<p class=MsoNormal>            &lt;h2
+class=&quot;section-title&quot;&gt;Transparent, Enterprise-Grade
+Pricing&lt;/h2&gt;</p>
+
+<p class=MsoNormal>            &lt;div class=&quot;pricing-grid&quot;&gt;</p>
+
+<p class=MsoNormal>                &lt;div class=&quot;price-card&quot;&gt;</p>
+
+<p class=MsoNormal>                    &lt;h3&gt;Growth Plan&lt;/h3&gt;</p>
+
+<p class=MsoNormal>                    &lt;div
+class=&quot;cost&quot;&gt;₹1,499&lt;span&gt;/mo&lt;/span&gt;&lt;/div&gt;</p>
+
+<p class=MsoNormal>                    &lt;ul&gt;</p>
+
+<p class=MsoNormal>                        &lt;li&gt;<span style='font-family:
+"Segoe UI Symbol",sans-serif'>✔</span> 5 Support Agents Included&lt;/li&gt;</p>
+
+<p class=MsoNormal>                        &lt;li&gt;<span style='font-family:
+"Segoe UI Symbol",sans-serif'>✔</span> Full Email Box Integration&lt;/li&gt;</p>
+
+<p class=MsoNormal>                        &lt;li&gt;<span style='font-family:
+"Segoe UI Symbol",sans-serif'>✔</span> AI Auto-Categorization&lt;/li&gt;</p>
+
+<p class=MsoNormal>                        &lt;li&gt;<span style='font-family:
+"Segoe UI Symbol",sans-serif'>✔</span> 9x5 Email Support&lt;/li&gt;</p>
+
+<p class=MsoNormal>                    &lt;/ul&gt;</p>
+
+<p class=MsoNormal>                    &lt;a href=&quot;#demo&quot;
+class=&quot;btn btn-signup&quot; style=&quot;display:block;
+text-align:center;&quot;&gt;Choose Growth&lt;/a&gt;</p>
+
+<p class=MsoNormal>                &lt;/div&gt;</p>
+
+<p class=MsoNormal>                &lt;div class=&quot;price-card
+featured&quot;&gt;</p>
+
+<p class=MsoNormal>                    &lt;h3&gt;Scale Plan&lt;/h3&gt;</p>
+
+<p class=MsoNormal>                    &lt;div
+class=&quot;cost&quot;&gt;₹3,499&lt;span&gt;/mo&lt;/span&gt;&lt;/div&gt;</p>
+
+<p class=MsoNormal>                    &lt;ul&gt;</p>
+
+<p class=MsoNormal>                        &lt;li&gt;<span style='font-family:
+"Segoe UI Symbol",sans-serif'>✔</span> Unlimited Support Agents&lt;/li&gt;</p>
+
+<p class=MsoNormal>                        &lt;li&gt;<span style='font-family:
+"Segoe UI Symbol",sans-serif'>✔</span> Generative AI Response Drafts&lt;/li&gt;</p>
+
+<p class=MsoNormal>                        &lt;li&gt;<span style='font-family:
+"Segoe UI Symbol",sans-serif'>✔</span> SLA Breach Predictor Layers&lt;/li&gt;</p>
+
+<p class=MsoNormal>                        &lt;li&gt;<span style='font-family:
+"Segoe UI Symbol",sans-serif'>✔</span> 24/7 Dedicated Support&lt;/li&gt;</p>
+
+<p class=MsoNormal>                    &lt;/ul&gt;</p>
+
+<p class=MsoNormal>                    &lt;a href=&quot;#demo&quot;
+class=&quot;btn btn-demo&quot; style=&quot;display:block; text-align:center;
+border-radius:6px;&quot;&gt;Go Scale&lt;/a&gt;</p>
+
+<p class=MsoNormal>                &lt;/div&gt;</p>
+
+<p class=MsoNormal>            &lt;/div&gt;</p>
+
+<p class=MsoNormal>        &lt;/div&gt;</p>
+
+<p class=MsoNormal>    &lt;/section&gt;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>    &lt;section class=&quot;team&quot;&gt;</p>
+
+<p class=MsoNormal>        &lt;div class=&quot;container&quot;&gt;</p>
+
+<p class=MsoNormal>            &lt;h2 class=&quot;section-title&quot;&gt;Meet
+Our Leadership Team&lt;/h2&gt;</p>
+
+<p class=MsoNormal>            &lt;div class=&quot;team-grid&quot;&gt;</p>
+
+<p class=MsoNormal>                &lt;div class=&quot;team-card&quot;&gt;</p>
+
+<p class=MsoNormal>                    &lt;div
+class=&quot;avatar&quot;&gt;&lt;/div&gt;</p>
+
+<p class=MsoNormal>                    &lt;h4&gt;Prithvi Kumar&lt;/h4&gt;</p>
+
+<p class=MsoNormal>                    &lt;p&gt;CEO &amp; Founder&lt;/p&gt;</p>
+
+<p class=MsoNormal>                &lt;/div&gt;</p>
+
+<p class=MsoNormal>                &lt;div class=&quot;team-card&quot;&gt;</p>
+
+<p class=MsoNormal>                    &lt;div
+class=&quot;avatar&quot;&gt;&lt;/div&gt;</p>
+
+<p class=MsoNormal>                    &lt;h4&gt;Ankit Sharma&lt;/h4&gt;</p>
+
+<p class=MsoNormal>                    &lt;p&gt;Product Head&lt;/p&gt;</p>
+
+<p class=MsoNormal>                &lt;/div&gt;</p>
+
+<p class=MsoNormal>                &lt;div class=&quot;team-card&quot;&gt;</p>
+
+<p class=MsoNormal>                    &lt;div
+class=&quot;avatar&quot;&gt;&lt;/div&gt;</p>
+
+<p class=MsoNormal>                    &lt;h4&gt;Sandhya&lt;/h4&gt;</p>
+
+<p class=MsoNormal>                    &lt;p&gt;Sales &amp; Support
+Head&lt;/p&gt;</p>
+
+<p class=MsoNormal>                &lt;/div&gt;</p>
+
+<p class=MsoNormal>            &lt;/div&gt;</p>
+
+<p class=MsoNormal>        &lt;/div&gt;</p>
+
+<p class=MsoNormal>    &lt;/section&gt;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>    &lt;section id=&quot;demo&quot; class=&quot;container
+section-padding&quot;&gt;</p>
+
+<p class=MsoNormal>        &lt;div class=&quot;contact-section&quot;&gt;</p>
+
+<p class=MsoNormal>            &lt;div class=&quot;demo-form&quot;&gt;</p>
+
+<p class=MsoNormal>                &lt;h3 style=&quot;margin-bottom:24px;
+font-size:24px;&quot;&gt;Schedule an Enterprise Demo&lt;/h3&gt;</p>
+
+<p class=MsoNormal>                &lt;form action=&quot;#&quot;&gt;</p>
+
+<p class=MsoNormal>                    &lt;div class=&quot;form-group&quot;&gt;</p>
+
+<p class=MsoNormal>                        &lt;label&gt;Full Name&lt;/label&gt;</p>
+
+<p class=MsoNormal>                        &lt;input type=&quot;text&quot;
+placeholder=&quot;Enter your name&quot; required&gt;</p>
+
+<p class=MsoNormal>                    &lt;/div&gt;</p>
+
+<p class=MsoNormal>                    &lt;div class=&quot;form-group&quot;&gt;</p>
+
+<p class=MsoNormal>                        &lt;label&gt;Work
+Email&lt;/label&gt;</p>
+
+<p class=MsoNormal>                        &lt;input type=&quot;email&quot;
+placeholder=&quot;name@company.com&quot; required&gt;</p>
+
+<p class=MsoNormal>                    &lt;/div&gt;</p>
+
+<p class=MsoNormal>                    &lt;div class=&quot;form-group&quot;&gt;</p>
+
+<p class=MsoNormal>                        &lt;label&gt;Phone
+Number&lt;/label&gt;</p>
+
+<p class=MsoNormal>                        &lt;input type=&quot;tel&quot;
+placeholder=&quot;Your mobile number&quot; required&gt;</p>
+
+<p class=MsoNormal>                    &lt;/div&gt;</p>
+
+<p class=MsoNormal>                    &lt;div class=&quot;form-group&quot;&gt;</p>
+
+<p class=MsoNormal>                        &lt;label&gt;Company
+Size&lt;/label&gt;</p>
+
+<p class=MsoNormal>                        &lt;select&gt;</p>
+
+<p class=MsoNormal>                            &lt;option&gt;1-20
+Employees&lt;/option&gt;</p>
+
+<p class=MsoNormal>                            &lt;option&gt;21-100
+Employees&lt;/option&gt;</p>
+
+<p class=MsoNormal>                            &lt;option&gt;100+
+Employees&lt;/option&gt;</p>
+
+<p class=MsoNormal>                        &lt;/select&gt;</p>
+
+<p class=MsoNormal>                    &lt;/div&gt;</p>
+
+<p class=MsoNormal>                    &lt;button type=&quot;submit&quot;
+class=&quot;btn btn-demo&quot; style=&quot;width:100%; border-radius:6px;
+margin-top:10px;&quot;&gt;Book Demo Now&lt;/button&gt;</p>
+
+<p class=MsoNormal>                &lt;/form&gt;</p>
+
+<p class=MsoNormal>            &lt;/div&gt;</p>
+
+<p class=MsoNormal>            </p>
+
+<p class=MsoNormal>            &lt;div class=&quot;contact-info-box&quot;&gt;</p>
+
+<p class=MsoNormal>                &lt;h3&gt;Get in touch directly&lt;/h3&gt;</p>
+
+<p class=MsoNormal>                &lt;p&gt;Email:
+&lt;span&gt;Support@tickoradesk.com&lt;/span&gt;&lt;/p&gt;</p>
+
+<p class=MsoNormal>                &lt;p&gt;Mobile: &lt;span&gt;+91 70042
+93858&lt;/span&gt;&lt;/p&gt;</p>
+
+<p class=MsoNormal>                &lt;p style=&quot;margin-top:20px;
+font-size:14px; color:#718096;&quot;&gt;Response guaranteed within 15
+minutes.&lt;/p&gt;</p>
+
+<p class=MsoNormal>            &lt;/div&gt;</p>
+
+<p class=MsoNormal>        &lt;/div&gt;</p>
+
+<p class=MsoNormal>    &lt;/section&gt;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>    &lt;footer&gt;</p>
+
+<p class=MsoNormal>        &lt;div class=&quot;container footer-grid&quot;&gt;</p>
+
+<p class=MsoNormal>            &lt;div class=&quot;footer-col&quot;&gt;</p>
+
+<p class=MsoNormal>                &lt;h4
+style=&quot;color:#FFF;&quot;&gt;About Us&lt;/h4&gt;</p>
+
+<p class=MsoNormal>                &lt;p
+style=&quot;margin-top:10px;&quot;&gt;Tickoradesk is building India's elite
+AI-powered customer infrastructure to help brands resolve heavy scale support
+backlogs without building massive operational armies.&lt;/p&gt;</p>
+
+<p class=MsoNormal>            &lt;/div&gt;</p>
+
+<p class=MsoNormal>            &lt;div class=&quot;footer-col&quot;&gt;</p>
+
+<p class=MsoNormal>                &lt;h4&gt;Legal &amp; Framework&lt;/h4&gt;</p>
+
+<p class=MsoNormal>                &lt;ul class=&quot;footer-links&quot;&gt;</p>
+
+<p class=MsoNormal>                    &lt;li&gt;&lt;a
+href=&quot;#&quot;&gt;Privacy Policy&lt;/a&gt;&lt;/li&gt;</p>
+
+<p class=MsoNormal>                    &lt;li&gt;&lt;a
+href=&quot;#&quot;&gt;Terms of Service&lt;/a&gt;&lt;/li&gt;</p>
+
+<p class=MsoNormal>                    &lt;li&gt;&lt;a
+href=&quot;#&quot;&gt;Security Framework&lt;/a&gt;&lt;/li&gt;</p>
+
+<p class=MsoNormal>                &lt;/ul&gt;</p>
+
+<p class=MsoNormal>            &lt;/div&gt;</p>
+
+<p class=MsoNormal>            &lt;div class=&quot;footer-col&quot;&gt;</p>
+
+<p class=MsoNormal>                &lt;h4&gt;Follow Us&lt;/h4&gt;</p>
+
+<p class=MsoNormal>                &lt;ul class=&quot;footer-links&quot;&gt;</p>
+
+<p class=MsoNormal>                    &lt;li&gt;&lt;a
+href=&quot;#&quot;&gt;LinkedIn&lt;/a&gt;&lt;/li&gt;</p>
+
+<p class=MsoNormal>                    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;X
+(Twitter)&lt;/a&gt;&lt;/li&gt;</p>
+
+<p class=MsoNormal>                    &lt;li&gt;&lt;a
+href=&quot;#&quot;&gt;Instagram&lt;/a&gt;&lt;/li&gt;</p>
+
+<p class=MsoNormal>                    &lt;li&gt;&lt;a
+href=&quot;#&quot;&gt;YouTube&lt;/a&gt;&lt;/li&gt;</p>
+
+<p class=MsoNormal>                &lt;/ul&gt;</p>
+
+<p class=MsoNormal>            &lt;/div&gt;</p>
+
+<p class=MsoNormal>        &lt;/div&gt;</p>
+
+<p class=MsoNormal>        &lt;div class=&quot;footer-bottom&quot;&gt;</p>
+
+<p class=MsoNormal>            &lt;p&gt;&amp;copy; 2026 Tickoradesk. All Rights
+Reserved.&lt;/p&gt;</p>
+
+<p class=MsoNormal>        &lt;/div&gt;</p>
+
+<p class=MsoNormal>    &lt;/footer&gt;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>&lt;/body&gt;</p>
+
+<p class=MsoNormal>&lt;/html&gt;</p>
+
+</div>
+
+</body>
+
+</html>
