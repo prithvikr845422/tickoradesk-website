@@ -338,3 +338,26 @@
           <li class="price-feat-item">24/7 dedicated support</li>
         </ul>
         <button class="btn btn-md btn-ghost" style="width:100%;justify-
+            // 15 Din ka Countdown Timer Engine
+// Abhi ke time se lekar agle 15 din tak ka target set karega
+const targetDate = new Date().getTime() + (15 * 24 * 60 * 60 * 1000);
+
+const timerInterval = setInterval(function() {
+  const now = new Date().getTime();
+  const distance = targetDate - now;
+
+  // Days, Hours, Minutes aur Seconds ka calculation
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // HTML block ke andar text update karna
+  document.getElementById("countdown").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+  // Agar timer khatam ho jaye toh block ko reset karna
+  if (distance < 0) {
+    clearInterval(timerInterval);
+    document.getElementById("countdown").innerHTML = "OFFER EXPIRED";
+  }
+}, 1000);
