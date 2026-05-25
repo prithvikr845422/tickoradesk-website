@@ -612,14 +612,28 @@ footer { background: var(--ink); color: white; }
 }
 </style>
 </head>
-<body>
-
-<div class="offer-banner" id="offerBanner">
-  <div class="offer-banner-inner">
+<div class="offer-banner" id="offerBanner" style="position: relative; z-index: 200; width: 100%;">
+  <style>
+    .timer-wrap-box {
+      max-width: 1280px; margin: 0 auto; padding: 14px 40px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    
+    /* RESPONSIVE CSS FOR TIMER & BANNER */
+    @media (max-width: 991px) {
+      .timer-wrap-box { flex-direction: column; text-align: center; gap: 12px; padding: 12px 20px; }
+      .offer-cards { display: none !important; } /* Mobile par labels hide rakhenge clear space ke liye */
+      .offer-banner-cta { width: 100%; max-width: 280px; padding: 8px 16px; font-size: 12px; }
+      .offer-banner-label { font-size: 13px; justify-content: center; flex-wrap: wrap; }
+    }
+  </style>
+  
+  <div class="timer-wrap-box">
     <div class="offer-banner-label">
       <span class="flash">⚡</span>
-      Special Discount ends in: <span id="bannerCountdown" style="color: var(--amber); font-weight: 800; background: rgba(0,0,0,0.25); padding: 3px 10px; border-radius: 6px; margin-left: 4px; font-family: monospace; letter-spacing: 0.5px; border: 1px solid rgba(255,255,255,0.15);">15d 00h 00m 00s</span>
+      Special Discount ends in: <span id="bannerCountdown" style="margin-left: 4px; display: inline-flex; align-items: center; gap: 2px;">15d 00h 00m 00s</span>
     </div>
+    
     <div class="offer-cards">
       <div class="offer-card">
         <div>
@@ -640,37 +654,31 @@ footer { background: var(--ink); color: white; }
         </div>
       </div>
     </div>
+    
     <button class="offer-banner-cta" onclick="openDemo()">Grab the Offer Now →</button>
     <button class="offer-close" onclick="document.getElementById('offerBanner').style.display='none'">✕</button>
   </div>
 </div>
 
-<nav id="mainNav" style="position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.97); backdrop-filter: blur(20px); border-bottom: 1px solid var(--ink-10); height: 68px; display: flex; align-items: center; box-shadow: var(--shadow); width: 100%;">
-  <div style="max-width: 1280px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 24px;">
+<nav id="mainNav" style="position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.97); backdrop-filter: blur(20px); border-bottom: 1px solid var(--ink-10); display: flex; flex-direction: column; align-items: center; box-shadow: var(--shadow); width: 100%; height: auto;">
+  <style>
+    /* Desktop vs Mobile Toggle Switching */
+    @media (max-width: 991px) {
+      .nav-links-desktop, .nav-cta-desktop { display: none !important; }
+      .mobile-menu-btn { display: block !important; }
+    }
+  </style>
+
+  <div style="max-width: 1280px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 68px;">
     
     <a href="#" class="nav-logo" style="display: flex; align-items: center; flex-shrink: 0;">
       <img src="https://horizons-cdn.hostinger.com/72e9311c-c0ff-4420-947d-12b8570631e7/11942e70edd8905306c2a172dd64b629.png" alt="TickoraDesk" style="height: 34px; width: auto; object-fit: contain;" />
     </a>
     
-    <div class="nav-links-container" style="display: flex; align-items: center; gap: 24px; margin-left: auto; margin-right: auto;">
-      <style>
-        /* Mobile responsive magic click config */
-        @media (max-width: 991px) {
-          .nav-links-container, .nav-cta-desktop { display: none !important; }
-          .mobile-menu-btn { display: block !important; }
-        }
-        @media (min-width: 992px) {
-          .mobile-menu-btn { display: none !important; }
-        }
-      </style>
-      
-      <div class="nav-dropdown">
-        <button class="nav-link">Product <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
-      </div>
+    <div class="nav-links-desktop" style="display: flex; align-items: center; gap: 24px; margin-left: auto; margin-right: auto;">
+      <a href="#features" class="nav-link">Product</a>
       <a href="#pricing" class="nav-link">Pricing</a>
-      <div class="nav-dropdown">
-        <button class="nav-link">Resources <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
-      </div>
+      <a href="#blogs" class="nav-link">Resources</a>
       <a href="#team" class="nav-link">About</a>
       <a href="#contact" class="nav-link">Contact</a>
     </div>
@@ -680,11 +688,34 @@ footer { background: var(--ink); color: white; }
       <button class="btn btn-sm btn-primary" onclick="openDemo()">Schedule Demo</button>
     </div>
 
-    <button class="mobile-menu-btn" style="display: none; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--ink-100); padding: 8px;" onclick="alert('Mobile menu setup incoming, bhai!')">
+    <button class="mobile-menu-btn" style="display: none; background: none; border: none; font-size: 28px; cursor: pointer; color: var(--ink); padding: 8px;" onclick="toggleMobileMenu()">
       ☰
     </button>
-    
   </div>
+
+  <div id="mobileMenuPanel" style="display: none; width: 100%; background: #ffffff; border-top: 1px solid var(--ink-10); padding: 16px 24px; flex-direction: column; gap: 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.05);">
+    <a href="#features" class="nav-link" onclick="toggleMobileMenu()" style="padding: 6px 0; display: block; font-size: 15px;">Product</a>
+    <a href="#pricing" class="nav-link" onclick="toggleMobileMenu()" style="padding: 6px 0; display: block; font-size: 15px;">Pricing</a>
+    <a href="#blogs" class="nav-link" onclick="toggleMobileMenu()" style="padding: 6px 0; display: block; font-size: 15px;">Resources</a>
+    <a href="#team" class="nav-link" onclick="toggleMobileMenu()" style="padding: 6px 0; display: block; font-size: 15px;">About</a>
+    <a href="#contact" class="nav-link" onclick="toggleMobileMenu()" style="padding: 6px 0; display: block; font-size: 15px;">Contact</a>
+    <hr style="border: none; border-top: 1px solid var(--ink-10); margin: 6px 0;">
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <a href="#" class="btn btn-ghost" style="text-align: center; width: 100%; justify-content: center; padding: 10px;">Login</a>
+      <button class="btn btn-primary" style="width: 100%; justify-content: center; padding: 10px;" onclick="toggleMobileMenu(); openDemo();">Schedule Demo</button>
+    </div>
+  </div>
+
+  <script>
+    function toggleMobileMenu() {
+      var panel = document.getElementById("mobileMenuPanel");
+      if (panel.style.display === "none" || panel.style.display === "") {
+        panel.style.display = "flex";
+      } else {
+        panel.style.display = "none";
+      }
+    }
+  </script>
 </nav>
 <section class="hero">
   <div class="hero-dots"></div>
