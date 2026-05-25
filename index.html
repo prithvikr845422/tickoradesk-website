@@ -593,21 +593,35 @@ footer { background: var(--ink); color: white; }
   .int-grid { grid-template-columns: repeat(4,1fr); }
 }
 @media (max-width: 768px) {
-   /* ── MODAL MOBILE FIX BY BHAI ── */
+  /* ── MODAL MOBILE SUPER FIX BY BHAI ── */
+  .modal-overlay {
+    align-items: flex-start !important;
+    padding-top: 40px !important;
+    overflow-y: auto !important;
+  }
   .modal {
     width: 92% !important;
     max-width: 100% !important;
-    margin: 10px auto !important;
+    margin: 0 auto 30px auto !important;
   }
   .modal-header {
-    padding: 24px 20px 20px !important;
+    padding: 36px 24px 20px !important;
   }
   .modal-close {
     top: 16px !important;
     right: 16px !important;
+    font-size: 22px !important;
+    background: rgba(255, 255, 255, 0.3) !important;
+    color: #ffffff !important;
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
   }
   .modal-body {
-    padding: 20px !important;
+    padding: 24px 20px !important;
   }  .nav-links { display: none; }
   .offer-banner-inner { flex-direction: column; text-align: center; gap: 12px; }
   .offer-cards { flex-wrap: wrap !important; justify-content: center; gap: 6px; }
