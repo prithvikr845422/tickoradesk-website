@@ -1,1144 +1,1390 @@
-<html>
+bash
 
+cat > /home/claude/build_site.py << 'PYEOF'
+import base64
+
+with open('/home/claude/logo_b64.txt', 'r') as f:
+    logo_b64 = f.read().strip()
+
+logo_src = f"data:image/png;base64,{logo_b64}"
+
+html = '''<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv=Content-Type content="text/html; charset=utf-8">
-<meta name=Generator content="Microsoft Word 15 (filtered)">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TickoraDesk — AI-Powered Customer Support Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.min.js"></script>
 <style>
-<!--
- /* Font Definitions */ 
- @font-face
-	{font-family:"Cambria Math";
-	panose-1:2 4 5 3 5 4 6 3 2 4;}
-@font-face
-	{font-family:Calibri;
-	panose-1:2 15 5 2 2 2 4 3 2 4;}
-@font-face
-	{font-family:"Segoe UI Emoji";
-	panose-1:2 11 5 2 4 2 4 2 2 3;}
-@font-face
-	{font-family:"Segoe UI Symbol";
-	panose-1:2 11 5 2 4 2 4 2 2 3;}
- /* Style Definitions */
- p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin-top:0in;
-	margin-right:0in;
-	margin-bottom:8.0pt;
-	margin-left:0in;
-	line-height:115%;
-	font-size:12.0pt;
-	font-family:"Calibri",sans-serif;}
-.MsoChpDefault
-	{font-size:12.0pt;
-	font-family:"Calibri",sans-serif;}
-.MsoPapDefault
-	{margin-bottom:8.0pt;
-	line-height:115%;}
-@page WordSection1
-	{size:8.5in 11.0in;
-	margin:1.0in 1.0in 1.0in 1.0in;}
-div.WordSection1
-	{page:WordSection1;}
--->
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════ */
+:root {
+  --cyan:       #00BCD4;
+  --cyan-dark:  #0097A7;
+  --cyan-light: #E0F7FA;
+  --cyan-mid:   #80DEEA;
+  --blue:       #1565C0;
+  --blue-light: #E3F2FD;
+  --ink:        #0D1B2A;
+  --ink-80:     #1E3A4C;
+  --ink-60:     #3D5A72;
+  --ink-40:     #6B8A9E;
+  --ink-20:     #B0C8D6;
+  --ink-10:     #E8F2F7;
+  --ink-05:     #F4F8FA;
+  --white:      #FFFFFF;
+  --green:      #00897B;
+  --green-l:    #E0F2F1;
+  --amber:      #F59E0B;
+  --amber-l:    #FFFBEB;
+  --red:        #E53935;
+  --red-l:      #FFEBEE;
+  --purple:     #7C3AED;
+  --purple-l:   #EDE9FE;
+  --r-sm:       8px;
+  --r:          12px;
+  --r-lg:       20px;
+  --r-xl:       28px;
+  --r-2xl:      40px;
+  --shadow-sm:  0 1px 4px rgba(0,188,212,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow:     0 4px 24px rgba(0,188,212,0.10), 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-lg:  0 16px 56px rgba(0,188,212,0.13), 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-xl:  0 32px 80px rgba(0,188,212,0.18), 0 8px 24px rgba(0,0,0,0.10);
+}
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: \'Plus Jakarta Sans\', sans-serif;
+  background: var(--white);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--ink-05); }
+::-webkit-scrollbar-thumb { background: var(--cyan-mid); border-radius: 99px; }
+
+/* ═══════════════════════════════════════════
+   OFFER BANNER
+═══════════════════════════════════════════ */
+.offer-banner {
+  position: relative; z-index: 200;
+  background: linear-gradient(90deg, #0D47A1 0%, #0097A7 40%, #00BCD4 70%, #0288D1 100%);
+  padding: 0;
+  transition: height .3s ease, opacity .3s ease;
+  overflow: hidden;
+}
+.offer-banner.closed { height: 0; opacity: 0; pointer-events: none; }
+.offer-banner-inner {
+  max-width: 1280px; margin: 0 auto;
+  padding: 14px 40px;
+  display: flex; align-items: center; gap: 0; flex-wrap: wrap;
+}
+.offer-banner-label {
+  font-size: 14px; font-weight: 700; color: white;
+  white-space: nowrap; margin-right: 24px; letter-spacing: .01em;
+  display: flex; align-items: center; gap: 8px;
+}
+.offer-banner-label .flash { font-size: 16px; animation: flashPulse 1.5s infinite; }
+@keyframes flashPulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.offer-cards { display: flex; gap: 10px; flex: 1; flex-wrap: wrap; }
+.offer-card {
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+  backdrop-filter: blur(8px); border-radius: var(--r);
+  padding: 8px 16px; display: flex; align-items: center; gap: 10px;
+  transition: background .15s;
+}
+.offer-card:hover { background: rgba(255,255,255,0.22); }
+.offer-card-pkg { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.75); white-space: nowrap; }
+.offer-card-deal { font-size: 13px; font-weight: 800; color: white; white-space: nowrap; }
+.offer-card-sep { width: 1px; height: 28px; background: rgba(255,255,255,0.25); }
+.offer-banner-cta {
+  margin-left: 20px; flex-shrink: 0;
+  background: white; color: var(--blue); font-size: 13px; font-weight: 800;
+  padding: 9px 22px; border-radius: var(--r); border: none; cursor: pointer;
+  transition: all .2s; white-space: nowrap; font-family: \'Plus Jakarta Sans\', sans-serif;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+.offer-banner-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+.offer-close {
+  margin-left: 16px; flex-shrink: 0; background: none; border: none;
+  color: rgba(255,255,255,0.65); cursor: pointer; width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; transition: all .15s; font-size: 18px;
+}
+.offer-close:hover { background: rgba(255,255,255,0.15); color: white; }
+
+/* ═══════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════ */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.97); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--ink-10);
+  height: 68px; display: flex; align-items: center;
+  transition: box-shadow .2s;
+}
+nav.scrolled { box-shadow: var(--shadow); }
+.nav-inner {
+  max-width: 1280px; margin: 0 auto; width: 100%;
+  display: flex; align-items: center; padding: 0 40px;
+}
+.nav-logo { display: flex; align-items: center; gap: 0; }
+.nav-logo img { height: 44px; object-fit: contain; mix-blend-mode: multiply; }
+.nav-links { display: flex; align-items: center; gap: 2px; margin-left: 36px; }
+.nav-link {
+  font-size: 14px; font-weight: 600; color: var(--ink-60);
+  padding: 8px 14px; border-radius: var(--r-sm); transition: all .15s;
+  display: flex; align-items: center; gap: 5px; cursor: pointer;
+  border: none; background: transparent; font-family: \'Plus Jakarta Sans\', sans-serif;
+  position: relative;
+}
+.nav-link:hover { color: var(--cyan-dark); background: var(--cyan-light); }
+.nav-link.active { color: var(--cyan-dark); }
+/* Dropdown */
+.nav-dropdown { position: relative; }
+.nav-dropdown-menu {
+  display: none; position: absolute; top: calc(100% + 8px); left: 0;
+  background: white; border: 1px solid var(--ink-10); border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg); padding: 10px; min-width: 220px; z-index: 200;
+}
+.nav-dropdown:hover .nav-dropdown-menu { display: block; animation: dropIn .15s ease; }
+@keyframes dropIn { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+.nav-drop-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px; border-radius: var(--r-sm); transition: background .12s; cursor: pointer;
+}
+.nav-drop-item:hover { background: var(--ink-05); }
+.nav-drop-icon { width: 36px; height: 36px; border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.nav-drop-label { font-size: 13px; font-weight: 600; color: var(--ink); }
+.nav-drop-sub { font-size: 12px; color: var(--ink-40); margin-top: 1px; }
+.nav-cta { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: \'Plus Jakarta Sans\', sans-serif; font-weight: 700;
+  cursor: pointer; border: none; transition: all .2s; border-radius: var(--r);
+}
+.btn-sm { font-size: 13px; padding: 8px 20px; }
+.btn-md { font-size: 14px; padding: 12px 26px; }
+.btn-lg { font-size: 15px; padding: 15px 34px; border-radius: var(--r-lg); }
+.btn-ghost { background: transparent; color: var(--ink-60); border: 1.5px solid var(--ink-20); }
+.btn-ghost:hover { border-color: var(--cyan); color: var(--cyan-dark); background: var(--cyan-light); }
+.btn-primary { background: linear-gradient(135deg, var(--cyan-dark) 0%, var(--cyan) 100%); color: white; box-shadow: 0 4px 16px rgba(0,188,212,0.3); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,188,212,0.4); filter: brightness(1.05); }
+.btn-outline { background: transparent; color: var(--cyan-dark); border: 2px solid var(--cyan); }
+.btn-outline:hover { background: var(--cyan-light); transform: translateY(-1px); }
+.btn-white { background: white; color: var(--cyan-dark); box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+.btn-white:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,0,0,0.16); }
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+.hero {
+  background: linear-gradient(160deg, #F0FBFF 0%, #E8F5FD 25%, #F8FEFF 55%, white 100%);
+  padding: 90px 40px 80px; position: relative; overflow: hidden;
+}
+.hero-dots {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(circle, rgba(0,188,212,0.12) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse at 65% 30%, black 10%, transparent 60%);
+}
+.hero-glow {
+  position: absolute; top: -10%; right: -8%; width: 700px; height: 700px;
+  background: radial-gradient(ellipse, rgba(0,188,212,0.10) 0%, rgba(21,101,192,0.04) 40%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; gap: 72px; }
+.hero-left { flex: 1; min-width: 0; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: white; border: 1px solid var(--cyan-mid); border-radius: 99px;
+  padding: 6px 14px 6px 8px; margin-bottom: 22px; box-shadow: var(--shadow-sm);
+}
+.hero-eyebrow-chip { background: var(--cyan); color: white; font-size: 10px; font-weight: 800; padding: 3px 10px; border-radius: 99px; letter-spacing: .06em; text-transform: uppercase; }
+.hero-eyebrow-text { font-size: 13px; font-weight: 600; color: var(--ink-60); }
+.hero h1 {
+  font-family: \'Manrope\', sans-serif; font-weight: 800;
+  font-size: clamp(36px, 5vw, 62px); line-height: 1.08;
+  letter-spacing: -2px; margin-bottom: 22px; color: var(--ink);
+}
+.hero h1 .accent { color: var(--cyan-dark); position: relative; display: inline-block; }
+.hero h1 .accent::after {
+  content: \'\'; position: absolute; bottom: 0; left: 0; right: 0; height: 5px;
+  background: linear-gradient(90deg, var(--cyan), var(--cyan-mid));
+  border-radius: 3px; opacity: 0.4; transform: translateY(4px);
+}
+.hero-sub { font-size: 18px; color: var(--ink-60); max-width: 500px; margin-bottom: 36px; line-height: 1.8; font-weight: 400; }
+.hero-btns { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 44px; }
+.hero-stats { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
+.hero-stat { text-align: center; }
+.hero-stat-num { font-family: \'Manrope\', sans-serif; font-weight: 800; font-size: 26px; color: var(--ink); letter-spacing: -1px; }
+.hero-stat-num span { color: var(--cyan-dark); }
+.hero-stat-label { font-size: 12px; color: var(--ink-40); font-weight: 500; margin-top: 2px; }
+.hero-stat-sep { width: 1px; height: 36px; background: var(--ink-10); }
+.hero-right { flex-shrink: 0; width: 560px; position: relative; }
+
+/* Dashboard Mockup */
+.dash-mockup {
+  background: #0F1923; border-radius: var(--r-xl);
+  border: 1px solid rgba(0,188,212,0.2);
+  box-shadow: var(--shadow-xl); overflow: hidden;
+}
+.dash-topbar {
+  background: #111C26; height: 48px; display: flex; align-items: center;
+  padding: 0 16px; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.dash-tb-dot { width: 10px; height: 10px; border-radius: 50%; }
+.dash-tb-logo { display: flex; align-items: center; gap: 6px; margin-left: 8px; }
+.dash-tb-logo-mark { width: 22px; height: 22px; background: var(--cyan); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+.dash-tb-title { font-size: 11px; font-weight: 700; color: white; }
+.dash-tb-title span { color: var(--cyan); }
+.dash-search { flex: 1; height: 26px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; margin: 0 10px; display: flex; align-items: center; padding: 0 8px; gap: 5px; }
+.dash-search-text { font-size: 10px; color: rgba(255,255,255,0.3); }
+.dash-tb-btn { font-size: 10px; background: var(--cyan); color: white; padding: 4px 10px; border-radius: 5px; border: none; font-weight: 700; cursor: pointer; }
+.dash-tb-avatar { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #7C3AED, #0891b2); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: white; }
+.dash-body { display: flex; height: 340px; }
+.dash-sb { width: 150px; background: #111C26; border-right: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; padding: 10px 0; flex-shrink: 0; }
+.dash-nav-i { display: flex; align-items: center; gap: 8px; padding: 7px 12px; font-size: 10px; color: rgba(255,255,255,0.4); border-left: 2px solid transparent; cursor: pointer; }
+.dash-nav-i.a { background: rgba(0,188,212,0.12); color: white; border-left-color: var(--cyan); font-weight: 600; }
+.dash-nav-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.dash-main { flex: 1; padding: 14px; overflow: hidden; }
+.dash-kpi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 7px; margin-bottom: 10px; }
+.dash-kpi { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 9px; }
+.dash-kpi-label { font-size: 8px; color: rgba(255,255,255,0.4); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
+.dash-kpi-val { font-family: \'Manrope\', sans-serif; font-weight: 800; font-size: 16px; color: white; line-height: 1; margin-bottom: 2px; }
+.dash-kpi-change { font-size: 8px; font-weight: 600; }
+.dash-kpi-change.up { color: #4CAF50; }
+.dash-kpi-change.down { color: #EF5350; }
+.dash-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.dash-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px; overflow: hidden; }
+.dash-card-title { font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+.dash-trow { display: flex; align-items: center; gap: 6px; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.dash-trow:last-child { border-bottom: none; }
+.dash-av { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 7px; font-weight: 700; flex-shrink: 0; }
+.dash-tid { font-size: 9px; color: var(--cyan); font-weight: 600; flex-shrink: 0; }
+.dash-tsubj { font-size: 9px; color: rgba(255,255,255,0.7); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dash-tbadge { font-size: 7px; padding: 2px 5px; border-radius: 4px; font-weight: 700; flex-shrink: 0; }
+.sla-bar-wrap { margin-bottom: 6px; }
+.sla-bar-label { display: flex; justify-content: space-between; font-size: 9px; margin-bottom: 3px; }
+.sla-bar-label span:first-child { color: rgba(255,255,255,0.6); }
+.sla-bar-label span:last-child { font-weight: 700; color: white; }
+.sla-bar-track { height: 5px; background: rgba(255,255,255,0.07); border-radius: 3px; overflow: hidden; }
+.sla-bar-fill { height: 100%; border-radius: 3px; }
+
+/* Floating cards on hero */
+.float-card {
+  position: absolute; background: white; border-radius: var(--r-lg);
+  border: 1px solid var(--ink-10); box-shadow: var(--shadow-lg);
+  padding: 12px 16px; display: flex; align-items: center; gap: 10px;
+}
+.float-card-1 { top: -20px; right: -30px; animation: floatA 4s ease-in-out infinite; }
+.float-card-2 { bottom: 30px; left: -40px; animation: floatB 5s ease-in-out infinite; }
+@keyframes floatA { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+@keyframes floatB { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+.float-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.float-val { font-family: \'Manrope\', sans-serif; font-weight: 800; font-size: 20px; color: var(--ink); line-height: 1; }
+.float-lbl { font-size: 11px; color: var(--ink-40); }
+
+/* ═══════════════════════════════════════════
+   TRUST LOGOS
+═══════════════════════════════════════════ */
+.trust-strip {
+  background: var(--ink-05); border-top: 1px solid var(--ink-10);
+  border-bottom: 1px solid var(--ink-10); padding: 26px 40px;
+}
+.trust-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; gap: 40px; }
+.trust-label { font-size: 13px; font-weight: 600; color: var(--ink-40); white-space: nowrap; flex-shrink: 0; }
+.trust-logos { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
+.trust-logo-item { font-size: 14px; font-weight: 800; color: var(--ink-20); letter-spacing: -0.3px; transition: color .2s; cursor: default; }
+.trust-logo-item:hover { color: var(--cyan-dark); }
+
+/* ═══════════════════════════════════════════
+   SECTION COMMON
+═══════════════════════════════════════════ */
+.section { max-width: 1280px; margin: 0 auto; padding: 100px 40px; }
+.section-sm { max-width: 1280px; margin: 0 auto; padding: 70px 40px; }
+.sec-center { text-align: center; }
+.eyebrow { font-size: 12px; font-weight: 800; color: var(--cyan-dark); text-transform: uppercase; letter-spacing: .14em; margin-bottom: 12px; }
+.sec-title { font-family: \'Manrope\', sans-serif; font-weight: 800; font-size: clamp(28px, 3.5vw, 46px); line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 16px; }
+.sec-title span { color: var(--cyan-dark); }
+.sec-sub { font-size: 17px; color: var(--ink-60); max-width: 540px; margin: 0 auto 64px; font-weight: 400; line-height: 1.8; }
+
+/* ═══════════════════════════════════════════
+   FEATURES SECTION
+═══════════════════════════════════════════ */
+.features-bg { background: linear-gradient(180deg, #F4FBFD 0%, white 100%); }
+.features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+.feat-card {
+  background: white; border: 1px solid var(--ink-10); border-radius: var(--r-xl);
+  overflow: hidden; box-shadow: var(--shadow-sm); transition: all .3s; cursor: pointer;
+  position: relative;
+}
+.feat-card::before {
+  content: \'\'; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--cyan-dark), var(--cyan));
+  transform: scaleX(0); transition: transform .3s; transform-origin: left;
+}
+.feat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--cyan-mid); }
+.feat-card:hover::before { transform: scaleX(1); }
+.feat-card-preview {
+  height: 180px; background: #0F1923; position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.feat-card-preview-inner { flex: 1; padding: 12px; }
+.feat-card-body { padding: 24px; }
+.feat-card-icon { width: 44px; height: 44px; border-radius: var(--r); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 14px; }
+.feat-card-title { font-family: \'Manrope\', sans-serif; font-weight: 700; font-size: 17px; margin-bottom: 8px; }
+.feat-card-desc { font-size: 14px; color: var(--ink-60); line-height: 1.65; }
+
+/* Mini dashboard components inside feature cards */
+.mini-kpi-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; margin-bottom: 8px; }
+.mini-kpi { background: rgba(255,255,255,0.06); border-radius: 6px; padding: 6px 8px; border: 1px solid rgba(255,255,255,0.06); }
+.mini-kpi-val { font-weight: 800; font-size: 14px; color: white; line-height: 1; }
+.mini-kpi-label { font-size: 8px; color: rgba(255,255,255,0.4); }
+.mini-trow { display: flex; align-items: center; gap: 6px; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.mini-trow:last-child { border-bottom: none; }
+.mini-av-xs { width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 6px; font-weight: 700; flex-shrink: 0; }
+.mini-tsubj { font-size: 9px; color: rgba(255,255,255,0.7); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mini-badge { font-size: 7px; padding: 1px 4px; border-radius: 3px; font-weight: 700; flex-shrink: 0; }
+.mini-sla-bar { height: 4px; border-radius: 2px; background: rgba(255,255,255,0.08); overflow: hidden; margin-bottom: 6px; }
+.mini-sla-fill { height: 100%; border-radius: 2px; }
+.mini-sla-label { display: flex; justify-content: space-between; font-size: 8px; margin-bottom: 3px; }
+.mini-sla-label span:first-child { color: rgba(255,255,255,0.5); }
+.mini-sla-label span:last-child { color: white; font-weight: 700; }
+.mini-gauge { display: flex; align-items: center; justify-content: center; padding: 10px 0; }
+.mini-score { font-family: \'Manrope\', sans-serif; font-weight: 800; font-size: 32px; color: white; text-align: center; }
+.mini-score-sub { font-size: 9px; color: rgba(255,255,255,0.4); text-align: center; }
+.mini-chart-bar { display: flex; align-items: flex-end; gap: 3px; height: 50px; }
+.mini-bar { flex: 1; border-radius: 3px 3px 0 0; }
+.mini-agent-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+.mini-agent-name { font-size: 9px; color: rgba(255,255,255,0.7); flex: 1; }
+.mini-agent-bar-wrap { width: 60px; height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
+.mini-agent-bar { height: 100%; border-radius: 2px; background: var(--cyan); }
+.mini-agent-val { font-size: 9px; color: white; font-weight: 700; width: 22px; text-align: right; }
+
+/* ═══════════════════════════════════════════
+   HOW IT WORKS
+═══════════════════════════════════════════ */
+.hiw-bg { background: var(--ink); }
+.hiw-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; position: relative; }
+.hiw-grid::before {
+  content: \'\'; position: absolute; top: 36px; left: 12.5%; right: 12.5%; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), rgba(0,188,212,0.4), transparent);
+}
+.hiw-step { text-align: center; padding: 0 20px; position: relative; }
+.hiw-num {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--cyan-dark), var(--cyan));
+  color: white; font-family: \'Manrope\', sans-serif; font-weight: 800; font-size: 26px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 22px; position: relative; z-index: 1;
+  box-shadow: 0 0 0 10px rgba(0,188,212,0.1), 0 12px 30px rgba(0,188,212,0.3);
+}
+.hiw-step h4 { font-family: \'Manrope\', sans-serif; font-weight: 700; font-size: 16px; color: white; margin-bottom: 10px; }
+.hiw-step p { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.7; }
+
+/* ═══════════════════════════════════════════
+   PRICING
+═══════════════════════════════════════════ */
+.pricing-bg { background: linear-gradient(180deg, white 0%, #F0FBFF 50%, white 100%); }
+.pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; align-items: start; }
+.price-card {
+  background: white; border: 1.5px solid var(--ink-10); border-radius: var(--r-xl);
+  padding: 38px 32px; position: relative; box-shadow: var(--shadow-sm);
+  transition: all .3s;
+}
+.price-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+.price-card.featured { border-color: var(--cyan); border-width: 2px; box-shadow: var(--shadow-lg); }
+.price-popular {
+  position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--cyan-dark), var(--cyan));
+  color: white; font-size: 11px; font-weight: 800; padding: 5px 18px;
+  border-radius: 99px; white-space: nowrap; letter-spacing: .05em;
+  box-shadow: 0 4px 14px rgba(0,188,212,0.35);
+}
+.price-plan { font-size: 12px; font-weight: 800; color: var(--ink-40); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 10px; }
+.price-amount { font-family: \'Manrope\', sans-serif; font-weight: 800; font-size: 52px; line-height: 1; letter-spacing: -2.5px; color: var(--ink); margin-bottom: 4px; display: flex; align-items: flex-start; gap: 2px; }
+.price-cur { font-size: 26px; font-family: \'Plus Jakarta Sans\', sans-serif; font-weight: 600; margin-top: 12px; color: var(--ink-60); }
+.price-per { font-size: 13px; color: var(--ink-40); margin-bottom: 8px; }
+.price-users { font-size: 14px; font-weight: 600; color: var(--cyan-dark); margin-bottom: 24px; padding: 8px 14px; background: var(--cyan-light); border-radius: var(--r-sm); display: inline-block; }
+.price-divider { border: none; border-top: 1px solid var(--ink-10); margin: 20px 0; }
+.price-feats { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+.price-feat-item { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--ink-60); }
+.price-feat-check { width: 20px; height: 20px; border-radius: 50%; background: var(--cyan-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.price-feat-check svg { width: 11px; height: 11px; color: var(--cyan-dark); }
+
+/* ═══════════════════════════════════════════
+   TESTIMONIALS
+═══════════════════════════════════════════ */
+.testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+.testi-card {
+  background: white; border: 1px solid var(--ink-10); border-radius: var(--r-xl);
+  padding: 32px; box-shadow: var(--shadow-sm); transition: all .25s; position: relative;
+}
+.testi-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.testi-stars { color: var(--amber); font-size: 14px; letter-spacing: 2px; margin-bottom: 16px; }
+.testi-text { font-size: 15px; color: var(--ink-80); line-height: 1.75; margin-bottom: 24px; font-style: italic; }
+.testi-author { display: flex; align-items: center; gap: 12px; }
+.testi-av-wrap { width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; flex-shrink: 0; }
+.testi-name { font-size: 14px; font-weight: 700; }
+.testi-role { font-size: 12px; color: var(--ink-40); }
+.testi-company { font-size: 12px; font-weight: 700; color: var(--cyan-dark); }
+
+/* ═══════════════════════════════════════════
+   BLOGS
+═══════════════════════════════════════════ */
+.blog-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+.blog-card {
+  background: white; border: 1px solid var(--ink-10); border-radius: var(--r-xl);
+  overflow: hidden; box-shadow: var(--shadow-sm); transition: all .25s;
+}
+.blog-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--cyan-mid); }
+.blog-img {
+  height: 180px; background: linear-gradient(135deg, #E0F7FA, #B2EBF2);
+  display: flex; align-items: center; justify-content: center; font-size: 64px;
+  position: relative; overflow: hidden;
+}
+.blog-img-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,188,212,0.15), rgba(21,101,192,0.1)); }
+.blog-tag { position: absolute; top: 12px; left: 12px; background: var(--cyan); color: white; font-size: 10px; font-weight: 800; padding: 3px 10px; border-radius: 99px; letter-spacing: .05em; }
+.blog-body { padding: 24px; }
+.blog-date { font-size: 12px; color: var(--ink-40); margin-bottom: 10px; }
+.blog-title { font-family: \'Manrope\', sans-serif; font-weight: 700; font-size: 16px; line-height: 1.45; margin-bottom: 12px; color: var(--ink); }
+.blog-excerpt { font-size: 13px; color: var(--ink-60); line-height: 1.65; margin-bottom: 18px; }
+.blog-read-more { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--cyan-dark); transition: gap .15s; }
+.blog-card:hover .blog-read-more { gap: 10px; }
+
+/* ═══════════════════════════════════════════
+   TEAM
+═══════════════════════════════════════════ */
+.team-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 32px; max-width: 900px; margin: 0 auto; }
+.team-card {
+  background: white; border: 1px solid var(--ink-10); border-radius: var(--r-xl);
+  padding: 36px 28px; text-align: center; box-shadow: var(--shadow-sm);
+  transition: all .25s; cursor: pointer;
+}
+.team-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--cyan-mid); }
+.team-avatar {
+  width: 90px; height: 90px; border-radius: 50%; display: flex;
+  align-items: center; justify-content: center;
+  font-family: \'Manrope\', sans-serif; font-weight: 800; font-size: 28px;
+  margin: 0 auto 18px; position: relative;
+}
+.team-avatar::after {
+  content: \'\'; position: absolute; inset: -3px; border-radius: 50%;
+  border: 2px solid transparent;
+  background: linear-gradient(135deg, var(--cyan), var(--blue)) border-box;
+  -webkit-mask: linear-gradient(white 0 0) padding-box, linear-gradient(white 0 0);
+  -webkit-mask-composite: destination-out; mask-composite: exclude;
+}
+.team-name { font-family: \'Manrope\', sans-serif; font-weight: 800; font-size: 18px; margin-bottom: 6px; }
+.team-role { font-size: 13px; color: var(--cyan-dark); font-weight: 600; margin-bottom: 14px; }
+.team-bio { font-size: 13px; color: var(--ink-60); line-height: 1.65; }
+
+/* ═══════════════════════════════════════════
+   INTEGRATIONS
+═══════════════════════════════════════════ */
+.int-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 14px; }
+.int-card {
+  background: white; border: 1px solid var(--ink-10); border-radius: var(--r-lg);
+  padding: 20px 14px; text-align: center; box-shadow: var(--shadow-sm);
+  transition: all .2s; cursor: pointer;
+}
+.int-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--cyan-mid); }
+.int-icon { font-size: 28px; margin-bottom: 8px; }
+.int-name { font-size: 11px; font-weight: 700; color: var(--ink-60); }
+
+/* ═══════════════════════════════════════════
+   CTA BAND
+═══════════════════════════════════════════ */
+.cta-band {
+  background: linear-gradient(135deg, #0D47A1 0%, #006064 50%, #00BCD4 100%);
+  position: relative; overflow: hidden;
+}
+.cta-band::before {
+  content: \'\'; position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+  background-size: 24px 24px; pointer-events: none;
+}
+.cta-inner { max-width: 1280px; margin: 0 auto; padding: 90px 40px; display: flex; align-items: center; justify-content: space-between; gap: 48px; }
+.cta-left h2 { font-family: \'Manrope\', sans-serif; font-weight: 800; font-size: clamp(28px, 3.5vw, 46px); color: white; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 14px; }
+.cta-left p { font-size: 17px; color: rgba(255,255,255,0.75); max-width: 480px; }
+.cta-right { display: flex; gap: 14px; flex-wrap: wrap; flex-shrink: 0; }
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+footer { background: var(--ink); color: white; }
+.footer-top { max-width: 1280px; margin: 0 auto; padding: 72px 40px 48px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; }
+.footer-brand-logo { display: flex; align-items: center; gap: 0; margin-bottom: 14px; }
+.footer-brand-logo img { height: 42px; object-fit: contain; filter: brightness(0) invert(1); opacity: 0.9; }
+.footer-brand p { font-size: 14px; color: rgba(255,255,255,0.45); line-height: 1.75; margin-bottom: 22px; max-width: 280px; }
+.footer-social { display: flex; gap: 10px; }
+.social-btn { width: 38px; height: 38px; border-radius: var(--r-sm); background: rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; transition: all .15s; border: 1px solid rgba(255,255,255,0.08); }
+.social-btn:hover { background: var(--cyan); border-color: var(--cyan); }
+.footer-col h5 { font-family: \'Manrope\', sans-serif; font-weight: 800; font-size: 12px; color: rgba(255,255,255,0.9); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 18px; }
+.footer-link-list { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+.footer-link-list li a { font-size: 14px; color: rgba(255,255,255,0.45); transition: color .15s; }
+.footer-link-list li a:hover { color: var(--cyan); }
+.footer-contact-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(255,255,255,0.45); margin-bottom: 10px; transition: color .15s; }
+.footer-contact-item:hover { color: var(--cyan); }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); }
+.footer-bottom-inner { max-width: 1280px; margin: 0 auto; padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; }
+.footer-copy { font-size: 13px; color: rgba(255,255,255,0.3); }
+.footer-badges { display: flex; gap: 8px; }
+.footer-badge { font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 99px; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.08); }
+
+/* ═══════════════════════════════════════════
+   MODAL (SCHEDULE DEMO)
+═══════════════════════════════════════════ */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 1000;
+  background: rgba(13,27,42,0.6); backdrop-filter: blur(8px);
+  align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.open { display: flex; animation: fadeIn .15s ease; }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+.modal {
+  background: white; border-radius: var(--r-2xl); width: 100%; max-width: 560px;
+  box-shadow: var(--shadow-xl); animation: slideUp .2s ease; overflow: hidden;
+}
+@keyframes slideUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+.modal-header {
+  background: linear-gradient(135deg, var(--cyan-dark) 0%, var(--cyan) 100%);
+  padding: 32px 36px 28px; position: relative;
+}
+.modal-header::after {
+  content: \'\'; position: absolute; bottom: -1px; left: 0; right: 0; height: 20px;
+  background: white; border-radius: 20px 20px 0 0;
+}
+.modal-title { font-family: \'Manrope\', sans-serif; font-weight: 800; font-size: 26px; color: white; margin-bottom: 6px; }
+.modal-sub { font-size: 14px; color: rgba(255,255,255,0.8); }
+.modal-close { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.2); border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; transition: background .15s; }
+.modal-close:hover { background: rgba(255,255,255,0.35); }
+.modal-body { padding: 32px 36px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group { margin-bottom: 18px; }
+.form-group:last-of-type { margin-bottom: 0; }
+.form-label { display: block; font-size: 12px; font-weight: 700; color: var(--ink-60); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+.form-input {
+  width: 100%; padding: 12px 14px; font-size: 14px; font-family: \'Plus Jakarta Sans\', sans-serif;
+  background: var(--ink-05); color: var(--ink); border: 1.5px solid var(--ink-10);
+  border-radius: var(--r); outline: none; transition: all .15s;
+}
+.form-input::placeholder { color: var(--ink-20); }
+.form-input:focus { border-color: var(--cyan); background: white; box-shadow: 0 0 0 3px rgba(0,188,212,0.1); }
+.form-select { appearance: none; cursor: pointer; }
+.modal-submit { width: 100%; margin-top: 24px; justify-content: center; border-radius: var(--r-lg); font-size: 16px; padding: 15px; }
+.modal-success { display: none; text-align: center; padding: 48px 36px; }
+.modal-success-icon { font-size: 56px; margin-bottom: 16px; }
+.modal-success-title { font-family: \'Manrope\', sans-serif; font-weight: 800; font-size: 24px; margin-bottom: 8px; color: var(--ink); }
+.modal-success-sub { font-size: 15px; color: var(--ink-60); }
+
+/* ═══════════════════════════════════════════
+   ANIMATIONS & UTILS
+═══════════════════════════════════════════ */
+.fade-up { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+.fade-up-d1 { transition-delay: .1s; }
+.fade-up-d2 { transition-delay: .2s; }
+.fade-up-d3 { transition-delay: .3s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .hero-inner { flex-direction: column; gap: 48px; }
+  .hero-right { width: 100%; max-width: 600px; }
+  .features-grid { grid-template-columns: 1fr 1fr; }
+  .hiw-grid { grid-template-columns: 1fr 1fr; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .int-grid { grid-template-columns: repeat(4,1fr); }
+}
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .offer-banner-inner { gap: 12px; }
+  .offer-cards { gap: 6px; }
+  .hero { padding: 80px 20px 60px; }
+  .section { padding: 60px 20px; }
+  .section-sm { padding: 50px 20px; }
+  .features-grid, .pricing-grid, .testi-grid, .blog-grid, .team-grid { grid-template-columns: 1fr; }
+  .hiw-grid { grid-template-columns: 1fr; }
+  .hiw-grid::before { display: none; }
+  .cta-inner { flex-direction: column; }
+  .footer-top { grid-template-columns: 1fr; }
+  .footer-bottom-inner { flex-direction: column; gap: 12px; text-align: center; }
+  .form-row { grid-template-columns: 1fr; }
+  .int-grid { grid-template-columns: repeat(3,1fr); }
+  .trust-inner { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .hero-stats { gap: 16px; }
+}
 </style>
-
 </head>
-
-<body lang=EN-US style='word-wrap:break-word'>
-
-<div class=WordSection1>
-
-<p class=MsoNormal>&lt;!DOCTYPE html&gt;</p>
-
-<p class=MsoNormal>&lt;html lang=&quot;en&quot;&gt;</p>
-
-<p class=MsoNormal>&lt;head&gt;</p>
-
-<p class=MsoNormal>    &lt;meta charset=&quot;UTF-8&quot;&gt;</p>
-
-<p class=MsoNormal>    &lt;meta name=&quot;viewport&quot;
-content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</p>
-
-<p class=MsoNormal>    &lt;title&gt;Tickoradesk — AI-Powered Customer Support
-Ticketing Platform&lt;/title&gt;</p>
-
-<p class=MsoNormal>    &lt;link rel=&quot;preconnect&quot;
-href=&quot;https://fonts.googleapis.com&quot;&gt;</p>
-
-<p class=MsoNormal>    &lt;link rel=&quot;preconnect&quot;
-href=&quot;https://fonts.gstatic.com&quot; crossorigin&gt;</p>
-
-<p class=MsoNormal>    &lt;link
-href=&quot;https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap&quot;
-rel=&quot;stylesheet&quot;&gt;</p>
-
-<p class=MsoNormal>    </p>
-
-<p class=MsoNormal>    &lt;style&gt;</p>
-
-<p class=MsoNormal>        :root {</p>
-
-<p class=MsoNormal>            --dark-navy: #0A1128;</p>
-
-<p class=MsoNormal>            --cool-grey: #F7F9FC;</p>
-
-<p class=MsoNormal>            --neon-cyan: #00E5FF;</p>
-
-<p class=MsoNormal>            --deep-teal: #00BACF;</p>
-
-<p class=MsoNormal>            --pure-white: #FFFFFF;</p>
-
-<p class=MsoNormal>            --muted-text: #4A5568;</p>
-
-<p class=MsoNormal>            --border-color: #E2E8F0;</p>
-
-<p class=MsoNormal>            --max-width: 1200px;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        * {</p>
-
-<p class=MsoNormal>            margin: 0;</p>
-
-<p class=MsoNormal>            padding: 0;</p>
-
-<p class=MsoNormal>            box-sizing: border-box;</p>
-
-<p class=MsoNormal>            font-family: 'Inter', sans-serif;</p>
-
-<p class=MsoNormal>            scroll-behavior: smooth;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        body {</p>
-
-<p class=MsoNormal>            background-color: var(--pure-white);</p>
-
-<p class=MsoNormal>            color: var(--dark-navy);</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .container {</p>
-
-<p class=MsoNormal>            width: 100%;</p>
-
-<p class=MsoNormal>            max-width: var(--max-width);</p>
-
-<p class=MsoNormal>            margin: 0 auto;</p>
-
-<p class=MsoNormal>            padding: 0 24px;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        /* NAVBAR SYSTEM (ZIMYO LOOK WITH WHITE BG) */</p>
-
-<p class=MsoNormal>        header {</p>
-
-<p class=MsoNormal>            background-color: var(--pure-white);</p>
-
-<p class=MsoNormal>            border-bottom: 1px solid var(--border-color);</p>
-
-<p class=MsoNormal>            position: sticky;</p>
-
-<p class=MsoNormal>            top: 0;</p>
-
-<p class=MsoNormal>            z-index: 1000;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .navbar {</p>
-
-<p class=MsoNormal>            display: flex;</p>
-
-<p class=MsoNormal>            justify-content: space-between;</p>
-
-<p class=MsoNormal>            align-items: center;</p>
-
-<p class=MsoNormal>            height: 80px;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .logo {</p>
-
-<p class=MsoNormal>            font-size: 24px;</p>
-
-<p class=MsoNormal>            font-weight: 800;</p>
-
-<p class=MsoNormal>            color: var(--dark-navy);</p>
-
-<p class=MsoNormal>            text-decoration: none;</p>
-
-<p class=MsoNormal>            display: flex;</p>
-
-<p class=MsoNormal>            align-items: center;</p>
-
-<p class=MsoNormal>            gap: 8px;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .logo span {</p>
-
-<p class=MsoNormal>            color: var(--deep-teal);</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .nav-links {</p>
-
-<p class=MsoNormal>            display: flex;</p>
-
-<p class=MsoNormal>            gap: 32px;</p>
-
-<p class=MsoNormal>            list-style: none;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .nav-links a {</p>
-
-<p class=MsoNormal>            text-decoration: none;</p>
-
-<p class=MsoNormal>            color: var(--muted-text);</p>
-
-<p class=MsoNormal>            font-weight: 500;</p>
-
-<p class=MsoNormal>            font-size: 15px;</p>
-
-<p class=MsoNormal>            transition: all 0.3s ease;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .nav-links a:hover {</p>
-
-<p class=MsoNormal>            color: var(--dark-navy);</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .nav-actions {</p>
-
-<p class=MsoNormal>            display: flex;</p>
-
-<p class=MsoNormal>            align-items: center;</p>
-
-<p class=MsoNormal>            gap: 20px;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .btn {</p>
-
-<p class=MsoNormal>            padding: 12px 24px;</p>
-
-<p class=MsoNormal>            border-radius: 6px;</p>
-
-<p class=MsoNormal>            font-size: 15px;</p>
-
-<p class=MsoNormal>            font-weight: 600;</p>
-
-<p class=MsoNormal>            text-decoration: none;</p>
-
-<p class=MsoNormal>            transition: all 0.3s ease;</p>
-
-<p class=MsoNormal>            cursor: pointer;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .btn-login {</p>
-
-<p class=MsoNormal>            color: var(--dark-navy);</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .btn-signup {</p>
-
-<p class=MsoNormal>            background-color: var(--dark-navy);</p>
-
-<p class=MsoNormal>            color: var(--pure-white);</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .btn-signup:hover {</p>
-
-<p class=MsoNormal>            background-color: #1a264d;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        /* HERO SECTION */</p>
-
-<p class=MsoNormal>        .hero {</p>
-
-<p class=MsoNormal>            padding: 100px 0;</p>
-
-<p class=MsoNormal>            display: grid;</p>
-
-<p class=MsoNormal>            grid-template-columns: 1fr 1fr;</p>
-
-<p class=MsoNormal>            gap: 48px;</p>
-
-<p class=MsoNormal>            align-items: center;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .hero-left h1 {</p>
-
-<p class=MsoNormal>            font-size: 48px;</p>
-
-<p class=MsoNormal>            font-weight: 800;</p>
-
-<p class=MsoNormal>            line-height: 1.2;</p>
-
-<p class=MsoNormal>            margin-bottom: 24px;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .hero-left p {</p>
-
-<p class=MsoNormal>            font-size: 18px;</p>
-
-<p class=MsoNormal>            color: var(--muted-text);</p>
-
-<p class=MsoNormal>            line-height: 1.6;</p>
-
-<p class=MsoNormal>            margin-bottom: 32px;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .btn-demo {</p>
-
-<p class=MsoNormal>            background-color: var(--neon-cyan);</p>
-
-<p class=MsoNormal>            color: var(--dark-navy);</p>
-
-<p class=MsoNormal>            border: none;</p>
-
-<p class=MsoNormal>            font-size: 16px;</p>
-
-<p class=MsoNormal>            padding: 16px 32px;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .btn-demo:hover {</p>
-
-<p class=MsoNormal>            background-color: var(--deep-teal);</p>
-
-<p class=MsoNormal>            color: var(--pure-white);</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .hero-right .mockup-box {</p>
-
-<p class=MsoNormal>            background-color: var(--cool-grey);</p>
-
-<p class=MsoNormal>            border: 2px dashed var(--border-color);</p>
-
-<p class=MsoNormal>            border-radius: 12px;</p>
-
-<p class=MsoNormal>            height: 380px;</p>
-
-<p class=MsoNormal>            display: flex;</p>
-
-<p class=MsoNormal>            justify-content: center;</p>
-
-<p class=MsoNormal>            align-items: center;</p>
-
-<p class=MsoNormal>            font-weight: 600;</p>
-
-<p class=MsoNormal>            color: var(--muted-text);</p>
-
-<p class=MsoNormal>            box-shadow: 0 20px 40px rgba(0,0,0,0.05);</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        /* SOCIAL PROOF */</p>
-
-<p class=MsoNormal>        .social-proof {</p>
-
-<p class=MsoNormal>            background-color: var(--cool-grey);</p>
-
-<p class=MsoNormal>            padding: 40px 0;</p>
-
-<p class=MsoNormal>            text-align: center;</p>
-
-<p class=MsoNormal>            border-top: 1px solid var(--border-color);</p>
-
-<p class=MsoNormal>            border-bottom: 1px solid var(--border-color);</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .social-proof p {</p>
-
-<p class=MsoNormal>            font-size: 14px;</p>
-
-<p class=MsoNormal>            text-transform: uppercase;</p>
-
-<p class=MsoNormal>            letter-spacing: 1px;</p>
-
-<p class=MsoNormal>            color: var(--muted-text);</p>
-
-<p class=MsoNormal>            font-weight: 600;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        /* PRICING SECTION */</p>
-
-<p class=MsoNormal>        .pricing {</p>
-
-<p class=MsoNormal>            padding: 100px 0;</p>
-
-<p class=MsoNormal>            background-color: var(--pure-white);</p>
-
-<p class=MsoNormal>            text-align: center;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .section-title {</p>
-
-<p class=MsoNormal>            font-size: 36px;</p>
-
-<p class=MsoNormal>            font-weight: 800;</p>
-
-<p class=MsoNormal>            margin-bottom: 48px;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .pricing-grid {</p>
-
-<p class=MsoNormal>            display: grid;</p>
-
-<p class=MsoNormal>            grid-template-columns: 1fr 1fr;</p>
-
-<p class=MsoNormal>            gap: 32px;</p>
-
-<p class=MsoNormal>            max-width: 800px;</p>
-
-<p class=MsoNormal>            margin: 0 auto;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .price-card {</p>
-
-<p class=MsoNormal>            background: var(--pure-white);</p>
-
-<p class=MsoNormal>            border: 1px solid var(--border-color);</p>
-
-<p class=MsoNormal>            border-radius: 12px;</p>
-
-<p class=MsoNormal>            padding: 40px;</p>
-
-<p class=MsoNormal>            text-align: left;</p>
-
-<p class=MsoNormal>            transition: all 0.3s ease;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .price-card.featured {</p>
-
-<p class=MsoNormal>            border: 2px solid var(--dark-navy);</p>
-
-<p class=MsoNormal>            position: relative;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .price-card h3 { font-size: 22px; margin-bottom:
-12px; }</p>
-
-<p class=MsoNormal>        .price-card .cost { font-size: 36px; font-weight:
-800; margin-bottom: 24px; color: var(--dark-navy); }</p>
-
-<p class=MsoNormal>        .price-card ul { list-style: none; margin-bottom:
-32px; }</p>
-
-<p class=MsoNormal>        .price-card ul li { margin-bottom: 12px; color:
-var(--muted-text); font-size: 15px; }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        /* TEAM SECTION */</p>
-
-<p class=MsoNormal>        .team {</p>
-
-<p class=MsoNormal>            padding: 100px 0;</p>
-
-<p class=MsoNormal>            background-color: var(--cool-grey);</p>
-
-<p class=MsoNormal>            text-align: center;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .team-grid {</p>
-
-<p class=MsoNormal>            display: grid;</p>
-
-<p class=MsoNormal>            grid-template-columns: repeat(3, 1fr);</p>
-
-<p class=MsoNormal>            gap: 32px;</p>
-
-<p class=MsoNormal>            margin-top: 48px;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .team-card {</p>
-
-<p class=MsoNormal>            background: var(--pure-white);</p>
-
-<p class=MsoNormal>            border: 1px solid var(--border-color);</p>
-
-<p class=MsoNormal>            border-radius: 12px;</p>
-
-<p class=MsoNormal>            padding: 32px;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .team-card .avatar {</p>
-
-<p class=MsoNormal>            width: 80px;</p>
-
-<p class=MsoNormal>            height: 80px;</p>
-
-<p class=MsoNormal>            background: var(--cool-grey);</p>
-
-<p class=MsoNormal>            border-radius: 50%;</p>
-
-<p class=MsoNormal>            margin: 0 auto 20px;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .team-card h4 { font-size: 20px; margin-bottom: 6px;
-}</p>
-
-<p class=MsoNormal>        .team-card p { color: var(--deep-teal); font-weight:
-600; font-size: 14px; }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        /* CONTACT &amp; DEMO FORM */</p>
-
-<p class=MsoNormal>        .contact-section {</p>
-
-<p class=MsoNormal>            padding: 100px 0;</p>
-
-<p class=MsoNormal>            display: grid;</p>
-
-<p class=MsoNormal>            grid-template-columns: 1.2fr 0.8fr;</p>
-
-<p class=MsoNormal>            gap: 64px;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .demo-form {</p>
-
-<p class=MsoNormal>            background: var(--cool-grey);</p>
-
-<p class=MsoNormal>            padding: 40px;</p>
-
-<p class=MsoNormal>            border-radius: 12px;</p>
-
-<p class=MsoNormal>            border: 1px solid var(--border-color);</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .form-group {</p>
-
-<p class=MsoNormal>            margin-bottom: 20px;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .form-group label {</p>
-
-<p class=MsoNormal>            display: block;</p>
-
-<p class=MsoNormal>            margin-bottom: 8px;</p>
-
-<p class=MsoNormal>            font-weight: 500;</p>
-
-<p class=MsoNormal>            font-size: 14px;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .form-group input, .form-group select {</p>
-
-<p class=MsoNormal>            width: 100%;</p>
-
-<p class=MsoNormal>            padding: 12px;</p>
-
-<p class=MsoNormal>            border: 1px solid var(--border-color);</p>
-
-<p class=MsoNormal>            border-radius: 6px;</p>
-
-<p class=MsoNormal>            font-size: 15px;</p>
-
-<p class=MsoNormal>            background: var(--pure-white);</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .contact-info-box {</p>
-
-<p class=MsoNormal>            background: var(--dark-navy);</p>
-
-<p class=MsoNormal>            color: var(--pure-white);</p>
-
-<p class=MsoNormal>            padding: 40px;</p>
-
-<p class=MsoNormal>            border-radius: 12px;</p>
-
-<p class=MsoNormal>            display: flex;</p>
-
-<p class=MsoNormal>            flex-direction: column;</p>
-
-<p class=MsoNormal>            justify-content: center;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .contact-info-box h3 { font-size: 28px;
-margin-bottom: 24px; }</p>
-
-<p class=MsoNormal>        .contact-info-box p { margin-bottom: 16px; color:
-#a0aec0; font-size: 16px; }</p>
-
-<p class=MsoNormal>        .contact-info-box span { color: var(--neon-cyan);
-font-weight: 600; }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        /* FOOTER */</p>
-
-<p class=MsoNormal>        footer {</p>
-
-<p class=MsoNormal>            background: var(--dark-navy);</p>
-
-<p class=MsoNormal>            color: var(--pure-white);</p>
-
-<p class=MsoNormal>            padding: 60px 0 30px;</p>
-
-<p class=MsoNormal>            border-top: 1px solid #1a264d;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .footer-grid {</p>
-
-<p class=MsoNormal>            display: grid;</p>
-
-<p class=MsoNormal>            grid-template-columns: 1.5fr 1fr 1fr;</p>
-
-<p class=MsoNormal>            gap: 48px;</p>
-
-<p class=MsoNormal>            margin-bottom: 40px;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .footer-col h4 { font-size: 16px; margin-bottom:
-20px; color: var(--neon-cyan); text-transform: uppercase; letter-spacing: 1px;}</p>
-
-<p class=MsoNormal>        .footer-col p { color: #a0aec0; line-height: 1.6;
-font-size: 14px; }</p>
-
-<p class=MsoNormal>        .footer-links { list-style: none; }</p>
-
-<p class=MsoNormal>        .footer-links li { margin-bottom: 12px; }</p>
-
-<p class=MsoNormal>        .footer-links a { color: #a0aec0; text-decoration:
-none; font-size: 14px; }</p>
-
-<p class=MsoNormal>        .footer-links a:hover { color: var(--pure-white); }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        .footer-bottom {</p>
-
-<p class=MsoNormal>            border-top: 1px solid #1a264d;</p>
-
-<p class=MsoNormal>            padding-top: 30px;</p>
-
-<p class=MsoNormal>            text-align: center;</p>
-
-<p class=MsoNormal>            color: #718096;</p>
-
-<p class=MsoNormal>            font-size: 14px;</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>        @media (max-width: 768px) {</p>
-
-<p class=MsoNormal>            .hero, .pricing-grid, .team-grid,
-.contact-section, .footer-grid {</p>
-
-<p class=MsoNormal>                grid-template-columns: 1fr;</p>
-
-<p class=MsoNormal>            }</p>
-
-<p class=MsoNormal>            .nav-links { display: none; }</p>
-
-<p class=MsoNormal>        }</p>
-
-<p class=MsoNormal>    &lt;/style&gt;</p>
-
-<p class=MsoNormal>&lt;/head&gt;</p>
-
-<p class=MsoNormal>&lt;body&gt;</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>    &lt;header&gt;</p>
-
-<p class=MsoNormal>        &lt;div class=&quot;container navbar&quot;&gt;</p>
-
-<p class=MsoNormal>            &lt;a href=&quot;#&quot;
-class=&quot;logo&quot;&gt;<span style='font-family:"Segoe UI Emoji",sans-serif'>☑️</span>
-Tickora&lt;span&gt;Desk&lt;/span&gt;&lt;/a&gt;</p>
-
-<p class=MsoNormal>            &lt;ul class=&quot;nav-links&quot;&gt;</p>
-
-<p class=MsoNormal>                &lt;li&gt;&lt;a href=&quot;#features&quot;&gt;Features&lt;/a&gt;&lt;/li&gt;</p>
-
-<p class=MsoNormal>                &lt;li&gt;&lt;a
-href=&quot;#pricing&quot;&gt;Pricing&lt;/a&gt;&lt;/li&gt;</p>
-
-<p class=MsoNormal>                &lt;li&gt;&lt;a
-href=&quot;#&quot;&gt;Resources&lt;/a&gt;&lt;/li&gt;</p>
-
-<p class=MsoNormal>            &lt;/ul&gt;</p>
-
-<p class=MsoNormal>            &lt;div class=&quot;nav-actions&quot;&gt;</p>
-
-<p class=MsoNormal>                &lt;a href=&quot;#&quot; class=&quot;btn
-btn-login&quot;&gt;Login&lt;/a&gt;</p>
-
-<p class=MsoNormal>                &lt;a href=&quot;#demo&quot; class=&quot;btn
-btn-signup&quot;&gt;Sign Up&lt;/a&gt;</p>
-
-<p class=MsoNormal>            &lt;/div&gt;</p>
-
-<p class=MsoNormal>        &lt;/div&gt;</p>
-
-<p class=MsoNormal>    &lt;/header&gt;</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>    &lt;section class=&quot;container hero&quot;&gt;</p>
-
-<p class=MsoNormal>        &lt;div class=&quot;hero-left&quot;&gt;</p>
-
-<p class=MsoNormal>            &lt;span class=&quot;badge&quot;&gt;AI-Powered
-Support Engine&lt;/span&gt;</p>
-
-<p class=MsoNormal>            &lt;h1&gt;Turn Support Emails Into Intelligent
-Tickets Instantly&lt;/h1&gt;</p>
-
-<p class=MsoNormal>            &lt;p&gt;Stop drowning in messy inbox threads.
-Tickoradesk uses advanced LLMs to prioritize, categorize, and draft precise
-enterprise support solutions in real-time.&lt;/p&gt;</p>
-
-<p class=MsoNormal>            &lt;a href=&quot;#demo&quot; class=&quot;btn
-btn-demo&quot;&gt;Request for Demo&lt;/a&gt;</p>
-
-<p class=MsoNormal>        &lt;/div&gt;</p>
-
-<p class=MsoNormal>        &lt;div class=&quot;hero-right&quot;&gt;</p>
-
-<p class=MsoNormal>            &lt;div class=&quot;mockup-box&quot;&gt;</p>
-
-<p class=MsoNormal>                [ AI Ticket Dashboard Interactive Mockup
-Visualization ]</p>
-
-<p class=MsoNormal>            &lt;/div&gt;</p>
-
-<p class=MsoNormal>        &lt;/div&gt;</p>
-
-<p class=MsoNormal>    &lt;/section&gt;</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>    &lt;section class=&quot;social-proof&quot;&gt;</p>
-
-<p class=MsoNormal>        &lt;div class=&quot;container&quot;&gt;</p>
-
-<p class=MsoNormal>            &lt;p&gt;Trusted by 50+ High-Growth Indian Tech
-Brands&lt;/p&gt;</p>
-
-<p class=MsoNormal>        &lt;/div&gt;</p>
-
-<p class=MsoNormal>    &lt;/section&gt;</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>    &lt;section id=&quot;pricing&quot;
-class=&quot;pricing&quot;&gt;</p>
-
-<p class=MsoNormal>        &lt;div class=&quot;container&quot;&gt;</p>
-
-<p class=MsoNormal>            &lt;h2
-class=&quot;section-title&quot;&gt;Transparent, Enterprise-Grade
-Pricing&lt;/h2&gt;</p>
-
-<p class=MsoNormal>            &lt;div class=&quot;pricing-grid&quot;&gt;</p>
-
-<p class=MsoNormal>                &lt;div class=&quot;price-card&quot;&gt;</p>
-
-<p class=MsoNormal>                    &lt;h3&gt;Growth Plan&lt;/h3&gt;</p>
-
-<p class=MsoNormal>                    &lt;div
-class=&quot;cost&quot;&gt;₹1,499&lt;span&gt;/mo&lt;/span&gt;&lt;/div&gt;</p>
-
-<p class=MsoNormal>                    &lt;ul&gt;</p>
-
-<p class=MsoNormal>                        &lt;li&gt;<span style='font-family:
-"Segoe UI Symbol",sans-serif'>✔</span> 5 Support Agents Included&lt;/li&gt;</p>
-
-<p class=MsoNormal>                        &lt;li&gt;<span style='font-family:
-"Segoe UI Symbol",sans-serif'>✔</span> Full Email Box Integration&lt;/li&gt;</p>
-
-<p class=MsoNormal>                        &lt;li&gt;<span style='font-family:
-"Segoe UI Symbol",sans-serif'>✔</span> AI Auto-Categorization&lt;/li&gt;</p>
-
-<p class=MsoNormal>                        &lt;li&gt;<span style='font-family:
-"Segoe UI Symbol",sans-serif'>✔</span> 9x5 Email Support&lt;/li&gt;</p>
-
-<p class=MsoNormal>                    &lt;/ul&gt;</p>
-
-<p class=MsoNormal>                    &lt;a href=&quot;#demo&quot;
-class=&quot;btn btn-signup&quot; style=&quot;display:block;
-text-align:center;&quot;&gt;Choose Growth&lt;/a&gt;</p>
-
-<p class=MsoNormal>                &lt;/div&gt;</p>
-
-<p class=MsoNormal>                &lt;div class=&quot;price-card
-featured&quot;&gt;</p>
-
-<p class=MsoNormal>                    &lt;h3&gt;Scale Plan&lt;/h3&gt;</p>
-
-<p class=MsoNormal>                    &lt;div
-class=&quot;cost&quot;&gt;₹3,499&lt;span&gt;/mo&lt;/span&gt;&lt;/div&gt;</p>
-
-<p class=MsoNormal>                    &lt;ul&gt;</p>
-
-<p class=MsoNormal>                        &lt;li&gt;<span style='font-family:
-"Segoe UI Symbol",sans-serif'>✔</span> Unlimited Support Agents&lt;/li&gt;</p>
-
-<p class=MsoNormal>                        &lt;li&gt;<span style='font-family:
-"Segoe UI Symbol",sans-serif'>✔</span> Generative AI Response Drafts&lt;/li&gt;</p>
-
-<p class=MsoNormal>                        &lt;li&gt;<span style='font-family:
-"Segoe UI Symbol",sans-serif'>✔</span> SLA Breach Predictor Layers&lt;/li&gt;</p>
-
-<p class=MsoNormal>                        &lt;li&gt;<span style='font-family:
-"Segoe UI Symbol",sans-serif'>✔</span> 24/7 Dedicated Support&lt;/li&gt;</p>
-
-<p class=MsoNormal>                    &lt;/ul&gt;</p>
-
-<p class=MsoNormal>                    &lt;a href=&quot;#demo&quot;
-class=&quot;btn btn-demo&quot; style=&quot;display:block; text-align:center;
-border-radius:6px;&quot;&gt;Go Scale&lt;/a&gt;</p>
-
-<p class=MsoNormal>                &lt;/div&gt;</p>
-
-<p class=MsoNormal>            &lt;/div&gt;</p>
-
-<p class=MsoNormal>        &lt;/div&gt;</p>
-
-<p class=MsoNormal>    &lt;/section&gt;</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>    &lt;section class=&quot;team&quot;&gt;</p>
-
-<p class=MsoNormal>        &lt;div class=&quot;container&quot;&gt;</p>
-
-<p class=MsoNormal>            &lt;h2 class=&quot;section-title&quot;&gt;Meet
-Our Leadership Team&lt;/h2&gt;</p>
-
-<p class=MsoNormal>            &lt;div class=&quot;team-grid&quot;&gt;</p>
-
-<p class=MsoNormal>                &lt;div class=&quot;team-card&quot;&gt;</p>
-
-<p class=MsoNormal>                    &lt;div
-class=&quot;avatar&quot;&gt;&lt;/div&gt;</p>
-
-<p class=MsoNormal>                    &lt;h4&gt;Prithvi Kumar&lt;/h4&gt;</p>
-
-<p class=MsoNormal>                    &lt;p&gt;CEO &amp; Founder&lt;/p&gt;</p>
-
-<p class=MsoNormal>                &lt;/div&gt;</p>
-
-<p class=MsoNormal>                &lt;div class=&quot;team-card&quot;&gt;</p>
-
-<p class=MsoNormal>                    &lt;div
-class=&quot;avatar&quot;&gt;&lt;/div&gt;</p>
-
-<p class=MsoNormal>                    &lt;h4&gt;Ankit Sharma&lt;/h4&gt;</p>
-
-<p class=MsoNormal>                    &lt;p&gt;Product Head&lt;/p&gt;</p>
-
-<p class=MsoNormal>                &lt;/div&gt;</p>
-
-<p class=MsoNormal>                &lt;div class=&quot;team-card&quot;&gt;</p>
-
-<p class=MsoNormal>                    &lt;div
-class=&quot;avatar&quot;&gt;&lt;/div&gt;</p>
-
-<p class=MsoNormal>                    &lt;h4&gt;Sandhya&lt;/h4&gt;</p>
-
-<p class=MsoNormal>                    &lt;p&gt;Sales &amp; Support
-Head&lt;/p&gt;</p>
-
-<p class=MsoNormal>                &lt;/div&gt;</p>
-
-<p class=MsoNormal>            &lt;/div&gt;</p>
-
-<p class=MsoNormal>        &lt;/div&gt;</p>
-
-<p class=MsoNormal>    &lt;/section&gt;</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>    &lt;section id=&quot;demo&quot; class=&quot;container
-section-padding&quot;&gt;</p>
-
-<p class=MsoNormal>        &lt;div class=&quot;contact-section&quot;&gt;</p>
-
-<p class=MsoNormal>            &lt;div class=&quot;demo-form&quot;&gt;</p>
-
-<p class=MsoNormal>                &lt;h3 style=&quot;margin-bottom:24px;
-font-size:24px;&quot;&gt;Schedule an Enterprise Demo&lt;/h3&gt;</p>
-
-<p class=MsoNormal>                &lt;form action=&quot;#&quot;&gt;</p>
-
-<p class=MsoNormal>                    &lt;div class=&quot;form-group&quot;&gt;</p>
-
-<p class=MsoNormal>                        &lt;label&gt;Full Name&lt;/label&gt;</p>
-
-<p class=MsoNormal>                        &lt;input type=&quot;text&quot;
-placeholder=&quot;Enter your name&quot; required&gt;</p>
-
-<p class=MsoNormal>                    &lt;/div&gt;</p>
-
-<p class=MsoNormal>                    &lt;div class=&quot;form-group&quot;&gt;</p>
-
-<p class=MsoNormal>                        &lt;label&gt;Work
-Email&lt;/label&gt;</p>
-
-<p class=MsoNormal>                        &lt;input type=&quot;email&quot;
-placeholder=&quot;name@company.com&quot; required&gt;</p>
-
-<p class=MsoNormal>                    &lt;/div&gt;</p>
-
-<p class=MsoNormal>                    &lt;div class=&quot;form-group&quot;&gt;</p>
-
-<p class=MsoNormal>                        &lt;label&gt;Phone
-Number&lt;/label&gt;</p>
-
-<p class=MsoNormal>                        &lt;input type=&quot;tel&quot;
-placeholder=&quot;Your mobile number&quot; required&gt;</p>
-
-<p class=MsoNormal>                    &lt;/div&gt;</p>
-
-<p class=MsoNormal>                    &lt;div class=&quot;form-group&quot;&gt;</p>
-
-<p class=MsoNormal>                        &lt;label&gt;Company
-Size&lt;/label&gt;</p>
-
-<p class=MsoNormal>                        &lt;select&gt;</p>
-
-<p class=MsoNormal>                            &lt;option&gt;1-20
-Employees&lt;/option&gt;</p>
-
-<p class=MsoNormal>                            &lt;option&gt;21-100
-Employees&lt;/option&gt;</p>
-
-<p class=MsoNormal>                            &lt;option&gt;100+
-Employees&lt;/option&gt;</p>
-
-<p class=MsoNormal>                        &lt;/select&gt;</p>
-
-<p class=MsoNormal>                    &lt;/div&gt;</p>
-
-<p class=MsoNormal>                    &lt;button type=&quot;submit&quot;
-class=&quot;btn btn-demo&quot; style=&quot;width:100%; border-radius:6px;
-margin-top:10px;&quot;&gt;Book Demo Now&lt;/button&gt;</p>
-
-<p class=MsoNormal>                &lt;/form&gt;</p>
-
-<p class=MsoNormal>            &lt;/div&gt;</p>
-
-<p class=MsoNormal>            </p>
-
-<p class=MsoNormal>            &lt;div class=&quot;contact-info-box&quot;&gt;</p>
-
-<p class=MsoNormal>                &lt;h3&gt;Get in touch directly&lt;/h3&gt;</p>
-
-<p class=MsoNormal>                &lt;p&gt;Email:
-&lt;span&gt;Support@tickoradesk.com&lt;/span&gt;&lt;/p&gt;</p>
-
-<p class=MsoNormal>                &lt;p&gt;Mobile: &lt;span&gt;+91 70042
-93858&lt;/span&gt;&lt;/p&gt;</p>
-
-<p class=MsoNormal>                &lt;p style=&quot;margin-top:20px;
-font-size:14px; color:#718096;&quot;&gt;Response guaranteed within 15
-minutes.&lt;/p&gt;</p>
-
-<p class=MsoNormal>            &lt;/div&gt;</p>
-
-<p class=MsoNormal>        &lt;/div&gt;</p>
-
-<p class=MsoNormal>    &lt;/section&gt;</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>    &lt;footer&gt;</p>
-
-<p class=MsoNormal>        &lt;div class=&quot;container footer-grid&quot;&gt;</p>
-
-<p class=MsoNormal>            &lt;div class=&quot;footer-col&quot;&gt;</p>
-
-<p class=MsoNormal>                &lt;h4
-style=&quot;color:#FFF;&quot;&gt;About Us&lt;/h4&gt;</p>
-
-<p class=MsoNormal>                &lt;p
-style=&quot;margin-top:10px;&quot;&gt;Tickoradesk is building India's elite
-AI-powered customer infrastructure to help brands resolve heavy scale support
-backlogs without building massive operational armies.&lt;/p&gt;</p>
-
-<p class=MsoNormal>            &lt;/div&gt;</p>
-
-<p class=MsoNormal>            &lt;div class=&quot;footer-col&quot;&gt;</p>
-
-<p class=MsoNormal>                &lt;h4&gt;Legal &amp; Framework&lt;/h4&gt;</p>
-
-<p class=MsoNormal>                &lt;ul class=&quot;footer-links&quot;&gt;</p>
-
-<p class=MsoNormal>                    &lt;li&gt;&lt;a
-href=&quot;#&quot;&gt;Privacy Policy&lt;/a&gt;&lt;/li&gt;</p>
-
-<p class=MsoNormal>                    &lt;li&gt;&lt;a
-href=&quot;#&quot;&gt;Terms of Service&lt;/a&gt;&lt;/li&gt;</p>
-
-<p class=MsoNormal>                    &lt;li&gt;&lt;a
-href=&quot;#&quot;&gt;Security Framework&lt;/a&gt;&lt;/li&gt;</p>
-
-<p class=MsoNormal>                &lt;/ul&gt;</p>
-
-<p class=MsoNormal>            &lt;/div&gt;</p>
-
-<p class=MsoNormal>            &lt;div class=&quot;footer-col&quot;&gt;</p>
-
-<p class=MsoNormal>                &lt;h4&gt;Follow Us&lt;/h4&gt;</p>
-
-<p class=MsoNormal>                &lt;ul class=&quot;footer-links&quot;&gt;</p>
-
-<p class=MsoNormal>                    &lt;li&gt;&lt;a
-href=&quot;#&quot;&gt;LinkedIn&lt;/a&gt;&lt;/li&gt;</p>
-
-<p class=MsoNormal>                    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;X
-(Twitter)&lt;/a&gt;&lt;/li&gt;</p>
-
-<p class=MsoNormal>                    &lt;li&gt;&lt;a
-href=&quot;#&quot;&gt;Instagram&lt;/a&gt;&lt;/li&gt;</p>
-
-<p class=MsoNormal>                    &lt;li&gt;&lt;a
-href=&quot;#&quot;&gt;YouTube&lt;/a&gt;&lt;/li&gt;</p>
-
-<p class=MsoNormal>                &lt;/ul&gt;</p>
-
-<p class=MsoNormal>            &lt;/div&gt;</p>
-
-<p class=MsoNormal>        &lt;/div&gt;</p>
-
-<p class=MsoNormal>        &lt;div class=&quot;footer-bottom&quot;&gt;</p>
-
-<p class=MsoNormal>            &lt;p&gt;&amp;copy; 2026 Tickoradesk. All Rights
-Reserved.&lt;/p&gt;</p>
-
-<p class=MsoNormal>        &lt;/div&gt;</p>
-
-<p class=MsoNormal>    &lt;/footer&gt;</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>&lt;/body&gt;</p>
-
-<p class=MsoNormal>&lt;/html&gt;</p>
-
+<body>
+
+<!-- ══════════════════════ OFFER BANNER ══════════════════════ -->
+<div class="offer-banner" id="offerBanner">
+  <div class="offer-banner-inner">
+    <div class="offer-banner-label">
+      <span class="flash">⚡</span>
+      Special Discount! Save More with Long-Term Plans
+    </div>
+    <div class="offer-cards">
+      <div class="offer-card">
+        <div>
+          <div class="offer-card-pkg">1 Year Package</div>
+          <div class="offer-card-deal">Get 6 Months Extra FREE</div>
+        </div>
+      </div>
+      <div class="offer-card">
+        <div>
+          <div class="offer-card-pkg">6 Months Package</div>
+          <div class="offer-card-deal">Get 2 Months Extra FREE</div>
+        </div>
+      </div>
+      <div class="offer-card">
+        <div>
+          <div class="offer-card-pkg">3 Months Package</div>
+          <div class="offer-card-deal">Get 1 Month Extra FREE</div>
+        </div>
+      </div>
+    </div>
+    <button class="offer-banner-cta" onclick="openDemo()">Grab the Offer Now →</button>
+    <button class="offer-close" onclick="document.getElementById(\'offerBanner\').classList.add(\'closed\')">✕</button>
+  </div>
 </div>
 
-</body>
+<!-- ══════════════════════ NAV ══════════════════════ -->
+<nav id="mainNav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <img src="LOGO_SRC" alt="TickoraDesk" />
+    </a>
+    <div class="nav-links">
+      <div class="nav-dropdown">
+        <button class="nav-link">
+          Product
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <div class="nav-drop-item"><div class="nav-drop-icon" style="background:#E0F7FA">🎫</div><div><div class="nav-drop-label">Ticket Management</div><div class="nav-drop-sub">Smart queue & resolution</div></div></div>
+          <div class="nav-drop-item"><div class="nav-drop-icon" style="background:#F3E5F5">🤖</div><div><div class="nav-drop-label">AI Automation</div><div class="nav-drop-sub">Intelligent responses</div></div></div>
+          <div class="nav-drop-item"><div class="nav-drop-icon" style="background:#E8F5E9">📊</div><div><div class="nav-drop-label">Analytics & Reports</div><div class="nav-drop-sub">Real-time insights</div></div></div>
+          <div class="nav-drop-item"><div class="nav-drop-icon" style="background:#FFF8E1">⏱</div><div><div class="nav-drop-label">SLA Management</div><div class="nav-drop-sub">Track & meet SLAs</div></div></div>
+        </div>
+      </div>
+      <a href="#pricing" class="nav-link">Pricing</a>
+      <div class="nav-dropdown">
+        <button class="nav-link">
+          Resources
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="#blogs" class="nav-drop-item"><div class="nav-drop-icon" style="background:#E3F2FD">📝</div><div><div class="nav-drop-label">Blogs</div><div class="nav-drop-sub">Tips & best practices</div></div></a>
+          <div class="nav-drop-item"><div class="nav-drop-icon" style="background:#E8F5E9">📖</div><div><div class="nav-drop-label">Documentation</div><div class="nav-drop-sub">API & developer guides</div></div></div>
+          <div class="nav-drop-item"><div class="nav-drop-icon" style="background:#FFF3E0">🎓</div><div><div class="nav-drop-label">Case Studies</div><div class="nav-drop-sub">Customer success stories</div></div></div>
+        </div>
+      </div>
+      <a href="#team" class="nav-link">About</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#" class="btn btn-sm btn-ghost">Login</a>
+      <button class="btn btn-sm btn-primary" onclick="openDemo()">
+        Schedule Demo
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 6.5h8M6.5 2.5l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
 
-</html>
+<!-- ══════════════════════ HERO ══════════════════════ -->
+<section class="hero">
+  <div class="hero-dots"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <span class="hero-eyebrow-chip">AI-Powered</span>
+        <span class="hero-eyebrow-text">Now live — Claude AI auto-reply engine</span>
+      </div>
+      <h1>Modern Customer Support Built for <span class="accent">Growing Businesses</span></h1>
+      <p class="hero-sub">Streamline customer support, automate ticket management, monitor SLAs and boost team productivity with TickoraDesk — designed for the way your team actually works.</p>
+      <div class="hero-btns">
+        <button class="btn btn-lg btn-primary" onclick="openDemo()">
+          Schedule a Demo
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <a href="#features" class="btn btn-lg btn-outline">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><polygon points="6.5,5.5 11.5,8 6.5,10.5" fill="currentColor"/></svg>
+          Explore Product
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hero-stat-num">2,000<span>+</span></div><div class="hero-stat-label">Happy Customers</div></div>
+        <div class="hero-stat-sep"></div>
+        <div class="hero-stat"><div class="hero-stat-num">3<span>×</span></div><div class="hero-stat-label">Faster Resolution</div></div>
+        <div class="hero-stat-sep"></div>
+        <div class="hero-stat"><div class="hero-stat-num">98<span>%</span></div><div class="hero-stat-label">CSAT Score</div></div>
+        <div class="hero-stat-sep"></div>
+        <div class="hero-stat"><div class="hero-stat-num">5<span>min</span></div><div class="hero-stat-label">To Go Live</div></div>
+      </div>
+    </div>
+    <div class="hero-right fade-up">
+      <div class="dash-mockup">
+        <div class="dash-topbar">
+          <div class="dash-tb-dot" style="background:#FF5F57"></div>
+          <div class="dash-tb-dot" style="background:#FEBC2E"></div>
+          <div class="dash-tb-dot" style="background:#28C840"></div>
+          <div class="dash-tb-logo">
+            <div class="dash-tb-logo-mark"><svg width="13" height="13" viewBox="0 0 20 20" fill="none"><polyline points="3,10 8,15.5 17,5.5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="dash-tb-title">Tickora<span>Desk</span></span>
+          </div>
+          <div class="dash-search">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="4.5" cy="4.5" r="3" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/><path d="M7 7l1.5 1.5" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" stroke-linecap="round"/></svg>
+            <span class="dash-search-text">Search tickets, customers...</span>
+          </div>
+          <button class="dash-tb-btn">+ Create Ticket</button>
+          <div class="dash-tb-avatar">JD</div>
+        </div>
+        <div class="dash-body">
+          <div class="dash-sb">
+            <div class="dash-nav-i a"><div class="dash-nav-dot" style="background:#00BCD4"></div>Dashboard</div>
+            <div class="dash-nav-i"><div class="dash-nav-dot" style="background:rgba(255,255,255,0.2)"></div>Tickets</div>
+            <div class="dash-nav-i"><div class="dash-nav-dot" style="background:rgba(255,255,255,0.2)"></div>Customers</div>
+            <div class="dash-nav-i"><div class="dash-nav-dot" style="background:rgba(255,255,255,0.2)"></div>Agents</div>
+            <div class="dash-nav-i"><div class="dash-nav-dot" style="background:rgba(255,255,255,0.2)"></div>SLA Mgmt</div>
+            <div class="dash-nav-i"><div class="dash-nav-dot" style="background:rgba(255,255,255,0.2)"></div>Analytics</div>
+            <div class="dash-nav-i"><div class="dash-nav-dot" style="background:rgba(255,255,255,0.2)"></div>Automation</div>
+            <div class="dash-nav-i"><div class="dash-nav-dot" style="background:rgba(255,255,255,0.2)"></div>Settings</div>
+          </div>
+          <div class="dash-main">
+            <div style="font-family:\'Manrope\',sans-serif;font-weight:700;font-size:14px;color:white;margin-bottom:12px">Dashboard <span style="font-size:11px;color:rgba(255,255,255,0.4);font-weight:400">— Welcome back, John!</span></div>
+            <div class="dash-kpi-grid">
+              <div class="dash-kpi"><div class="dash-kpi-label">Total Tickets</div><div class="dash-kpi-val">24,851</div><div class="dash-kpi-change up">↑ 12.5%</div></div>
+              <div class="dash-kpi"><div class="dash-kpi-label">Open Tickets</div><div class="dash-kpi-val" style="color:#00BCD4">4,215</div><div class="dash-kpi-change up">↑ 8.4%</div></div>
+              <div class="dash-kpi"><div class="dash-kpi-label">SLA Met %</div><div class="dash-kpi-val" style="color:#4CAF50">92.4%</div><div class="dash-kpi-change up">↑ 3.6%</div></div>
+              <div class="dash-kpi"><div class="dash-kpi-label">CSAT Score</div><div class="dash-kpi-val" style="color:#FFC107">4.7/5</div><div class="dash-kpi-change down">↓ 0.3</div></div>
+            </div>
+            <div class="dash-bottom">
+              <div class="dash-card">
+                <div class="dash-card-title">Recent Tickets</div>
+                <div class="dash-trow"><div class="dash-av" style="background:rgba(0,188,212,0.2);color:#00BCD4">GC</div><div class="dash-tid">TK-24981</div><div class="dash-tsubj">Dashboard access error</div><div class="dash-tbadge" style="background:rgba(239,83,80,0.2);color:#EF5350">High</div></div>
+                <div class="dash-trow"><div class="dash-av" style="background:rgba(124,58,237,0.2);color:#9C6FE4">IN</div><div class="dash-tid">TK-24980</div><div class="dash-tsubj">API auth failing</div><div class="dash-tbadge" style="background:rgba(255,193,7,0.2);color:#FFC107">Med</div></div>
+                <div class="dash-trow"><div class="dash-av" style="background:rgba(76,175,80,0.2);color:#4CAF50">SI</div><div class="dash-tid">TK-24979</div><div class="dash-tsubj">Billing page error</div><div class="dash-tbadge" style="background:rgba(239,83,80,0.2);color:#EF5350">High</div></div>
+                <div class="dash-trow"><div class="dash-av" style="background:rgba(255,152,0,0.2);color:#FF9800">WE</div><div class="dash-tid">TK-24978</div><div class="dash-tsubj">Feature: Dark mode</div><div class="dash-tbadge" style="background:rgba(76,175,80,0.2);color:#4CAF50">Low</div></div>
+              </div>
+              <div class="dash-card">
+                <div class="dash-card-title">SLA Performance</div>
+                <div class="sla-bar-wrap"><div class="sla-bar-label"><span>First Response</span><span>96%</span></div><div class="sla-bar-track"><div class="sla-bar-fill" style="width:96%;background:linear-gradient(90deg,#00BCD4,#26C6DA)"></div></div></div>
+                <div class="sla-bar-wrap"><div class="sla-bar-label"><span>Resolution</span><span>88%</span></div><div class="sla-bar-track"><div class="sla-bar-fill" style="width:88%;background:linear-gradient(90deg,#4CAF50,#66BB6A)"></div></div></div>
+                <div class="sla-bar-wrap"><div class="sla-bar-label"><span>Escalation</span><span>72%</span></div><div class="sla-bar-track"><div class="sla-bar-fill" style="width:72%;background:linear-gradient(90deg,#FF9800,#FFA726)"></div></div></div>
+                <div style="margin-top:8px;font-size:9px;color:rgba(255,255,255,0.3)">Active Agents: <span style="color:#00BCD4;font-weight:700">42 online</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="float-card float-card-1">
+        <div class="float-icon" style="background:#E8F5E9">✅</div>
+        <div><div class="float-val" style="color:#2E7D32">18,282</div><div class="float-lbl">Resolved this month</div></div>
+      </div>
+      <div class="float-card float-card-2">
+        <div class="float-icon" style="background:#E0F7FA">⚡</div>
+        <div><div class="float-val" style="color:var(--cyan-dark)">6m 24s</div><div class="float-lbl">Avg resolution time</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ TRUST ══════════════════════ -->
+<div class="trust-strip">
+  <div class="trust-inner">
+    <span class="trust-label">Trusted by growing teams at</span>
+    <div class="trust-logos">
+      <span class="trust-logo-item">Razorpay</span>
+      <span class="trust-logo-item">Zepto</span>
+      <span class="trust-logo-item">Groww</span>
+      <span class="trust-logo-item">CRED</span>
+      <span class="trust-logo-item">Meesho</span>
+      <span class="trust-logo-item">BharatPe</span>
+      <span class="trust-logo-item">Licious</span>
+      <span class="trust-logo-item">Nykaa</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ FEATURES ══════════════════════ -->
+<div class="features-bg" id="features">
+  <div class="section">
+    <div class="sec-center">
+      <div class="eyebrow">Platform Features</div>
+      <h2 class="sec-title">Everything your support team <span>needs to excel</span></h2>
+      <p class="sec-sub">Six powerful modules. One unified platform. Built for teams that want to move fast without sacrificing quality.</p>
+    </div>
+    <div class="features-grid">
+
+      <!-- Feature 1: Smart Ticket Dashboard -->
+      <div class="feat-card fade-up">
+        <div class="feat-card-preview">
+          <div class="feat-card-preview-inner" style="background:#0F1923">
+            <div class="mini-kpi-row">
+              <div class="mini-kpi"><div class="mini-kpi-val" style="color:#00BCD4">4,215</div><div class="mini-kpi-label">Open</div></div>
+              <div class="mini-kpi"><div class="mini-kpi-val" style="color:#EF5350">312</div><div class="mini-kpi-label">Urgent</div></div>
+              <div class="mini-kpi"><div class="mini-kpi-val" style="color:#4CAF50">18,282</div><div class="mini-kpi-label">Resolved</div></div>
+            </div>
+            <div class="mini-trow"><div class="mini-av-xs" style="background:rgba(0,188,212,0.2);color:#00BCD4">GC</div><span class="mini-tsubj">Unable to access dashboard</span><span class="mini-badge" style="background:rgba(239,83,80,0.2);color:#EF5350">High</span></div>
+            <div class="mini-trow"><div class="mini-av-xs" style="background:rgba(124,58,237,0.2);color:#9C6FE4">IN</div><span class="mini-tsubj">API authentication failing</span><span class="mini-badge" style="background:rgba(255,193,7,0.2);color:#FFC107">Med</span></div>
+            <div class="mini-trow"><div class="mini-av-xs" style="background:rgba(76,175,80,0.2);color:#4CAF50">SI</div><span class="mini-tsubj">Billing page broken</span><span class="mini-badge" style="background:rgba(239,83,80,0.2);color:#EF5350">High</span></div>
+            <div class="mini-trow"><div class="mini-av-xs" style="background:rgba(255,152,0,0.2);color:#FF9800">WE</div><span class="mini-tsubj">Feature request: Dark mode</span><span class="mini-badge" style="background:rgba(76,175,80,0.2);color:#4CAF50">Low</span></div>
+          </div>
+        </div>
+        <div class="feat-card-body">
+          <div class="feat-card-icon" style="background:#E0F7FA">🎫</div>
+          <h3 class="feat-card-title">Smart Ticket Dashboard</h3>
+          <p class="feat-card-desc">Unified ticket queue with AI-powered sorting, priority detection, and real-time status updates. Never miss a critical issue.</p>
+        </div>
+      </div>
+
+      <!-- Feature 2: SLA Monitoring -->
+      <div class="feat-card fade-up fade-up-d1">
+        <div class="feat-card-preview" style="background:#0F1923">
+          <div class="feat-card-preview-inner">
+            <div style="text-align:center;padding:8px 0 6px">
+              <div style="font-family:\'Manrope\',sans-serif;font-weight:800;font-size:28px;color:white">92<span style="color:#00BCD4">%</span></div>
+              <div style="font-size:9px;color:rgba(255,255,255,0.4)">SLA Compliance</div>
+            </div>
+            <div>
+              <div class="mini-sla-label"><span>First Response</span><span>96%</span></div>
+              <div class="mini-sla-bar"><div class="mini-sla-fill" style="width:96%;background:linear-gradient(90deg,#00BCD4,#26C6DA)"></div></div>
+              <div class="mini-sla-label"><span>Resolution</span><span>88%</span></div>
+              <div class="mini-sla-bar"><div class="mini-sla-fill" style="width:88%;background:linear-gradient(90deg,#4CAF50,#66BB6A)"></div></div>
+              <div class="mini-sla-label"><span>Escalation</span><span>72%</span></div>
+              <div class="mini-sla-bar"><div class="mini-sla-fill" style="width:72%;background:linear-gradient(90deg,#FF9800,#FFA726)"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="feat-card-body">
+          <div class="feat-card-icon" style="background:#FFF8E1">⏱</div>
+          <h3 class="feat-card-title">SLA Monitoring</h3>
+          <p class="feat-card-desc">Set, track and enforce SLAs with automated alerts. Visual dashboards show real-time compliance across all support tiers.</p>
+        </div>
+      </div>
+
+      <!-- Feature 3: Automation Center -->
+      <div class="feat-card fade-up fade-up-d2">
+        <div class="feat-card-preview" style="background:#0F1923">
+          <div class="feat-card-preview-inner">
+            <div style="display:flex;flex-direction:column;gap:6px;padding:4px 0">
+              <div style="background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.25);border-radius:6px;padding:7px 10px;display:flex;align-items:center;gap:8px">
+                <span style="font-size:14px">🤖</span>
+                <div><div style="font-size:9px;color:#C4B5FD;font-weight:700">Auto-Reply Rule</div><div style="font-size:8px;color:rgba(255,255,255,0.4)">Billing keywords → Billing team</div></div>
+                <div style="margin-left:auto;width:20px;height:10px;background:#4CAF50;border-radius:5px"></div>
+              </div>
+              <div style="background:rgba(0,188,212,0.1);border:1px solid rgba(0,188,212,0.2);border-radius:6px;padding:7px 10px;display:flex;align-items:center;gap:8px">
+                <span style="font-size:14px">⏰</span>
+                <div><div style="font-size:9px;color:#80DEEA;font-weight:700">SLA Breach Alert</div><div style="font-size:8px;color:rgba(255,255,255,0.4)">Notify manager after 2 hrs</div></div>
+                <div style="margin-left:auto;width:20px;height:10px;background:#4CAF50;border-radius:5px"></div>
+              </div>
+              <div style="background:rgba(76,175,80,0.1);border:1px solid rgba(76,175,80,0.2);border-radius:6px;padding:7px 10px;display:flex;align-items:center;gap:8px">
+                <span style="font-size:14px">🔀</span>
+                <div><div style="font-size:9px;color:#A5D6A7;font-weight:700">Smart Routing</div><div style="font-size:8px;color:rgba(255,255,255,0.4)">Round-robin assignment</div></div>
+                <div style="margin-left:auto;width:20px;height:10px;background:#4CAF50;border-radius:5px"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="feat-card-body">
+          <div class="feat-card-icon" style="background:#F3E5F5">🤖</div>
+          <h3 class="feat-card-title">Automation Center</h3>
+          <p class="feat-card-desc">Build powerful no-code automation workflows. Auto-route, auto-reply, and auto-escalate — let AI handle the repetitive work.</p>
+        </div>
+      </div>
+
+      <!-- Feature 4: Agent Productivity -->
+      <div class="feat-card fade-up">
+        <div class="feat-card-preview" style="background:#0F1923">
+          <div class="feat-card-preview-inner">
+            <div style="font-size:9px;color:rgba(255,255,255,0.5);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Agent Performance</div>
+            <div class="mini-agent-row"><div class="mini-av-xs" style="background:rgba(0,188,212,0.2);color:#00BCD4">RS</div><div class="mini-agent-name">Rahul S.</div><div class="mini-agent-bar-wrap"><div class="mini-agent-bar" style="width:92%"></div></div><div class="mini-agent-val">92%</div></div>
+            <div class="mini-agent-row"><div class="mini-av-xs" style="background:rgba(76,175,80,0.2);color:#4CAF50">PM</div><div class="mini-agent-name">Priya M.</div><div class="mini-agent-bar-wrap"><div class="mini-agent-bar" style="width:87%"></div></div><div class="mini-agent-val">87%</div></div>
+            <div class="mini-agent-row"><div class="mini-av-xs" style="background:rgba(124,58,237,0.2);color:#9C6FE4">AK</div><div class="mini-agent-name">Arjun K.</div><div class="mini-agent-bar-wrap"><div class="mini-agent-bar" style="width:79%"></div></div><div class="mini-agent-val">79%</div></div>
+            <div class="mini-agent-row"><div class="mini-av-xs" style="background:rgba(255,152,0,0.2);color:#FF9800">SL</div><div class="mini-agent-name">Smita L.</div><div class="mini-agent-bar-wrap"><div class="mini-agent-bar" style="width:74%"></div></div><div class="mini-agent-val">74%</div></div>
+            <div style="margin-top:8px;font-size:8px;color:rgba(255,255,255,0.3)">42 agents · 7 online now</div>
+          </div>
+        </div>
+        <div class="feat-card-body">
+          <div class="feat-card-icon" style="background:#E8F5E9">👥</div>
+          <h3 class="feat-card-title">Agent Productivity</h3>
+          <p class="feat-card-desc">Track individual and team performance with leaderboards, workload analysis, and response time metrics in real time.</p>
+        </div>
+      </div>
+
+      <!-- Feature 5: Multi-channel Inbox -->
+      <div class="feat-card fade-up fade-up-d1">
+        <div class="feat-card-preview" style="background:#0F1923">
+          <div class="feat-card-preview-inner">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px">
+              <div style="background:rgba(0,188,212,0.1);border:1px solid rgba(0,188,212,0.2);border-radius:5px;padding:6px;text-align:center"><div style="font-size:16px">📧</div><div style="font-size:8px;color:rgba(255,255,255,0.5)">Email</div><div style="font-size:10px;color:#00BCD4;font-weight:700">342</div></div>
+              <div style="background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.2);border-radius:5px;padding:6px;text-align:center"><div style="font-size:16px">💬</div><div style="font-size:8px;color:rgba(255,255,255,0.5)">Chat</div><div style="font-size:10px;color:#9C6FE4;font-weight:700">128</div></div>
+              <div style="background:rgba(76,175,80,0.1);border:1px solid rgba(76,175,80,0.2);border-radius:5px;padding:6px;text-align:center"><div style="font-size:16px">📱</div><div style="font-size:8px;color:rgba(255,255,255,0.5)">WhatsApp</div><div style="font-size:10px;color:#4CAF50;font-weight:700">89</div></div>
+              <div style="background:rgba(255,152,0,0.1);border:1px solid rgba(255,152,0,0.2);border-radius:5px;padding:6px;text-align:center"><div style="font-size:16px">📞</div><div style="font-size:8px;color:rgba(255,255,255,0.5)">Phone</div><div style="font-size:10px;color:#FF9800;font-weight:700">47</div></div>
+            </div>
+            <div style="background:rgba(255,255,255,0.04);border-radius:5px;padding:6px;font-size:9px;color:rgba(255,255,255,0.5)">All channels unified in one inbox ✓</div>
+          </div>
+        </div>
+        <div class="feat-card-body">
+          <div class="feat-card-icon" style="background:#E3F2FD">📬</div>
+          <h3 class="feat-card-title">Multi-channel Inbox</h3>
+          <p class="feat-card-desc">Manage email, chat, WhatsApp, and phone support from a single unified inbox. No more switching between tools.</p>
+        </div>
+      </div>
+
+      <!-- Feature 6: Analytics & Reports -->
+      <div class="feat-card fade-up fade-up-d2">
+        <div class="feat-card-preview" style="background:#0F1923">
+          <div class="feat-card-preview-inner">
+            <div style="display:flex;align-items:flex-end;gap:3px;height:60px;margin-bottom:8px">
+              <div style="flex:1;background:rgba(0,188,212,0.3);border-radius:2px 2px 0 0;height:40%"></div>
+              <div style="flex:1;background:rgba(0,188,212,0.5);border-radius:2px 2px 0 0;height:65%"></div>
+              <div style="flex:1;background:rgba(0,188,212,0.4);border-radius:2px 2px 0 0;height:45%"></div>
+              <div style="flex:1;background:#00BCD4;border-radius:2px 2px 0 0;height:80%"></div>
+              <div style="flex:1;background:rgba(0,188,212,0.5);border-radius:2px 2px 0 0;height:70%"></div>
+              <div style="flex:1;background:rgba(0,188,212,0.6);border-radius:2px 2px 0 0;height:85%"></div>
+              <div style="flex:1;background:#4CAF50;border-radius:2px 2px 0 0;height:95%"></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px">
+              <div style="background:rgba(255,255,255,0.05);border-radius:5px;padding:6px;text-align:center"><div style="font-size:12px;color:#00BCD4;font-weight:800">4.7★</div><div style="font-size:8px;color:rgba(255,255,255,0.4)">CSAT</div></div>
+              <div style="background:rgba(255,255,255,0.05);border-radius:5px;padding:6px;text-align:center"><div style="font-size:12px;color:white;font-weight:800">6h24m</div><div style="font-size:8px;color:rgba(255,255,255,0.4)">Avg Res.</div></div>
+              <div style="background:rgba(255,255,255,0.05);border-radius:5px;padding:6px;text-align:center"><div style="font-size:12px;color:#4CAF50;font-weight:800">92%</div><div style="font-size:8px;color:rgba(255,255,255,0.4)">SLA Met</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="feat-card-body">
+          <div class="feat-card-icon" style="background:#E8F5E9">📊</div>
+          <h3 class="feat-card-title">Analytics & Reports</h3>
+          <p class="feat-card-desc">Deep insights into team performance, ticket trends, CSAT scores, and SLA compliance with exportable reports and dashboards.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ HOW IT WORKS ══════════════════════ -->
+<div class="hiw-bg">
+  <div class="section">
+    <div class="sec-center">
+      <div class="eyebrow" style="color:var(--cyan)">How It Works</div>
+      <h2 class="sec-title" style="color:white">From ticket to resolved in <span style="color:var(--cyan)">4 simple steps</span></h2>
+      <p class="sec-sub" style="color:rgba(255,255,255,0.55)">AI handles the heavy lifting. Your team handles the human touch. Customers get fast, accurate answers every time.</p>
+    </div>
+    <div class="hiw-grid">
+      <div class="hiw-step fade-up"><div class="hiw-num">1</div><h4>Ticket Arrives</h4><p>Customer submits an issue via email, chat, or portal. Lands instantly in your TickoraDesk queue with full context.</p></div>
+      <div class="hiw-step fade-up fade-up-d1"><div class="hiw-num">2</div><h4>AI Classifies</h4><p>AI reads the content, assigns priority, tags it, routes to the right team, and drafts the first response automatically.</p></div>
+      <div class="hiw-step fade-up fade-up-d2"><div class="hiw-num">3</div><h4>Agent Responds</h4><p>Agent opens ticket, reviews AI-drafted reply, edits if needed, and sends in one click. Under 2 minutes total.</p></div>
+      <div class="hiw-step fade-up fade-up-d3"><div class="hiw-num">4</div><h4>Issue Resolved</h4><p>Ticket closed, CSAT collected automatically. AI learns from every interaction to continuously improve quality.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ PRICING ══════════════════════ -->
+<div class="pricing-bg" id="pricing">
+  <div class="section">
+    <div class="sec-center">
+      <div class="eyebrow">Pricing Plans</div>
+      <h2 class="sec-title">Simple, transparent <span>pricing</span></h2>
+      <p class="sec-sub">Start free. No credit card needed. Scale as your team grows. All plans include a 14-day free trial.</p>
+    </div>
+    <div class="pricing-grid">
+      <!-- Basic -->
+      <div class="price-card fade-up">
+        <div class="price-plan">Basic</div>
+        <div class="price-amount"><span class="price-cur">₹</span>499</div>
+        <div class="price-per">per month · billed annually</div>
+        <div class="price-users">👥 Up to 3 users</div>
+        <hr class="price-divider">
+        <ul class="price-feats">
+          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Ticket management dashboard</li>
+          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Email channel support</li>
+          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Basic SLA tracking</li>
+          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Standard reports</li>
+          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Email support</li>
+        </ul>
+        <button class="btn btn-md btn-outline" style="width:100%;justify-content:center;" onclick="openDemo()">Start Free Trial</button>
+      </div>
+      <!-- Standard (Featured) -->
+      <div class="price-card featured fade-up fade-up-d1">
+        <div class="price-popular">⭐ Most Popular</div>
+        <div class="price-plan">Standard</div>
+        <div class="price-amount"><span class="price-cur">₹</span>1,499</div>
+        <div class="price-per">per month · billed annually</div>
+        <div class="price-users">👥 Up to 15 users</div>
+        <hr class="price-divider">
+        <ul class="price-feats">
+          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Everything in Basic</li>
+          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>AI reply suggestions</li>
+          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Multi-channel inbox</li>
+          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Automation workflows</li>
+          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Advanced analytics</li>
+          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Priority support</li>
+        </ul>
+        <button class="btn btn-md btn-primary" style="width:100%;justify-content:center;" onclick="openDemo()">Start Free Trial</button>
+      </div>
+      <!-- Enterprise -->
+      <div class="price-card fade-up fade-up-d2">
+        <div class="price-plan">Enterprise</div>
+        <div class="price-amount" style="font-size:36px;padding-top:10px;letter-spacing:-1px">Custom</div>
+        <div class="price-per">contact us for pricing</div>
+        <div class="price-users">👥 Unlimited users</div>
+        <hr class="price-divider">
+        <ul class="price-feats">
+          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Everything in Standard</li>
+          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Dedicated AI model</li>
+          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>SSO / SAML login</li>
+          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Guaranteed SLA uptime</li>
+          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>24/7 dedicated support</li>
+          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>On-prem deployment</li>
+        </ul>
+        <button class="btn btn-md btn-ghost" style="width:100%;justify-content:center;" onclick="openDemo()">Talk to Sales</button>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:40px">
+      <p style="font-size:14px;color:var(--ink-40);margin-bottom:16px">All plans include a 14-day free trial. No credit card required.</p>
+      <button class="btn btn-lg btn-outline" onclick="openDemo()">📅 Schedule a Demo to Learn More</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ TESTIMONIALS ══════════════════════ -->
+<div style="background:var(--ink-05)">
+  <div class="section">
+    <div class="sec-center">
+      <div class="eyebrow">Customer Stories</div>
+      <h2 class="sec-title">Loved by support teams <span>across India</span></h2>
+      <p class="sec-sub">Real results from real teams who switched to TickoraDesk.</p>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card fade-up">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"TickoraDesk cut our average resolution time from 4 hours to 90 minutes in the first week. The AI reply feature is better than what our junior agents were writing. Game-changer for our team."</p>
+        <div class="testi-author">
+          <div class="testi-av-wrap" style="background:#E0F7FA;color:#006064">PK</div>
+          <div><div class="testi-name">Prashant Kumar</div><div class="testi-role">Head of Support</div><div class="testi-company">Fintech Startup, Mumbai</div></div>
+        </div>
+      </div>
+      <div class="testi-card fade-up fade-up-d1">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Setup took under 5 minutes. The AI auto-classified our first ticket correctly and suggested a perfect reply. I couldn\'t believe it worked this smoothly right out of the box. Incredible product."</p>
+        <div class="testi-author">
+          <div class="testi-av-wrap" style="background:#E8F5E9;color:#2E7D32">AN</div>
+          <div><div class="testi-name">Ananya Nair</div><div class="testi-role">CTO</div><div class="testi-company">SaaS Company, Bangalore</div></div>
+        </div>
+      </div>
+      <div class="testi-card fade-up fade-up-d2">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"We were paying ₹6,000/agent on Zendesk. TickoraDesk gives us equal or better features at a fraction of the cost. India-first pricing with enterprise-grade features. Absolutely no-brainer decision."</p>
+        <div class="testi-author">
+          <div class="testi-av-wrap" style="background:#EDE9FE;color:#4C1D95">RV</div>
+          <div><div class="testi-name">Rohit Verma</div><div class="testi-role">Operations Lead</div><div class="testi-company">D2C Brand, Delhi</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ INTEGRATIONS ══════════════════════ -->
+<div class="section">
+  <div class="sec-center">
+    <div class="eyebrow">Integrations</div>
+    <h2 class="sec-title">Connects with the tools <span>you already use</span></h2>
+    <p class="sec-sub">50+ native integrations. Most take under 60 seconds to set up.</p>
+  </div>
+  <div class="int-grid">
+    <div class="int-card fade-up"><div class="int-icon">📧</div><div class="int-name">Gmail</div></div>
+    <div class="int-card fade-up"><div class="int-icon">💬</div><div class="int-name">Slack</div></div>
+    <div class="int-card fade-up"><div class="int-icon">💳</div><div class="int-name">Razorpay</div></div>
+    <div class="int-card fade-up"><div class="int-icon">🔵</div><div class="int-name">Stripe</div></div>
+    <div class="int-card fade-up"><div class="int-icon">🗂</div><div class="int-name">Jira</div></div>
+    <div class="int-card fade-up"><div class="int-icon">🔷</div><div class="int-name">Outlook</div></div>
+    <div class="int-card fade-up"><div class="int-icon">📋</div><div class="int-name">Notion</div></div>
+    <div class="int-card fade-up"><div class="int-icon">⚡</div><div class="int-name">Zapier</div></div>
+    <div class="int-card fade-up"><div class="int-icon">📱</div><div class="int-name">WhatsApp</div></div>
+    <div class="int-card fade-up"><div class="int-icon">🟦</div><div class="int-name">MS Teams</div></div>
+    <div class="int-card fade-up"><div class="int-icon">🐙</div><div class="int-name">GitHub</div></div>
+    <div class="int-card fade-up"><div class="int-icon">🤖</div><div class="int-name">Claude AI</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════ BLOGS ══════════════════════ -->
+<div style="background:var(--ink-05)" id="blogs">
+  <div class="section">
+    <div class="sec-center">
+      <div class="eyebrow">Resources & Blogs</div>
+      <h2 class="sec-title">Insights to level up your <span>support game</span></h2>
+      <p class="sec-sub">Expert tips, best practices, and actionable strategies for modern support teams.</p>
+    </div>
+    <div class="blog-grid">
+      <div class="blog-card fade-up">
+        <div class="blog-img" style="background:linear-gradient(135deg,#E0F7FA,#B2EBF2)">
+          <div class="blog-img-overlay"></div>
+          <span>🤝</span>
+          <div class="blog-tag">Customer Support</div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-date">📅 May 12, 2026</div>
+          <h3 class="blog-title">How Small Businesses Can Improve Customer Support Without Breaking the Bank</h3>
+          <p class="blog-excerpt">Discover practical, cost-effective strategies that small businesses can implement today to dramatically improve their customer support quality and response times.</p>
+          <div class="blog-read-more">Read More <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+      <div class="blog-card fade-up fade-up-d1">
+        <div class="blog-img" style="background:linear-gradient(135deg,#E8F5E9,#C8E6C9)">
+          <div class="blog-img-overlay" style="background:linear-gradient(135deg,rgba(0,150,136,0.15),rgba(21,101,192,0.1))"></div>
+          <span>⏱</span>
+          <div class="blog-tag" style="background:#4CAF50">SLA & Ops</div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-date">📅 May 5, 2026</div>
+          <h3 class="blog-title">Why SLA Tracking Matters for Growing Teams and How to Get It Right</h3>
+          <p class="blog-excerpt">SLA breaches can cost you customers and reputation. Learn how to set realistic SLAs, track them effectively, and use data to continuously improve your team\'s performance.</p>
+          <div class="blog-read-more">Read More <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+      <div class="blog-card fade-up fade-up-d2">
+        <div class="blog-img" style="background:linear-gradient(135deg,#F3E5F5,#E1BEE7)">
+          <div class="blog-img-overlay" style="background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(0,188,212,0.1))"></div>
+          <span>🤖</span>
+          <div class="blog-tag" style="background:#7C3AED">Automation</div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-date">📅 April 28, 2026</div>
+          <h3 class="blog-title">Top 5 Support Automation Tips That Actually Work for Startup Teams</h3>
+          <p class="blog-excerpt">Automation doesn\'t mean losing the human touch. These 5 proven tips will help your support team automate smartly — saving hours without sacrificing customer satisfaction.</p>
+          <div class="blog-read-more">Read More <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:40px">
+      <a href="#" class="btn btn-md btn-outline">View All Articles →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ TEAM ══════════════════════ -->
+<div id="team">
+  <div class="section">
+    <div class="sec-center">
+      <div class="eyebrow">Meet the Team</div>
+      <h2 class="sec-title">Built by people who <span>love support</span></h2>
+      <p class="sec-sub">A passionate team on a mission to make world-class customer support accessible to every growing business in India.</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card fade-up">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#E0F7FA,#B2EBF2);color:#006064">PK</div>
+        <div class="team-name">Prithvi Kumar</div>
+        <div class="team-role">CEO & Founder</div>
+        <p class="team-bio">Visionary leader with 10+ years in SaaS product development. Passionate about making enterprise-grade support tools accessible to every business in India.</p>
+      </div>
+      <div class="team-card fade-up fade-up-d1">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#F3E5F5,#E1BEE7);color:#4A148C">AS</div>
+        <div class="team-name">Ankit Sharma</div>
+        <div class="team-role">Product Head</div>
+        <p class="team-bio">Product craftsman with deep expertise in UX and AI integrations. Previously built products used by 500K+ users across fintech and edtech sectors.</p>
+      </div>
+      <div class="team-card fade-up fade-up-d2">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#E8F5E9,#C8E6C9);color:#1B5E20">SY</div>
+        <div class="team-name">Sandhya</div>
+        <div class="team-role">Sales, Support & Marketing Head</div>
+        <p class="team-bio">Customer champion with 8+ years of experience in B2B SaaS growth. Expert in building customer success programs and go-to-market strategies for startup teams.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ CTA BAND ══════════════════════ -->
+<div class="cta-band">
+  <div class="cta-inner">
+    <div class="cta-left">
+      <h2>Start resolving tickets<br>3× faster today</h2>
+      <p>Join 2,000+ growing businesses using TickoraDesk to deliver faster, smarter customer support with AI — at India-first pricing.</p>
+    </div>
+    <div class="cta-right">
+      <button class="btn btn-lg btn-white" onclick="openDemo()">Schedule a Demo</button>
+      <a href="#pricing" class="btn btn-lg btn-outline-white">See Pricing</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ FOOTER ══════════════════════ -->
+<footer id="contact">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-brand-logo">
+        <img src="LOGO_SRC" alt="TickoraDesk" />
+      </div>
+      <p>Modern ticketing system designed for small businesses. Streamline your customer support with powerful tools that don\'t break the bank.</p>
+      <div class="footer-social">
+        <div class="social-btn" title="LinkedIn">in</div>
+        <div class="social-btn" title="Twitter">𝕏</div>
+        <div class="social-btn" title="YouTube">▶</div>
+        <div class="social-btn" title="Facebook">f</div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Product</h5>
+      <ul class="footer-link-list">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#">Integrations</a></li>
+        <li><a href="#">Changelog</a></li>
+        <li><a href="#">Status Page</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul class="footer-link-list">
+        <li><a href="#team">About Us</a></li>
+        <li><a href="#blogs">Blog</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press Kit</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact Us</h5>
+      <div class="footer-contact-item">
+        <span>📧</span>
+        <a href="mailto:support@tickoradesk.com" style="color:inherit">support@tickoradesk.com</a>
+      </div>
+      <div class="footer-contact-item">
+        <span>📞</span>
+        <a href="tel:7004293858" style="color:inherit">7004293858</a>
+      </div>
+      <div class="footer-contact-item">
+        <span>🏢</span>
+        <span>India 🇮🇳</span>
+      </div>
+      <div style="margin-top:16px">
+        <button class="btn btn-sm btn-primary" onclick="openDemo()" style="width:100%;justify-content:center">Schedule Demo</button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <div class="footer-copy">© 2026 TickoraDesk · Made with ❤️ in India 🇮🇳</div>
+      <div class="footer-badges">
+        <div class="footer-badge">ISO 27001</div>
+        <div class="footer-badge">SOC 2</div>
+        <div class="footer-badge">DPDP Compliant</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════ DEMO MODAL ══════════════════════ -->
+<div class="modal-overlay" id="demoModal" onclick="if(event.target===this)closeDemo()">
+  <div class="modal">
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeDemo()">✕</button>
+      <div class="modal-title">📅 Schedule a Demo</div>
+      <div class="modal-sub">See TickoraDesk in action — we\'ll show you everything in 30 minutes.</div>
+    </div>
+    <div class="modal-body" id="demoForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Full Name *</label>
+          <input class="form-input" type="text" placeholder="Rahul Singh" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mobile Number *</label>
+          <input class="form-input" type="tel" placeholder="+91 98765 43210" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address *</label>
+        <input class="form-input" type="email" placeholder="rahul@company.com" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Company Name *</label>
+          <input class="form-input" type="text" placeholder="Acme Corp" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Number of Users</label>
+          <select class="form-input form-select">
+            <option value="">Select team size</option>
+            <option>1–5 users</option>
+            <option>6–15 users</option>
+            <option>16–50 users</option>
+            <option>51–200 users</option>
+            <option>200+ users</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-md modal-submit" onclick="submitDemo()">
+        📅 Schedule Demo
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <p style="text-align:center;font-size:12px;color:var(--ink-40);margin-top:14px">🔒 Your data is safe. We never spam.</p>
+    </div>
+    <div class="modal-success" id="demoSuccess">
+      <div class="modal-success-icon">🎉</div>
+      <div class="modal-success-title">Demo Scheduled!</div>
+      <p class="modal-success-sub">Thank you! Our team will contact you within 24 hours to confirm your demo slot. We\'re excited to show you TickoraDesk!</p>
+      <button class="btn btn-md btn-primary" style="margin-top:24px;justify-content:center" onclick="closeDemo()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Nav scroll effect
+window.addEventListener(\'scroll\', () => {
+  document.getElementById(\'mainNav\').classList.toggle(\'scrolled\', window.scrollY > 30);
+});
+
+// Demo Modal
+function openDemo() {
+  document.getElementById(\'demoModal\').classList.add(\'open\');
+  document.body.style.overflow = \'hidden\';
+}
+function closeDemo() {
+  document.getElementById(\'demoModal\').classList.remove(\'open\');
+  document.body.style.overflow = \'\';
+  document.getElementById(\'demoForm\').style.display = \'block\';
+  document.getElementById(\'demoSuccess\').style.display = \'none\';
+}
+function submitDemo() {
+  document.getElementById(\'demoForm\').style.display = \'none\';
+  document.getElementById(\'demoSuccess\').style.display = \'block\';
+}
+
+// Intersection Observer for fade-up animations
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add(\'visible\'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll(\'.fade-up\').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>'''
+
+# Replace logo placeholder
+html = html.replace('LOGO_SRC', logo_src)
+
+with open('/home/claude/tickoradesk-website.html', 'w') as f:
+    f.write(html)
+
+print(f"Done! File size: {len(html)} bytes ({len(html)//1024} KB)")
+PYEOF
+python3 /home/claude/build_site.py
+Output
+
+Done! File size: 321451 bytes (313 KB)
+Done
