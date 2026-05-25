@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TickoraDesk — Admin CRM Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #0B0F19;
+            --card-dark: #151B2C;
+            --cyan: #00BCD4;
+            --text-main: #F3F4F6;
+            --text-muted: #9CA3AF;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Manrope', sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow-x: hidden; }
+
+        /* 🔒 LOGIN SCREEN STYLES */
+        .login-container { width: 100%; max-width: 400px; padding: 32px; background: var(--card-dark); border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); text-align: center; }
+        .login-logo { font-size: 24px; font-weight: 800; color: #ffffff; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .login-logo span { color: var(--cyan); }
+        .login-subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+        .form-group { text-align: left; margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text-main); }
+        .form-group input { width: 100%; padding: 12px 16px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: #ffffff; font-size: 14px; transition: 0.2s; }
+        .form-group input:focus { border-color: var(--cyan); outline: none; background: rgba(0,0,0,0.3); }
+        .btn-login { width: 100%; padding: 12px; background: var(--cyan); border: none; border-radius: 8px; color: #000000; font-weight: 700; font-size: 15px; cursor: pointer; transition: 0.2s; margin-top: 10px; }
+        .btn-login:hover { opacity: 0.9; transform: translateY(-1px); }
+        .error-msg { color: #EF4444; font-size: 13px; margin-top: 12px; display: none; }
+
+        /* 📊 DASHBOARD STYLES (HIDDEN BY DEFAULT) */
+        .dashboard-container { width: 100%; max-width: 1280px; padding: 40px 24px; display: none; min-height: 100vh; flex-direction: column; gap: 32px; }
+        .dash-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+        .dash-title h1 { font-size: 28px; font-weight: 800; }
+        .dash-title p { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
+        .btn-logout { padding: 8px 16px; background: transparent; border: 1px solid #EF4444; color: #EF4444; border-radius: 6px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s; }
+        .btn-logout:hover { background: #EF4444; color: #ffffff; }
+
+        /* STATS COUNTERS */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+        .stat-card { background: var(--card-dark); border: 1px solid var(--border); padding: 24px; border-radius: 12px; }
+        .stat-label { color: var(--text-muted); font-size: 14px; font-weight: 500; }
+        .stat-value { font-size: 32px; font-weight: 800; margin-top: 8px; color: #ffffff; }
+        .stat-value.cyan-text { color: var(--cyan); }
+
+        /* LEADS TABLE */
+        .table-card { background: var(--card-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        .table-header-box { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .table-header-box h2 { font-size: 18px; font-weight: 700; }
+        .table-responsive { width: 100%; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 700px; }
+        th { background: rgba(0, 0, 0, 0.15); padding: 14px 24px; font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+        td { padding: 16px 24px; font-size: 14px; border-bottom: 1px solid var(--border); color: #E5E7EB; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(255,255,255,0.01); }
+        
+        .badge { padding: 4px 10px; border-radius: 50px; font-size: 12px; font-weight: 600; display: inline-block; }
+        .badge-new { background: rgba(0, 188, 212, 0.15); color: var(--cyan); }
+
+        @media (max-width: 768px) {
+            body { align-items: flex-start; }
+            .dashboard-container { padding: 24px 16px; }
+            .dash-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+            .btn-logout { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container" id="loginBox">
+        <div class="login-logo"><span>✓</span> TickoraDesk Admin</div>
+        <div class="login-subtitle">Enter your secret credentials to access CRM</div>
+        
+        <div class="form-group">
+            <label>Admin Username</label>
+            <input type="text" id="adminUser" placeholder="e.g., admin">
+        </div>
+        <div class="form-group">
+            <label>Secret Password</label>
+            <input type="password" id="adminPass" placeholder="••••••••">
+        </div>
+        
+        <button class="btn-login" onclick="checkAdminLogin()">Login to Dashboard</button>
+        <div class="error-msg" id="loginError">Bhai, username ya password galat hai! ❌</div>
+    </div>
+
+    <div class="dashboard-container" id="dashBox">
+        <div class="dash-header">
+            <div class="dash-title">
+                <h1>TickoraDesk CRM Control</h1>
+                <p>Welcome back, Boss! Track and manage all your inbound client leads here.</p>
+            </div>
+            <button class="btn-logout" onclick="adminLogout()">Log Out Securely</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Leads Received</div>
+                <div class="stat-value" id="countTotal">2</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Active Demos Scheduled</div>
+                <div class="stat-value cyan-text" id="countActive">2</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">System Security Status</div>
+                <div class="stat-value" style="color: #10B981; font-size: 22px;">🔒 Fully Encrypted</div>
+            </div>
+        </div>
+
+        <div class="table-card">
+            <div class="table-header-box">
+                <h2>Inbound Client Leads</h2>
+                <span class="badge badge-new">Real-time Sync</span>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Mobile Number</th>
+                            <th>Email Address</th>
+                            <th>Company Name</th>
+                            <th>Team Size</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leadsTableBody">
+                        <tr>
+                            <td><strong>Rahul Singh (Sample)</strong></td>
+                            <td>+91 98765 43210</td>
+                            <td>rahul@company.com</td>
+                            <td>Acme Corp</td>
+                            <td>10-50 users</td>
+                            <td><span class="badge badge-new">New Lead</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Amit Sharma (Sample)</strong></td>
+                            <td>+91 99999 88888</td>
+                            <td>amit@techsolutions.in</td>
+                            <td>TechSolutions</td>
+                            <td>5-10 users</td>
+                            <td><span class="badge badge-new">New Lead</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Securely authentication lock setup
+        function checkAdminLogin() {
+            var user = document.getElementById("adminUser").value;
+            var pass = document.getElementById("adminPass").value;
+            var error = document.getElementById("loginError");
+
+            // Bhai, yahan aap apna custom ID aur Password set kar sakte ho!
+            if (user === "prithvi" && pass === "tickora2026") {
+                error.style.display = "none";
+                
+                // Hide Login box and Show CRM Dashboard Panel
+                document.getElementById("loginBox").style.display = "none";
+                document.body.style.alignItems = "flex-start"; // Smooth flex reset
+                document.getElementById("dashBox").style.display = "flex";
+            } else {
+                error.style.display = "block";
+            }
+        }
+
+        function adminLogout() {
+            document.getElementById("adminUser").value = "";
+            document.getElementById("adminPass").value = "";
+            document.getElementById("dashBox").style.display = "none";
+            document.body.style.alignItems = "center";
+            document.getElementById("loginBox").style.display = "block";
+        }
+    </script>
+</body>
+</html>
