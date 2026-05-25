@@ -645,14 +645,14 @@ footer { background: var(--ink); color: white; }
   </div>
 </div>
 
-<nav id="mainNav" style="position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.97); backdrop-filter: blur(20px); border-bottom: 1px solid var(--ink-10); height: 68px; display: flex; align-items: center; box-shadow: var(--shadow);">
-  <div style="max-width: 1280px; margin: 0 auto; width: 100%; display: flex; align-items: center; padding: 0 40px;">
+<nav id="mainNav" style="position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.97); backdrop-filter: blur(20px); border-bottom: 1px solid var(--ink-10); height: 68px; display: flex; align-items: center; box-shadow: var(--shadow); width: 100%;">
+  <div style="max-width: 1280px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 40px;">
     
-    <a href="#" class="nav-logo" style="display: flex; align-items: center;">
+    <a href="#" class="nav-logo" style="display: flex; align-items: center; flex-shrink: 0;">
       <img src="https://horizons-cdn.hostinger.com/72e9311c-c0ff-4420-947d-12b8570631e7/11942e70edd8905306c2a172dd64b629.png" alt="TickoraDesk" style="height: 38px; width: auto; object-fit: contain;" />
     </a>
     
-    <div class="nav-links" style="display: flex; align-items: center; gap: 24px; margin-left: auto; margin-right: auto; padding-right: 50px;">
+    <div class="nav-links" style="display: flex; align-items: center; gap: 24px; margin-left: auto; margin-right: auto;">
       <div class="nav-dropdown">
         <button class="nav-link">Product <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
         <div class="nav-dropdown-menu">
@@ -673,14 +673,13 @@ footer { background: var(--ink); color: white; }
       <a href="#contact" class="nav-link">Contact</a>
     </div>
     
-    <div class="nav-cta" style="display: flex; align-items: center; gap: 10px;">
+    <div class="nav-cta" style="display: flex; align-items: center; gap: 14px; flex-shrink: 0;">
       <a href="#" class="btn btn-sm btn-ghost">Login</a>
       <button class="btn btn-sm btn-primary" onclick="openDemo()">Schedule Demo</button>
     </div>
     
   </div>
 </nav>
-
 <section class="hero">
   <div class="hero-dots"></div>
   <div class="hero-glow"></div>
