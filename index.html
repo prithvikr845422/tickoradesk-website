@@ -593,7 +593,22 @@ footer { background: var(--ink); color: white; }
   .int-grid { grid-template-columns: repeat(4,1fr); }
 }
 @media (max-width: 768px) {
-  .nav-links { display: none; }
+   /* ── MODAL MOBILE FIX BY BHAI ── */
+  .modal {
+    width: 92% !important;
+    max-width: 100% !important;
+    margin: 10px auto !important;
+  }
+  .modal-header {
+    padding: 24px 20px 20px !important;
+  }
+  .modal-close {
+    top: 16px !important;
+    right: 16px !important;
+  }
+  .modal-body {
+    padding: 20px !important;
+  }  .nav-links { display: none; }
   .offer-banner-inner { flex-direction: column; text-align: center; gap: 12px; }
   .offer-cards { flex-wrap: wrap !important; justify-content: center; gap: 6px; }
   .hero { padding: 80px 20px 60px; }
