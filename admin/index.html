@@ -3,79 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TickoraDesk — Admin CRM Dashboard</title>
+    <title>TickoraDesk — Admin Kanban CRM</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-dark: #0B0F19;
-            --card-dark: #151B2C;
+            --bg-light: #F4F7FC; 
+            --card-light: #FFFFFF;
             --cyan: #00BCD4;
-            --text-main: #F3F4F6;
-            --text-muted: #9CA3AF;
-            --border: rgba(255, 255, 255, 0.08);
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            
+            /* Pipeline Column Colors */
+            --col-open: #28A745;   
+            --col-hot: #DC3545;    
+            --col-cold: #007BFF;   
+            --col-closed: #20C997; 
+            --col-dead: #6C757D;   
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Manrope', sans-serif; }
-        body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow-x: hidden; }
+        body { background-color: var(--bg-light); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow-x: hidden; }
 
-        /* 🔒 LOGIN SCREEN STYLES */
-        .login-container { width: 100%; max-width: 400px; padding: 32px; background: var(--card-dark); border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); text-align: center; }
-        .login-logo { font-size: 24px; font-weight: 800; color: #ffffff; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .login-logo span { color: var(--cyan); }
+        /* 🔒 LIGHT THEME LOGIN SCREEN WITH LOGO IMAGE */
+        .login-container { width: 100%; max-width: 400px; padding: 32px; background: var(--card-light); border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; }
+        .brand-logo-img { height: 40px; object-fit: contain; margin-bottom: 12px; }
+        .login-logo { font-size: 22px; font-weight: 800; color: #0F172A; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .login-subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+        
         .form-group { text-align: left; margin-bottom: 18px; }
         .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text-main); }
-        .form-group input { width: 100%; padding: 12px 16px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; color: #ffffff; font-size: 14px; transition: 0.2s; }
-        .form-group input:focus { border-color: var(--cyan); outline: none; background: rgba(0,0,0,0.3); }
-        .btn-login { width: 100%; padding: 12px; background: var(--cyan); border: none; border-radius: 8px; color: #000000; font-weight: 700; font-size: 15px; cursor: pointer; transition: 0.2s; margin-top: 10px; }
-        .btn-login:hover { opacity: 0.9; transform: translateY(-1px); }
-        .error-msg { color: #EF4444; font-size: 13px; margin-top: 12px; display: none; }
-
-        /* 📊 DASHBOARD STYLES (HIDDEN BY DEFAULT) */
-        .dashboard-container { width: 100%; max-width: 1280px; padding: 40px 24px; display: none; min-height: 100vh; flex-direction: column; gap: 32px; }
-        .dash-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
-        .dash-title h1 { font-size: 28px; font-weight: 800; }
-        .dash-title p { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
-        .btn-logout { padding: 8px 16px; background: transparent; border: 1px solid #EF4444; color: #EF4444; border-radius: 6px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s; }
-        .btn-logout:hover { background: #EF4444; color: #ffffff; }
-
-        /* STATS COUNTERS */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
-        .stat-card { background: var(--card-dark); border: 1px solid var(--border); padding: 24px; border-radius: 12px; }
-        .stat-label { color: var(--text-muted); font-size: 14px; font-weight: 500; }
-        .stat-value { font-size: 32px; font-weight: 800; margin-top: 8px; color: #ffffff; }
-        .stat-value.cyan-text { color: var(--cyan); }
-
-        /* LEADS TABLE */
-        .table-card { background: var(--card-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-        .table-header-box { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .table-header-box h2 { font-size: 18px; font-weight: 700; }
-        .table-responsive { width: 100%; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 700px; }
-        th { background: rgba(0, 0, 0, 0.15); padding: 14px 24px; font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
-        td { padding: 16px 24px; font-size: 14px; border-bottom: 1px solid var(--border); color: #E5E7EB; }
-        tr:last-child td { border-bottom: none; }
-        tr:hover td { background: rgba(255,255,255,0.01); }
+        .form-group input { width: 100%; padding: 12px 16px; background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; color: var(--text-main); font-size: 14px; transition: 0.2s; }
+        .form-group input:focus { border-color: var(--cyan); outline: none; background: #ffffff; box-shadow: 0 0 0 3px rgba(0, 188, 210, 0.1); }
         
-        .badge { padding: 4px 10px; border-radius: 50px; font-size: 12px; font-weight: 600; display: inline-block; }
-        .badge-new { background: rgba(0, 188, 212, 0.15); color: var(--cyan); }
+        .btn-login { width: 100%; padding: 12px; background: var(--cyan); border: none; border-radius: 8px; color: #ffffff; font-weight: 700; font-size: 15px; cursor: pointer; transition: 0.2s; margin-top: 10px; }
+        .btn-login:hover { opacity: 0.9; transform: translateY(-1px); }
+        .error-msg { color: #DC3545; font-size: 13px; margin-top: 12px; display: none; }
 
-        @media (max-width: 768px) {
-            body { align-items: flex-start; }
-            .dashboard-container { padding: 24px 16px; }
-            .dash-header { flex-direction: column; align-items: flex-start; gap: 16px; }
-            .btn-logout { width: 100%; text-align: center; }
+        /* 📊 KANBAN BOARD DASHBOARD */
+        .dashboard-container { width: 100%; max-width: 1440px; padding: 32px 24px; display: none; min-height: 100vh; flex-direction: column; gap: 24px; }
+        .dash-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+        
+        .dash-brand-box { display: flex; align-items: center; gap: 14px; }
+        .dash-logo-img { height: 45px; object-fit: contain; }
+        .dash-title h1 { font-size: 24px; font-weight: 800; color: #0F172A; }
+        .dash-title p { color: var(--text-muted); font-size: 13px; margin-top: 2px; }
+        
+        .btn-logout { padding: 8px 16px; background: transparent; border: 1px solid #DC3545; color: #DC3545; border-radius: 6px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s; }
+        .btn-logout:hover { background: #DC3545; color: #ffffff; }
+
+        /* 🏛️ KANBAN PIPELINE GRID */
+        .kanban-board { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; align-items: flex-start; margin-top: 10px; overflow-x: auto; padding-bottom: 20px; }
+        .kanban-column { background: #EBF1FA; border-radius: 12px; padding: 16px; min-height: 550px; display: flex; flex-direction: column; gap: 12px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }
+        
+        .column-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 6px; font-weight: 700; font-size: 13px; letter-spacing: 0.5px; color: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .col-open .column-header { background: var(--col-open); }
+        .col-hot .column-header { background: var(--col-hot); }
+        .col-cold .column-header { background: var(--col-cold); }
+        .col-closed .column-header { background: var(--col-closed); }
+        .col-dead .column-header { background: var(--col-dead); }
+
+        .lead-count { background: rgba(255,255,255,0.25); padding: 2px 8px; border-radius: 20px; font-size: 11px; color: #ffffff; font-weight: 800; }
+
+        /* 🎴 CLIENT CARD STYLES */
+        .lead-card { background: var(--card-light); border: 1px solid var(--border); border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.02), 0 1px 3px rgba(0,0,0,0.05); transition: 0.2s; }
+        .lead-card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px rgba(0,0,0,0.05); border-color: #CBD5E1; }
+        
+        .card-name { font-size: 15px; font-weight: 700; color: #0F172A; }
+        .card-info { font-size: 12px; color: var(--text-muted); display: flex; flex-direction: column; gap: 5px; border-top: 1px solid #F1F5F9; padding-top: 10px; }
+        .card-info span b { color: #334155; font-weight: 600; }
+
+        .card-action { margin-top: 4px; }
+        .status-select { width: 100%; background: #F8FAFC; color: #334155; border: 1px solid var(--border); padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; outline: none; transition: 0.2s; }
+        .status-select:focus { border-color: var(--cyan); }
+
+        @media (max-width: 1100px) {
+            .kanban-board { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
         }
     </style>
 </head>
 <body>
 
     <div class="login-container" id="loginBox">
-        <div class="login-logo"><span>✓</span> TickoraDesk Admin</div>
-        <div class="login-subtitle">Enter your secret credentials to access CRM</div>
+        <img src="https://horizons-cdn.hostinger.com/72e9311c-c0ff-4420-947d-12b8570631e7/8a6889eb252d0b5e7d5cf2ec7f7bf309.png" class="brand-logo-img" alt="Logo">
+        <div class="login-logo">TickoraDesk CRM</div>
+        <div class="login-subtitle">Enter your secret credentials to access Kanban Board</div>
         
         <div class="form-group">
             <label>Admin Username</label>
@@ -86,89 +101,115 @@
             <input type="password" id="adminPass" placeholder="••••••••">
         </div>
         
-        <button class="btn-login" onclick="checkAdminLogin()">Login to Dashboard</button>
+        <button class="btn-login" onclick="checkAdminLogin()">Login to CRM</button>
         <div class="error-msg" id="loginError">Bhai, username ya password galat hai! ❌</div>
     </div>
 
     <div class="dashboard-container" id="dashBox">
         <div class="dash-header">
-            <div class="dash-title">
-                <h1>TickoraDesk CRM Control</h1>
-                <p>Welcome back, Boss! Track and manage all your inbound client leads here.</p>
+            <div class="dash-brand-box">
+                <img src="https://horizons-cdn.hostinger.com/72e9311c-c0ff-4420-947d-12b8570631e7/8a6889eb252d0b5e7d5cf2ec7f7bf309.png" class="dash-logo-img" alt="Logo">
+                <div class="dash-title">
+                    <h1>TickoraDesk Deal Pipeline</h1>
+                    <p>Welcome back, Boss! Manage your corporate pipeline live.</p>
+                </div>
             </div>
-            <button class="btn-logout" onclick="adminLogout()">Log Out Securely</button>
+            <button class="btn-logout" onclick="adminLogout()">Log Out</button>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-label">Total Leads Received</div>
-                <div class="stat-value" id="countTotal">2</div>
+        <div class="kanban-board">
+            
+            <div class="kanban-column col-open">
+                <div class="column-header">
+                    <span>🟢 NEW LEADS</span>
+                    <span class="lead-count" id="count-open">1</span>
+                </div>
+                <div class="column-cards-container" id="container-open">
+                    <div class="lead-card" id="lead-1">
+                        <div class="card-name">Rahul Singh (Sample)</div>
+                        <div class="card-info">
+                            <span><b>Phone:</b> +91 98765 43210</span>
+                            <span><b>Email:</b> rahul@company.com</span>
+                            <span><b>Company:</b> Acme Corp (10-50 users)</span>
+                        </div>
+                        <div class="card-action">
+                            <select class="status-select" onchange="moveCard('lead-1', this.value)">
+                                <option value="open" selected>🟢 New Lead</option>
+                                <option value="hot">🔴 Hot Pipeline</option>
+                                <option value="cold">🔵 Cold Stage</option>
+                                <option value="closed">✨ Closed (Won)</option>
+                                <option value="dead">❌ Dead / Lost</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-label">Active Demos Scheduled</div>
-                <div class="stat-value cyan-text" id="countActive">2</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">System Security Status</div>
-                <div class="stat-value" style="color: #10B981; font-size: 22px;">🔒 Fully Encrypted</div>
-            </div>
-        </div>
 
-        <div class="table-card">
-            <div class="table-header-box">
-                <h2>Inbound Client Leads</h2>
-                <span class="badge badge-new">Real-time Sync</span>
+            <div class="kanban-column col-hot">
+                <div class="column-header">
+                    <span>🔴 HOT PIPELINE</span>
+                    <span class="lead-count" id="count-hot">1</span>
+                </div>
+                <div class="column-cards-container" id="container-hot">
+                    <div class="lead-card" id="lead-2">
+                        <div class="card-name">Amit Sharma (Sample)</div>
+                        <div class="card-info">
+                            <span><b>Phone:</b> +91 99999 88888</span>
+                            <span><b>Email:</b> amit@techsolutions.in</span>
+                            <span><b>Company:</b> TechSolutions (5-10 users)</span>
+                        </div>
+                        <div class="card-action">
+                            <select class="status-select" onchange="moveCard('lead-2', this.value)">
+                                <option value="open">🟢 New Lead</option>
+                                <option value="hot" selected>🔴 Hot Pipeline</option>
+                                <option value="cold">🔵 Cold Stage</option>
+                                <option value="closed">✨ Closed (Won)</option>
+                                <option value="dead">❌ Dead / Lost</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Full Name</th>
-                            <th>Mobile Number</th>
-                            <th>Email Address</th>
-                            <th>Company Name</th>
-                            <th>Team Size</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="leadsTableBody">
-                        <tr>
-                            <td><strong>Rahul Singh (Sample)</strong></td>
-                            <td>+91 98765 43210</td>
-                            <td>rahul@company.com</td>
-                            <td>Acme Corp</td>
-                            <td>10-50 users</td>
-                            <td><span class="badge badge-new">New Lead</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Amit Sharma (Sample)</strong></td>
-                            <td>+91 99999 88888</td>
-                            <td>amit@techsolutions.in</td>
-                            <td>TechSolutions</td>
-                            <td>5-10 users</td>
-                            <td><span class="badge badge-new">New Lead</span></td>
-                        </tr>
-                    </tbody>
-                </table>
+
+            <div class="kanban-column col-cold">
+                <div class="column-header">
+                    <span>🔵 COLD STAGE</span>
+                    <span class="lead-count" id="count-cold">0</span>
+                </div>
+                <div class="column-cards-container" id="container-cold"></div>
             </div>
+
+            <div class="kanban-column col-closed">
+                <div class="column-header">
+                    <span>✨ CLOSED (WON)</span>
+                    <span class="lead-count" id="count-closed">0</span>
+                </div>
+                <div class="column-cards-container" id="container-closed"></div>
+            </div>
+
+            <div class="kanban-column col-dead">
+                <div class="column-header">
+                    <span>❌ DEAD / LOST</span>
+                    <span class="lead-count" id="count-dead">0</span>
+                </div>
+                <div class="column-cards-container" id="container-dead"></div>
+            </div>
+
         </div>
     </div>
 
     <script>
-        // Securely authentication lock setup
         function checkAdminLogin() {
             var user = document.getElementById("adminUser").value;
             var pass = document.getElementById("adminPass").value;
             var error = document.getElementById("loginError");
 
-            // Bhai, yahan aap apna custom ID aur Password set kar sakte ho!
             if (user === "prithvi" && pass === "tickora2026") {
                 error.style.display = "none";
-                
-                // Hide Login box and Show CRM Dashboard Panel
                 document.getElementById("loginBox").style.display = "none";
-                document.body.style.alignItems = "flex-start"; // Smooth flex reset
+                document.body.style.alignItems = "flex-start";
                 document.getElementById("dashBox").style.display = "flex";
+                recalculateCounters();
             } else {
                 error.style.display = "block";
             }
@@ -180,6 +221,27 @@
             document.getElementById("dashBox").style.display = "none";
             document.body.style.alignItems = "center";
             document.getElementById("loginBox").style.display = "block";
+        }
+
+        function moveCard(cardId, targetStatus) {
+            var card = document.getElementById(cardId);
+            var targetContainer = document.getElementById('container-' + targetStatus);
+            
+            if (card && targetContainer) {
+                targetContainer.appendChild(card);
+                recalculateCounters();
+            }
+        }
+
+        function recalculateCounters() {
+            var statuses = ['open', 'hot', 'cold', 'closed', 'dead'];
+            statuses.forEach(function(status) {
+                var container = document.getElementById('container-' + status);
+                var countSpan = document.getElementById('count-' + status);
+                if (container && countSpan) {
+                    countSpan.innerText = container.children.length;
+                }
+            });
         }
     </script>
 </body>
