@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TickoraDesk — Admin Kanban CRM</title>
+    <title>TickoraDesk — Admin Drag-Drop Kanban CRM</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -28,7 +28,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Manrope', sans-serif; }
         body { background-color: var(--bg-light); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow-x: hidden; }
 
-        /* 🔒 LIGHT THEME LOGIN SCREEN WITH LOGO IMAGE */
+        /* 🔒 LIGHT THEME LOGIN SCREEN */
         .login-container { width: 100%; max-width: 400px; padding: 32px; background: var(--card-light); border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; }
         .brand-logo-img { height: 40px; object-fit: contain; margin-bottom: 12px; }
         .login-logo { font-size: 22px; font-weight: 800; color: #0F172A; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 8px; }
@@ -57,8 +57,11 @@
 
         /* 🏛️ KANBAN PIPELINE GRID */
         .kanban-board { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; align-items: flex-start; margin-top: 10px; overflow-x: auto; padding-bottom: 20px; }
-        .kanban-column { background: #EBF1FA; border-radius: 12px; padding: 16px; min-height: 550px; display: flex; flex-direction: column; gap: 12px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }
+        .kanban-column { background: #EBF1FA; border-radius: 12px; padding: 16px; min-height: 550px; display: flex; flex-direction: column; gap: 12px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); transition: background 0.2s; }
         
+        /* Dragover effect on columns */
+        .kanban-column.drag-over { background: #DFE7F5; border: 2px dashed rgba(0, 188, 212, 0.4); }
+
         .column-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 6px; font-weight: 700; font-size: 13px; letter-spacing: 0.5px; color: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .col-open .column-header { background: var(--col-open); }
         .col-hot .column-header { background: var(--col-hot); }
@@ -67,18 +70,20 @@
         .col-dead .column-header { background: var(--col-dead); }
 
         .lead-count { background: rgba(255,255,255,0.25); padding: 2px 8px; border-radius: 20px; font-size: 11px; color: #ffffff; font-weight: 800; }
-
-        /* 🎴 CLIENT CARD STYLES */
-        .lead-card { background: var(--card-light); border: 1px solid var(--border); border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.02), 0 1px 3px rgba(0,0,0,0.05); transition: 0.2s; }
-        .lead-card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px rgba(0,0,0,0.05); border-color: #CBD5E1; }
         
-        .card-name { font-size: 15px; font-weight: 700; color: #0F172A; }
+        .column-cards-container { min-height: 480px; display: flex; flex-direction: column; gap: 12px; }
+
+        /* 🎴 CLIENT CARD STYLES (DRAGGABLE) */
+        .lead-card { background: var(--card-light); border: 1px solid var(--border); border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.02), 0 1px 3px rgba(0,0,0,0.05); cursor: grab; transition: transform 0.1s, box-shadow 0.2s; position: relative; }
+        .lead-card:active { cursor: grabbing; transform: scale(0.98); opacity: 0.6; }
+        .lead-card:hover { box-shadow: 0 10px 15px rgba(0,0,0,0.05); border-color: #CBD5E1; }
+        
+        /* Drag Handle Grid Dots */
+        .drag-handle { position: absolute; top: 14px; right: 14px; color: var(--text-muted); opacity: 0.4; font-size: 12px; font-weight: bold; letter-spacing: 1px; line-height: 4px; pointer-events: none; }
+        
+        .card-name { font-size: 15px; font-weight: 700; color: #0F172A; padding-right: 15px; }
         .card-info { font-size: 12px; color: var(--text-muted); display: flex; flex-direction: column; gap: 5px; border-top: 1px solid #F1F5F9; padding-top: 10px; }
         .card-info span b { color: #334155; font-weight: 600; }
-
-        .card-action { margin-top: 4px; }
-        .status-select { width: 100%; background: #F8FAFC; color: #334155; border: 1px solid var(--border); padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; outline: none; transition: 0.2s; }
-        .status-select:focus { border-color: var(--cyan); }
 
         @media (max-width: 1100px) {
             .kanban-board { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
@@ -88,9 +93,9 @@
 <body>
 
     <div class="login-container" id="loginBox">
-        <img src="https://horizons-cdn.hostinger.com/72e9311c-c0ff-4420-947d-12b8570631e7/8a6889eb252d0b5e7d5cf2ec7f7bf309.png" class="brand-logo-img" alt="Logo">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACv0lEQVR4nO2Xv2sUQRTHv7N3uTshRFAihZAgpEnAgIUiFsGoREtLtLALFv4Hba0U/AsECxsRESuREAtFQLSwsFAshCgkiI0gGCO5vbybXbMz9mYv7N69vct76wz7wYHD7mN+8L7zZt7MeyIiIiIiIiIiIiIisgS0AYwDuAbgBoArAK70b7f6bWf/z8Rst/XbFf32NoCHAJ727zciq6gA3AJwZ8r6LID7Zt73fN+IyBy6AMpD7O9EZIH680fP9v0gIrPqzy/vN6vVquf7vstms97ExIRXKpV83/f7P7v7v+/7vscY80ZGRryRkRHv/Pnzvffm5ua82dlZb3Fx0Zubm9vdf65wOHAnT57snToggle3fVpM1o9Xjf7/fS6bTv9XoP+v1+LwzDfhiGff39vP4pDMMeY8wD0NPvXwHQ6bdtAL3+6evvHQAj/fN9AAdZgBcAVv0pD+C+P6wCuAngKoAbWYAuwE0LwAsAzwE8A/B0yvMvAPwA8D3L0NPHS/o4r49XAbwFsG7vXwKwdor5D/VxG8C2fX4bwI7++YV+/m8D8AD8AbCjv39qn/9mn9+x7w70+w76p0K/f9feO/f+mX3vAvA774FwZmdnveXlZW91dbX3bWv96+vrvUwm46VSKS+ZTPrFYrFfLpdVqVSqxWKxlkgkdndfKBQ8Y0xvZGREpVIp79SpU6pSqXjNZtM7efKkatRqNbe6umrS6bRvjOn1er1vWvjXarV+q9XyW62W12w2vVarpVKpVM91XbeXy+X6uVyul8vleuVy2SuVSl46nfYKhYJXKBQ813V7XNe9XfX6+vr/A2CMqWw2m5vJZG7+pEwmcxt9N6m99+7b1nreK7XfWvtN9H6r/da6pW8/D3Xb/p+Inm6fEBERERERERERERH5n/AD1N604zWw9lYAAAAASUVORK5CYII=" class="brand-logo-img" alt="Logo">
         <div class="login-logo">TickoraDesk CRM</div>
-        <div class="login-subtitle">Enter your secret credentials to access Kanban Board</div>
+        <div class="login-subtitle">Enter credentials to access Drag-Drop Kanban</div>
         
         <div class="form-group">
             <label>Admin Username</label>
@@ -108,10 +113,10 @@
     <div class="dashboard-container" id="dashBox">
         <div class="dash-header">
             <div class="dash-brand-box">
-                <img src="https://horizons-cdn.hostinger.com/72e9311c-c0ff-4420-947d-12b8570631e7/8a6889eb252d0b5e7d5cf2ec7f7bf309.png" class="dash-logo-img" alt="Logo">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACv0lEQVR4nO2Xv2sUQRTHv7N3uTshRFAihZAgpEnAgIUiFsGoREtLtLALFv4Hba0U/AsECxsRESuREAtFQLSwsFAshCgkiI0gGCO5vbybXbMz9mYv7N69vct76wz7wYHD7mN+8L7zZt7MeyIiIiIiIiIiIiIisgS0AYwDuAbgBoArAK70b7f6bWf/z8Rst/XbFf32NoCHAJ727zciq6gA3AJwZ8r6LID7Zt73fN+IyBy6AMpD7O9EZIH680fP9v0gIrPqzy/vN6vVquf7vstms97ExIRXKpV83/f7P7v7v+/7vscY80ZGRryRkRHv/Pnzvffm5ua82dlZb3Fx0Zubm9vdf65wOHAnT57snToggle3fVpM1o9Xjf7/fS6bTv9XoP+v1+LwzDfhiGff39vP4pDMMeY8wD0NPvXwHQ6bdtAL3+6evvHQAj/fN9AAdZgBcAVv0pD+C+P6wCuAngKoAbWYAuwE0LwAsAzwE8A/B0yvMvAPwA8D3L0NPHS/o4r49XAbwFsG7vXwKwdor5D/VxG8C2fX4bwI7++YV+/m8D8AD8AbCjv39qn/9mn9+x7w70+w76p0K/f9feO/f+mX3vAvA774FwZmdnveXlZW91dbX3bWv96+vrvUwm46VSKS+ZTPrFYrFfLpdVqVSqxWKxlkgkdndfKBQ8Y0xvZGREpVIp79SpU6pSqXjNZtM7efKkatRqNbe6umrS6bRvjOn1er1vWvjXarV+q9XyW62W12w2vVarpVKpVM91XbeXy+X6uVyul8vleuVy2SuVSl46nfYKhYJXKBQ813V7XNe9XfX6+vr/A2CMqWw2m5vJZG7+pEwmcxt9N6m99+7b1nreK7XfWvtN9H6r/da6pW8/D3Xb/p+Inm6fEBERERERERERERH5n/AD1N604zWw9lYAAAAASUVORK5CYII=" class="dash-logo-img" alt="Logo">
                 <div class="dash-title">
                     <h1>TickoraDesk Deal Pipeline</h1>
-                    <p>Welcome back, Boss! Manage your corporate pipeline live.</p>
+                    <p>Welcome back, Boss! Drag & drop any client card to sort them live.</p>
                 </div>
             </div>
             <button class="btn-logout" onclick="adminLogout()">Log Out</button>
@@ -119,59 +124,42 @@
 
         <div class="kanban-board">
             
-            <div class="kanban-column col-open">
+            <div class="kanban-column col-open" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="dropCard(event, 'open')">
                 <div class="column-header">
                     <span>🟢 NEW LEADS</span>
-                    <span class="lead-count" id="count-open">1</span>
+                    <span class="lead-count" id="count-open">2</span>
                 </div>
                 <div class="column-cards-container" id="container-open">
-                    <div class="lead-card" id="lead-1">
+                    <div class="lead-card" id="lead-1" draggable="true" ondragstart="dragStart(event)">
+                        <div class="drag-handle">•••<br>•••</div>
                         <div class="card-name">Rahul Singh (Sample)</div>
                         <div class="card-info">
                             <span><b>Phone:</b> +91 98765 43210</span>
                             <span><b>Email:</b> rahul@company.com</span>
                             <span><b>Company:</b> Acme Corp (10-50 users)</span>
                         </div>
-                        <div class="card-action">
-                            <select class="status-select" onchange="moveCard('lead-1', this.value)">
-                                <option value="open" selected>🟢 New Lead</option>
-                                <option value="hot">🔴 Hot Pipeline</option>
-                                <option value="cold">🔵 Cold Stage</option>
-                                <option value="closed">✨ Closed (Won)</option>
-                                <option value="dead">❌ Dead / Lost</option>
-                            </select>
-                        </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="kanban-column col-hot">
-                <div class="column-header">
-                    <span>🔴 HOT PIPELINE</span>
-                    <span class="lead-count" id="count-hot">1</span>
-                </div>
-                <div class="column-cards-container" id="container-hot">
-                    <div class="lead-card" id="lead-2">
+                    <div class="lead-card" id="lead-2" draggable="true" ondragstart="dragStart(event)">
+                        <div class="drag-handle">•••<br>•••</div>
                         <div class="card-name">Amit Sharma (Sample)</div>
                         <div class="card-info">
                             <span><b>Phone:</b> +91 99999 88888</span>
                             <span><b>Email:</b> amit@techsolutions.in</span>
                             <span><b>Company:</b> TechSolutions (5-10 users)</span>
                         </div>
-                        <div class="card-action">
-                            <select class="status-select" onchange="moveCard('lead-2', this.value)">
-                                <option value="open">🟢 New Lead</option>
-                                <option value="hot" selected>🔴 Hot Pipeline</option>
-                                <option value="cold">🔵 Cold Stage</option>
-                                <option value="closed">✨ Closed (Won)</option>
-                                <option value="dead">❌ Dead / Lost</option>
-                            </select>
-                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="kanban-column col-cold">
+            <div class="kanban-column col-hot" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="dropCard(event, 'hot')">
+                <div class="column-header">
+                    <span>🔴 HOT PIPELINE</span>
+                    <span class="lead-count" id="count-hot">0</span>
+                </div>
+                <div class="column-cards-container" id="container-hot"></div>
+            </div>
+
+            <div class="kanban-column col-cold" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="dropCard(event, 'cold')">
                 <div class="column-header">
                     <span>🔵 COLD STAGE</span>
                     <span class="lead-count" id="count-cold">0</span>
@@ -179,7 +167,7 @@
                 <div class="column-cards-container" id="container-cold"></div>
             </div>
 
-            <div class="kanban-column col-closed">
+            <div class="kanban-column col-closed" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="dropCard(event, 'closed')">
                 <div class="column-header">
                     <span>✨ CLOSED (WON)</span>
                     <span class="lead-count" id="count-closed">0</span>
@@ -187,7 +175,7 @@
                 <div class="column-cards-container" id="container-closed"></div>
             </div>
 
-            <div class="kanban-column col-dead">
+            <div class="kanban-column col-dead" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="dropCard(event, 'dead')">
                 <div class="column-header">
                     <span>❌ DEAD / LOST</span>
                     <span class="lead-count" id="count-dead">0</span>
@@ -223,10 +211,39 @@
             document.getElementById("loginBox").style.display = "block";
         }
 
-        function moveCard(cardId, targetStatus) {
+        // 🧲 DRAG AND DROP FUNCTIONS
+        function dragStart(event) {
+            event.dataTransfer.setData("text/plain", event.target.id);
+        }
+
+        function allowDrop(event) {
+            event.preventDefault();
+            // Add a visual dashed border effect when hovering over a column
+            var column = event.target.closest('.kanban-column');
+            if (column) {
+                column.classList.add('drag-over');
+            }
+        }
+
+        function dragLeave(event) {
+            var column = event.target.closest('.kanban-column');
+            if (column) {
+                column.classList.remove('drag-over');
+            }
+        }
+
+        function dropCard(event, targetStatus) {
+            event.preventDefault();
+            
+            var column = event.target.closest('.kanban-column');
+            if (column) {
+                column.classList.remove('drag-over');
+            }
+
+            var cardId = event.dataTransfer.getData("text/plain");
             var card = document.getElementById(cardId);
             var targetContainer = document.getElementById('container-' + targetStatus);
-            
+
             if (card && targetContainer) {
                 targetContainer.appendChild(card);
                 recalculateCounters();
