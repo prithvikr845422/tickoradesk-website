@@ -111,7 +111,7 @@
         </div>
         
         <button class="btn-login" onclick="checkAdminLogin()">Login to CRM</button>
-        <div class="error-msg" id="loginError">Bhai, username ya password galat hai! ❌</div>
+        <div class="error-msg" id="loginError">Invalid username or password! Please try again. ❌</div>
     </div>
 
     <div class="dashboard-container" id="dashBox">
@@ -135,46 +135,9 @@
             <div class="kanban-column col-open" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="dropCard(event, 'open')">
                 <div class="column-header">
                     <span>🟢 NEW LEADS</span>
-                    <span class="lead-count" id="count-open">2</span>
+                    <span class="lead-count" id="count-open">0</span>
                 </div>
-                <div class="column-cards-container" id="container-open">
-                    <div class="lead-card" id="lead-1" draggable="true" ondragstart="dragStart(event)">
-                        <div class="drag-handle">•••<br>•••</div>
-                        <div class="card-name">Rahul Singh (Sample)</div>
-                        <div class="card-info">
-                            <span><b>Phone:</b> +91 98765 43210</span>
-                            <span><b>Email:</b> rahul@company.com</span>
-                            <span><b>Company:</b> Acme Corp (10-50 users)</span>
-                        </div>
-                        <div class="card-action">
-                            <select class="status-select" onchange="manualMoveCard('lead-1', this.value)">
-                                <option value="open" selected>🟢 New Lead</option>
-                                <option value="hot">🔴 Hot Pipeline</option>
-                                <option value="cold">🔵 Cold Stage</option>
-                                <option value="closed">✨ Closed (Won)</option>
-                                <option value="dead">❌ Dead / Lost</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="lead-card" id="lead-2" draggable="true" ondragstart="dragStart(event)">
-                        <div class="drag-handle">•••<br>•••</div>
-                        <div class="card-name">Amit Sharma (Sample)</div>
-                        <div class="card-info">
-                            <span><b>Phone:</b> +91 99999 88888</span>
-                            <span><b>Email:</b> amit@techsolutions.in</span>
-                            <span><b>Company:</b> TechSolutions (5-10 users)</span>
-                        </div>
-                        <div class="card-action">
-                            <select class="status-select" onchange="manualMoveCard('lead-2', this.value)">
-                                <option value="open" selected>🟢 New Lead</option>
-                                <option value="hot">🔴 Hot Pipeline</option>
-                                <option value="cold">🔵 Cold Stage</option>
-                                <option value="closed">✨ Closed (Won)</option>
-                                <option value="dead">❌ Dead / Lost</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+                <div class="column-cards-container" id="container-open"></div>
             </div>
 
             <div class="kanban-column col-hot" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="dropCard(event, 'hot')">
@@ -223,10 +186,57 @@
                 document.getElementById("loginBox").style.display = "none";
                 document.body.style.alignItems = "flex-start";
                 document.getElementById("dashBox").style.display = "flex";
-                recalculateCounters();
+                
+                // Triggers structural data parsing from live server API endpoint
+                fetchLeads(); 
             } else {
                 error.style.display = "block";
             }
+        }
+
+        function fetchLeads() {
+            const containerOpen = document.getElementById('container-open');
+            containerOpen.innerHTML = ''; 
+
+            fetch('https://tickoradesk.com/get_leads.php')
+            .then(response => response.json())
+            .then(leads => {
+                if(leads.length === 0) {
+                    containerOpen.innerHTML = '<p style="color:#64748B; font-size:13px; text-align:center; padding:20px; width:100%;">No new leads available at the moment.</p>';
+                    recalculateCounters();
+                    return;
+                }
+
+                // Generates UI elements dynamically based on secure live objects
+                leads.forEach(lead => {
+                    const cardHtml = `
+                        <div class="lead-card" id="lead-${lead.id}" draggable="true" ondragstart="dragStart(event)">
+                            <div class="drag-handle">•••<br>•••</div>
+                            <div class="card-name">${lead.name}</div>
+                            <div class="card-info">
+                                <span><b>Email:</b> ${lead.email}</span>
+                                <span><b>Message:</b> ${lead.message ? lead.message : 'No custom message specified.'}</span>
+                            </div>
+                            <div class="card-action">
+                                <select class="status-select" onchange="manualMoveCard('lead-${lead.id}', this.value)">
+                                    <option value="open" selected>🟢 New Lead</option>
+                                    <option value="hot">🔴 Hot Pipeline</option>
+                                    <option value="cold">🔵 Cold Stage</option>
+                                    <option value="closed">✨ Closed (Won)</option>
+                                    <option value="dead">❌ Dead / Lost</option>
+                                </select>
+                            </div>
+                        </div>
+                    `;
+                    containerOpen.innerHTML += cardHtml;
+                });
+
+                recalculateCounters();
+            })
+            .catch(error => {
+                console.error('Error execution failed during fetching leads:', error);
+                containerOpen.innerHTML = '<p style="color:#DC3545; font-size:13px; padding:10px; text-align:center; width:100%;">Failed to synchronize database records.</p>';
+            });
         }
 
         function adminLogout() {
