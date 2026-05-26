@@ -521,7 +521,6 @@ footer { background: var(--ink); color: white; }
 .footer-link-list { list-style: none; display: flex; flex-direction: column; gap: 11px; }
 .footer-link-list li a { font-size: 14px; color: rgba(255,255,255,0.45); transition: color .15s; }
 .footer-link-list li a:hover { color: var(--cyan); }
-.footer-col h5 { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12px; color: rgba(255,255,255,0.9); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 18px; }
 .footer-contact-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(255,255,255,0.45); margin-bottom: 10px; transition: color .15s; }
 .footer-contact-item:hover { color: var(--cyan); }
 .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); }
@@ -595,7 +594,7 @@ footer { background: var(--ink); color: white; }
   .int-grid { grid-template-columns: repeat(4,1fr); }
 }
 @media (max-width: 768px) {
-  /* ── MODAL MOBILE SUPER FIX BY BHAI ── */
+  /* ── MODAL MOBILE SUPER FIX ── */
   .modal-overlay {
     align-items: flex-start !important;
     padding-top: 40px !important;
@@ -655,7 +654,7 @@ footer { background: var(--ink); color: white; }
     /* RESPONSIVE CSS FOR TIMER & BANNER */
     @media (max-width: 991px) {
       .timer-wrap-box { flex-direction: column; text-align: center; gap: 12px; padding: 12px 20px; }
-      .offer-cards { display: none !important; } /* Mobile par labels hide rakhenge clear space ke liye */
+      .offer-cards { display: none !important; } 
       .offer-banner-cta { width: 100%; max-width: 280px; padding: 8px 16px; font-size: 12px; }
       .offer-banner-label { font-size: 13px; justify-content: center; flex-wrap: wrap; }
     }
@@ -695,7 +694,6 @@ footer { background: var(--ink); color: white; }
 
 <nav id="mainNav" style="position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.97); backdrop-filter: blur(20px); border-bottom: 1px solid var(--ink-10); display: flex; flex-direction: column; align-items: center; box-shadow: var(--shadow); width: 100%; height: auto;">
   <style>
-    /* Desktop vs Mobile Toggle Switching */
     @media (max-width: 991px) {
       .nav-links-desktop, .nav-cta-desktop { display: none !important; }
       .mobile-menu-btn { display: block !important; }
@@ -1260,7 +1258,7 @@ footer { background: var(--ink); color: white; }
         <div class="social-btn" title="LinkedIn">in</div>
         <div class="social-btn" title="Twitter">𝕏</div>
         <div class="social-btn" title="YouTube">▶</div>
-        <div class="footer-social">f</div>
+        <div class="social-btn" title="Facebook">f</div>
       </div>
     </div>
     <div class="footer-col">
@@ -1427,7 +1425,7 @@ function closeDemo() {
   document.getElementById('modalSubmitBtn').disabled = false;
 }
 
-// FULLY WORKING API INTERFACE ENGAGED WITH STRICT MULTI-ROW VALIDATION BY BHAI
+// ASLI VERIFIED ENGINE WITH PURE ENGLISH INTERACTION LOGIC
 function submitDemo() {
   // 1. Data Fetching via exact designated IDs
   const nameVal = document.getElementById('modalNameInput').value.trim();
@@ -1436,13 +1434,13 @@ function submitDemo() {
   const companyVal = document.getElementById('modalCompanyInput').value.trim();
   const teamSizeVal = document.getElementById('modalTeamSizeSelect').value;
 
-  // 2. STRICT VALIDATION: Khali fields hone par rok dega, popup nahi badlega!
+  // 2. STRICT VALIDATION: Blocks empty inputs and triggers professional English alerts
   if (!nameVal || !phoneVal || !emailVal || !companyVal) {
-    alert("Bhai, saare Asterisk (*) fields bharna zaroori hai! Kuch khali chhut gaya hai.");
+    alert("Please fill in all mandatory fields marked with an asterisk (*).");
     return;
   }
 
-  // Submit button loading state
+  // Submit button loading state in English
   const submitBtn = document.getElementById('modalSubmitBtn');
   submitBtn.innerText = "Scheduling... Please Wait...";
   submitBtn.disabled = true;
@@ -1450,7 +1448,7 @@ function submitDemo() {
   // Compile message data to insert inside DB message block
   const fullMessageBody = `Phone: ${phoneVal} | Company: ${companyVal} | Team Size: ${teamSizeVal}`;
 
-  // 3. NATIVE FETCH HIT: Real time API execution on crm subdomain
+  // 3. NATIVE FETCH HIT: Transmitting real data payload to submission endpoint
   fetch('https://crm.tickoradesk.com/submit_lead.php', {
     method: 'POST',
     headers: {
@@ -1464,31 +1462,31 @@ function submitDemo() {
   })
   .then(response => {
     if (!response.ok) {
-      throw new Error('Network component drop occurred');
+      throw new Error('Network response drop occurred');
     }
     return response.json();
   })
   .then(data => {
     if (data.status === 'success') {
-      // 4. POPUP FLIP ONLY UPON REAL SUCCESSFUL TRANSMISSION
+      // 4. POPUP SWITCHES SUCCESS STATE ONLY UPON SUCCESSFUL DB DEPLOYMENT
       document.getElementById('demoForm').style.display = 'none';
       document.getElementById('demoSuccess').style.display = 'block';
       
-      // Clear input values after submission
+      // Clear input values after successful submission
       document.getElementById('modalNameInput').value = "";
       document.getElementById('modalPhoneInput').value = "";
       document.getElementById('modalEmailInput').value = "";
       document.getElementById('modalCompanyInput').value = "";
       document.getElementById('modalTeamSizeSelect').value = "";
     } else {
-      alert("Backend runtime mismatch: " + data.message);
+      alert("Submission Failed: " + data.message);
       submitBtn.disabled = false;
       submitBtn.innerHTML = `📅 Schedule Demo <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
     }
   })
   .catch(err => {
     console.error("Transmission error:", err);
-    alert("Bhai panga ho gaya! Request background me process nahi hui. Submit script check karo.");
+    alert("Connection error. The request could not be processed. Please check your network.");
     submitBtn.disabled = false;
     submitBtn.innerHTML = `📅 Schedule Demo <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   });
