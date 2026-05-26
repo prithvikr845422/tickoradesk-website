@@ -28,9 +28,10 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Manrope', sans-serif; }
         body { background-color: var(--bg-light); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow-x: hidden; }
 
-        /* 🔒 LIGHT THEME LOGIN SCREEN */
+        /* 🔒 UNICORN BLACK-CYAN LOGIN SCREEN */
         .login-container { width: 100%; max-width: 400px; padding: 32px; background: var(--card-light); border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; }
-        .login-logo { font-size: 22px; font-weight: 800; color: #0F172A; margin-top: 8px; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .login-logo { font-size: 24px; font-weight: 800; color: #151B2C; margin-top: 8px; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .login-logo span { color: var(--cyan); }
         .login-subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
         
         .form-group { text-align: left; margin-bottom: 18px; position: relative; }
@@ -38,7 +39,6 @@
         .form-group input { width: 100%; padding: 12px 16px; background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; color: var(--text-main); font-size: 14px; transition: 0.2s; }
         .form-group input:focus { border-color: var(--cyan); outline: none; background: #ffffff; box-shadow: 0 0 0 3px rgba(0, 188, 210, 0.1); }
         
-        /* Premium Password Positioning */
         .password-container { position: relative; }
         .eye-icon { position: absolute; right: 16px; top: 38px; cursor: pointer; color: var(--text-muted); font-size: 16px; transition: color 0.2s; }
         .eye-icon:hover { color: var(--cyan); }
@@ -58,7 +58,7 @@
         .btn-logout { padding: 8px 16px; background: transparent; border: 1px solid #DC3545; color: #DC3545; border-radius: 6px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s; }
         .btn-logout:hover { background: #DC3545; color: #ffffff; }
 
-        /* 🏛️ KANBAN PIPELINE GRID */
+        /* 🏛️ KANBAN PIPELINE GRID (MOBILE FRIENDLY RESPONSIVE) */
         .kanban-board { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; align-items: flex-start; margin-top: 10px; overflow-x: auto; padding-bottom: 20px; }
         .kanban-column { background: #EBF1FA; border-radius: 12px; padding: 16px; min-height: 550px; display: flex; flex-direction: column; gap: 12px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); transition: background 0.2s; }
         
@@ -72,7 +72,6 @@
         .col-dead .column-header { background: var(--col-dead); }
 
         .lead-count { background: rgba(255,255,255,0.25); padding: 2px 8px; border-radius: 20px; font-size: 11px; color: #ffffff; font-weight: 800; }
-        
         .column-cards-container { min-height: 480px; display: flex; flex-direction: column; gap: 12px; }
 
         /* 🎴 CLIENT CARD STYLES */
@@ -81,17 +80,15 @@
         .lead-card:hover { box-shadow: 0 10px 15px rgba(0,0,0,0.05); border-color: #CBD5E1; }
         
         .drag-handle { position: absolute; top: 14px; right: 14px; color: var(--text-muted); opacity: 0.3; font-size: 12px; font-weight: bold; letter-spacing: 1px; line-height: 4px; pointer-events: none; }
-        
         .card-name { font-size: 15px; font-weight: 700; color: #0F172A; padding-right: 15px; }
         .card-info { font-size: 12px; color: var(--text-muted); display: flex; flex-direction: column; gap: 5px; border-top: 1px solid #F1F5F9; padding-top: 10px; }
         .card-info span b { color: #334155; font-weight: 600; }
 
         .card-action { margin-top: 6px; border-top: 1px dashed #E2E8F0; padding-top: 8px; }
         .status-select { width: 100%; background: #F8FAFC; color: #334155; border: 1px solid var(--border); padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; outline: none; transition: 0.2s; }
-        .status-select:focus { border-color: var(--cyan); }
 
         @media (max-width: 1100px) {
-            .kanban-board { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+            .kanban-board { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
         }
     </style>
 </head>
@@ -103,15 +100,250 @@
             <rect x="8" y="8" width="32" height="32" rx="6" stroke="#00BCD4" stroke-width="4" fill="none"/>
             <path d="M16 24L22 30L34 16" stroke="#00BCD4" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        <div class="login-logo">TickoraDesk CRM</div>
+        <div class="login-logo">Tickora<span>Desk</span> CRM</div>
         <div class="login-subtitle">Enter credentials to access Hybrid Kanban</div>
         
         <div class="form-group">
             <label>Admin Username</label>
-            <input type="text" id="adminUser" placeholder="e.g., admin">
+            <input type="text" id="adminUser" placeholder="Username">
         </div>
         
         <div class="form-group password-container">
             <label>Secret Password</label>
             <input type="password" id="adminPass" placeholder="••••••••">
-            <i class="
+            <i class="fas fa-eye eye-icon" id="togglePass" onclick="togglePassword()"></i>
+        </div>
+        
+        <button class="btn-login" onclick="checkAdminLogin()">Login to CRM</button>
+        <div class="error-msg" id="loginError">Invalid username or password! Please try again. ❌</div>
+    </div>
+
+    <div class="dashboard-container" id="dashBox">
+        <div class="dash-header">
+            <div class="dash-brand-box">
+                <svg width="45" height="45" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="48" height="48" rx="10" fill="#151B2C"/>
+                    <rect x="8" y="8" width="32" height="32" rx="6" stroke="#00BCD4" stroke-width="4" fill="none"/>
+                    <path d="M16 24L22 30L34 16" stroke="#00BCD4" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="dash-title">
+                    <h1>TickoraDesk Deal Pipeline</h1>
+                    <p>Welcome back, Boss! Drag cards or select categories from dropdown manually.</p>
+                </div>
+            </div>
+            <button class="btn-logout" onclick="adminLogout()">Log Out</button>
+        </div>
+
+        <div class="kanban-board">
+            <div class="kanban-column col-open" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="dropCard(event, 'open')">
+                <div class="column-header"><span>🟢 NEW LEADS</span><span class="lead-count" id="count-open">0</span></div>
+                <div class="column-cards-container" id="container-open"></div>
+            </div>
+
+            <div class="kanban-column col-hot" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="dropCard(event, 'hot')">
+                <div class="column-header"><span>🔴 HOT PIPELINE</span><span class="lead-count" id="count-hot">0</span></div>
+                <div class="column-cards-container" id="container-hot"></div>
+            </div>
+
+            <div class="kanban-column col-cold" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="dropCard(event, 'cold')">
+                <div class="column-header"><span>🔵 COLD STAGE</span><span class="lead-count" id="count-cold">0</span></div>
+                <div class="column-cards-container" id="container-cold"></div>
+            </div>
+
+            <div class="kanban-column col-closed" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="dropCard(event, 'closed')">
+                <div class="column-header"><span>✨ CLOSED (WON)</span><span class="lead-count" id="count-closed">0</span></div>
+                <div class="column-cards-container" id="container-closed"></div>
+            </div>
+
+            <div class="kanban-column col-dead" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="dropCard(event, 'dead')">
+                <div class="column-header"><span>❌ DEAD / LOST</span><span class="lead-count" id="count-dead">0</span></div>
+                <div class="column-cards-container" id="container-dead"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 🔄 REQUIREMENT 4: REFRESH PERSISTENCE (Page refresh par dashboard locked rahega)
+        window.addEventListener('DOMContentLoaded', () => {
+            const sessionActive = localStorage.getItem('crm_authenticated');
+            if (sessionActive === 'true') {
+                loadDashboardView();
+            }
+            
+            // KEYBOARD ENTER LOGIC FOR LOGIN
+            document.getElementById("adminPass").addEventListener("keypress", function(e) {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    checkAdminLogin();
+                }
+            });
+            document.getElementById("adminUser").addEventListener("keypress", function(e) {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    checkAdminLogin();
+                }
+            });
+        });
+
+        // 👁️ REQUIREMENT 1: HIDE/SHOW PASSWORD BUTTON
+        function togglePassword() {
+            var passInput = document.getElementById("adminPass");
+            var icon = document.getElementById("togglePass");
+            if (passInput.type === "password") {
+                passInput.type = "text";
+                icon.classList.replace("fa-eye", "fa-eye-slash");
+            } else {
+                passInput.type = "password";
+                icon.classList.replace("fa-eye-slash", "fa-eye");
+            }
+        }
+
+        function checkAdminLogin() {
+            var user = document.getElementById("adminUser").value;
+            var pass = document.getElementById("adminPass").value;
+            var error = document.getElementById("loginError");
+
+            if (user === "prithvi" && pass === "tickora2026") {
+                error.style.display = "none";
+                localStorage.setItem('crm_authenticated', 'true');
+                loadDashboardView();
+            } else {
+                error.style.display = "block";
+            }
+        }
+
+        function loadDashboardView() {
+            document.getElementById("loginBox").style.display = "none";
+            document.body.style.alignItems = "flex-start";
+            document.getElementById("dashBox").style.display = "flex";
+            fetchLeads();
+        }
+
+        // 📥 REQUIREMENT 2: FETCH DATA FROM DATABASE TABLE DIRECTLY
+        function fetchLeads() {
+            const columns = ['open', 'hot', 'cold', 'closed', 'dead'];
+            columns.forEach(status => {
+                const el = document.getElementById('container-' + status);
+                if (el) el.innerHTML = '';
+            });
+
+            fetch('https://crm.tickoradesk.com/get_leads.php')
+            .then(response => response.json())
+            .then(leads => {
+                if(leads.length === 0) {
+                    recalculateCounters();
+                    return;
+                }
+
+                leads.forEach(lead => {
+                    const currentStatus = lead.status ? lead.status : 'open';
+                    const container = document.getElementById('container-' + currentStatus);
+                    
+                    if (container) {
+                        const cardHtml = `
+                            <div class="lead-card" id="lead-${lead.id}" draggable="true" ondragstart="dragStart(event)">
+                                <div class="drag-handle">•••<br>•••</div>
+                                <div class="card-name">${lead.name}</div>
+                                <div class="card-info">
+                                    <span><b>Email:</b> ${lead.email}</span>
+                                    <span><b>Mobile:</b> ${lead['mobile number'] ? lead['mobile number'] : 'N/A'}</span>
+                                    <span><b>Company:</b> ${lead['company name'] ? lead['company name'] : 'N/A'}</span>
+                                    <span><b>Team Size:</b> ${lead['user count'] ? lead['user count'] : 'N/A'}</span>
+                                    <span><b>Status Msg:</b> ${lead.message ? lead.message : 'No custom message specified.'}</span>
+                                </div>
+                                <div class="card-action">
+                                    <select class="status-select" onchange="manualMoveCard('lead-${lead.id}', this.value)">
+                                        <option value="open" ${currentStatus === 'open' ? 'selected' : ''}>🟢 New Lead</option>
+                                        <option value="hot" ${currentStatus === 'hot' ? 'selected' : ''}>🔴 Hot Pipeline</option>
+                                        <option value="cold" ${currentStatus === 'cold' ? 'selected' : ''}>🔵 Cold Stage</option>
+                                        <option value="closed" ${currentStatus === 'closed' ? 'selected' : ''}>✨ Closed (Won)</option>
+                                        <option value="dead" ${currentStatus === 'dead' ? 'selected' : ''}>❌ Dead / Lost</option>
+                                    </select>
+                                </div>
+                            </div>
+                        `;
+                        container.innerHTML += cardHtml;
+                    }
+                });
+                recalculateCounters();
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        }
+
+        function adminLogout() {
+            localStorage.removeItem('crm_authenticated');
+            document.getElementById("adminUser").value = "";
+            document.getElementById("adminPass").value = "";
+            document.getElementById("dashBox").style.display = "none";
+            document.body.style.alignItems = "center";
+            document.getElementById("loginBox").style.display = "block";
+        }
+
+        function dragStart(event) {
+            event.dataTransfer.setData("text/plain", event.target.id);
+        }
+
+        function allowDrop(event) {
+            event.preventDefault();
+            var column = event.target.closest('.kanban-column');
+            if (column) column.classList.add('drag-over');
+        }
+
+        function dragLeave(event) {
+            var column = event.target.closest('.kanban-column');
+            if (column) column.classList.remove('drag-over');
+        }
+
+        // 🔄 REQUIREMENT 3: DRAG & MOVE STATUS UPDATE SAVE ENGINE
+        function dropCard(event, targetStatus) {
+            event.preventDefault();
+            var column = event.target.closest('.kanban-column');
+            if (column) column.classList.remove('drag-over');
+
+            var cardId = event.dataTransfer.getData("text/plain");
+            var card = document.getElementById(cardId);
+            var targetContainer = document.getElementById('container-' + targetStatus);
+
+            if (card && targetContainer) {
+                saveStatusToDatabase(cardId, targetStatus);
+                targetContainer.appendChild(card);
+                var selectElement = card.querySelector('.status-select');
+                if (selectElement) selectElement.value = targetStatus;
+                recalculateCounters();
+            }
+        }
+
+        // DROPDOWN STATUS UPDATE SAVE ENGINE
+        function manualMoveCard(cardId, targetStatus) {
+            var card = document.getElementById(cardId);
+            var targetContainer = document.getElementById('container-' + targetStatus);
+            if (card && targetContainer) {
+                saveStatusToDatabase(cardId, targetStatus);
+                targetContainer.appendChild(card);
+                recalculateCounters();
+            }
+        }
+
+        function saveStatusToDatabase(cardId, targetStatus) {
+            fetch('https://crm.tickoradesk.com/update_status.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: cardId, status: targetStatus })
+            }).catch(err => console.error('Error saving state:', err));
+        }
+
+        function recalculateCounters() {
+            var statuses = ['open', 'hot', 'cold', 'closed', 'dead'];
+            statuses.forEach(function(status) {
+                var container = document.getElementById('container-' + status);
+                var countSpan = document.getElementById('count-' + status);
+                if (container && countSpan) {
+                    countSpan.innerText = container.children.length;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
