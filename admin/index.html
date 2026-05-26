@@ -1,75 +1,64 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TickoraDesk — Premium Hybrid Kanban CRM</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --bg-light: #F4F7FC; --card-light: #FFFFFF; --cyan: #00BCD4; --text-main: #1E293B; --text-muted: #64748B; --border: #E2E8F0; 
-                --col-open: #28A745; --col-hot: #DC3545; --col-cold: #007BFF; --col-closed: #20C997; --col-dead: #6C757D; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Manrope', sans-serif; }
-        body { background-color: var(--bg-light); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: center; }
-
-        /* LOGIN PAGE */
-        .login-container { width: 100%; max-width: 400px; padding: 32px; background: var(--card-light); border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; }
-        .login-logo { font-size: 22px; font-weight: 800; color: #0F172A; margin: 15px 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .form-group { text-align: left; margin-bottom: 18px; position: relative; }
-        .form-group input { width: 100%; padding: 12px 16px; background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; }
-        .eye-icon { position: absolute; right: 15px; top: 38px; cursor: pointer; color: var(--text-muted); }
-        .btn-login { width: 100%; padding: 12px; background: var(--cyan); border: none; border-radius: 8px; color: white; font-weight: 700; cursor: pointer; }
-
-        /* DASHBOARD PAGE */
-        .dashboard-container { width: 100%; max-width: 1440px; padding: 32px; display: none; flex-direction: column; gap: 24px; }
-        .dash-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
-        .kanban-board { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; align-items: start; }
-        .kanban-column { background: #EBF1FA; border-radius: 12px; padding: 16px; min-height: 550px; }
-        .column-header { padding: 10px; border-radius: 6px; color: white; font-weight: 700; font-size: 13px; display: flex; justify-content: space-between; margin-bottom: 10px; }
-        .lead-card { background: white; border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 10px; cursor: grab; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        /* [Purana CSS wahi rakho jo maine abhi diya tha] */
+        :root { --bg-light: #F4F7FC; --cyan: #00BCD4; }
+        body { background-color: var(--bg-light); font-family: sans-serif; margin:0; display:flex; justify-content:center; align-items:center; min-height:100vh; }
+        .login-container { width:400px; padding:32px; background:#fff; border-radius:16px; border:1px solid #E2E8F0; text-align:center; }
+        .dashboard-container { width:100%; max-width:1440px; padding:32px; display:none; flex-direction:column; gap:24px; }
+        .kanban-board { display:grid; grid-template-columns:repeat(5,1fr); gap:16px; }
+        .kanban-column { background:#EBF1FA; border-radius:12px; padding:16px; min-height:500px; }
     </style>
 </head>
 <body>
 
     <div class="login-container" id="loginBox">
-        <svg width="50" height="50" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" rx="10" fill="#151B2C"/><rect x="8" y="8" width="32" height="32" rx="6" stroke="#00BCD4" stroke-width="4" fill="none"/><path d="M16 24L22 30L34 16" stroke="#00BCD4" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="login-logo">TickoraDesk CRM</div>
-        <div class="form-group"><label>Admin Username</label><input type="text" id="adminUser" placeholder="admin"></div>
-        <div class="form-group">
-            <label>Secret Password</label>
-            <input type="password" id="adminPass" placeholder="••••••••">
-            <i class="fas fa-eye eye-icon" id="togglePass" onclick="togglePassword()"></i>
-        </div>
-        <button class="btn-login" onclick="checkAdminLogin()">Login to CRM</button>
+        <h3>TickoraDesk CRM</h3>
+        <input type="text" id="adminUser" placeholder="Username" style="width:100%; margin:10px 0; padding:10px;">
+        <input type="password" id="adminPass" placeholder="Password" style="width:100%; margin:10px 0; padding:10px;">
+        <button onclick="checkAdminLogin()" style="width:100%; padding:10px; background:#00BCD4; border:none; color:white;">Login</button>
     </div>
 
     <div class="dashboard-container" id="dashBox">
-        <div class="dash-header">
-            <div><h1>TickoraDesk Deal Pipeline</h1><p>Welcome back, Boss!</p></div>
-            <button onclick="location.reload()" style="padding:8px 16px; border:1px solid #DC3545; color:#DC3545; background:none; border-radius:6px; cursor:pointer;">Log Out</button>
-        </div>
+        <div class="dash-header"><h1>Deal Pipeline</h1><button onclick="adminLogout()">Log Out</button></div>
         <div class="kanban-board">
-            <div class="kanban-column" ondragover="event.preventDefault()" ondrop="dropCard(event, 'open')"><div class="column-header" style="background:var(--col-open)">NEW LEADS <span id="count-open">0</span></div><div id="container-open"></div></div>
-            <div class="kanban-column" ondragover="event.preventDefault()" ondrop="dropCard(event, 'hot')"><div class="column-header" style="background:var(--col-hot)">HOT <span id="count-hot">0</span></div><div id="container-hot"></div></div>
-            <div class="kanban-column" ondragover="event.preventDefault()" ondrop="dropCard(event, 'cold')"><div class="column-header" style="background:var(--col-cold)">COLD <span id="count-cold">0</span></div><div id="container-cold"></div></div>
-            <div class="kanban-column" ondragover="event.preventDefault()" ondrop="dropCard(event, 'closed')"><div class="column-header" style="background:var(--col-closed)">WON <span id="count-closed">0</span></div><div id="container-closed"></div></div>
-            <div class="kanban-column" ondragover="event.preventDefault()" ondrop="dropCard(event, 'dead')"><div class="column-header" style="background:var(--col-dead)">LOST <span id="count-dead">0</span></div><div id="container-dead"></div></div>
+            <div class="kanban-column" id="container-open" ondragover="event.preventDefault()" ondrop="dropCard(event, 'open')"><h3>NEW</h3></div>
+            <div class="kanban-column" id="container-hot" ondragover="event.preventDefault()" ondrop="dropCard(event, 'hot')"><h3>HOT</h3></div>
+            <div class="kanban-column" id="container-cold" ondragover="event.preventDefault()" ondrop="dropCard(event, 'cold')"><h3>COLD</h3></div>
+            <div class="kanban-column" id="container-closed" ondragover="event.preventDefault()" ondrop="dropCard(event, 'closed')"><h3>WON</h3></div>
+            <div class="kanban-column" id="container-dead" ondragover="event.preventDefault()" ondrop="dropCard(event, 'dead')"><h3>LOST</h3></div>
         </div>
     </div>
 
     <script>
-        function togglePassword() {
-            var p = document.getElementById("adminPass");
-            var i = document.getElementById("togglePass");
-            p.type = (p.type === "password") ? "text" : "password";
-            i.classList.toggle("fa-eye"); i.classList.toggle("fa-eye-slash");
-        }
+        // PAGE LOAD HOTE HI CHECK KAREGA
+        window.onload = function() {
+            if (localStorage.getItem('crm_logged_in') === 'true') {
+                showDashboard();
+            }
+        };
+
         function checkAdminLogin() {
-            if (document.getElementById("adminUser").value === "admin" && document.getElementById("adminPass").value === "admin") {
-                document.getElementById("loginBox").style.display = "none";
-                document.getElementById("dashBox").style.display = "flex";
-                fetchLeads();
-            } else { alert("Invalid!"); }
+            if (document.getElementById("adminUser").value === "prithvi" && document.getElementById("adminPass").value === "tickora2026") {
+                localStorage.setItem('crm_logged_in', 'true');
+                showDashboard();
+            } else { alert("Invalid Credentials!"); }
         }
+
+        function showDashboard() {
+            document.getElementById("loginBox").style.display = "none";
+            document.getElementById("dashBox").style.display = "flex";
+            fetchLeads();
+        }
+
+        function adminLogout() {
+            localStorage.removeItem('crm_logged_in');
+            location.reload();
+        }
+
         function fetchLeads() {
             fetch('https://crm.tickoradesk.com/get_leads.php')
             .then(res => res.json())
@@ -78,12 +67,12 @@
                     const status = lead.status || 'open';
                     document.getElementById('container-' + status).innerHTML += `
                         <div class="lead-card" id="lead-${lead.id}" draggable="true" ondragstart="event.dataTransfer.setData('text/plain', 'lead-${lead.id}')">
-                            <b>${lead.name}</b><br><small>${lead.email}</small>
+                            <b>${lead.name}</b>
                         </div>`;
                 });
-                updateCounts();
             });
         }
+        
         function dropCard(event, targetStatus) {
             var cardId = event.dataTransfer.getData("text/plain");
             fetch('https://crm.tickoradesk.com/update_status.php', {
@@ -92,12 +81,6 @@
                 body: JSON.stringify({ id: cardId, status: targetStatus })
             });
             document.getElementById('container-' + targetStatus).appendChild(document.getElementById(cardId));
-            updateCounts();
-        }
-        function updateCounts() {
-            ['open', 'hot', 'cold', 'closed', 'dead'].forEach(s => {
-                document.getElementById('count-' + s).innerText = document.getElementById('container-' + s).children.length;
-            });
         }
     </script>
 </body>
