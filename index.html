@@ -377,7 +377,7 @@ nav.scrolled { box-shadow: var(--shadow); }
   box-shadow: 0 0 0 10px rgba(0,188,212,0.1), 0 12px 30px rgba(0,188,212,0.3);
 }
 .hiw-step h4 { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 16px; color: white; margin-bottom: 10px; }
-.hiw-step p { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.7; }
+.hiw-step p { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.7; / }
 
 /* ═══════════════════════════════════════════
    PRICING (FIXED WITH RUPEES AND DURATION LIMITS)
@@ -716,6 +716,7 @@ footer { background: var(--ink); color: white; }
     
     <div class="nav-cta-desktop" style="display: flex; align-items: center; gap: 14px; flex-shrink: 0;">
       <a href="#" class="btn btn-sm btn-ghost">Login</a>
+      <button class="btn btn-sm btn-outline" onclick="openDemo()">Sign Up</button>
       <button class="btn btn-sm btn-primary" onclick="openDemo()">Schedule Demo</button>
     </div>
 
@@ -733,6 +734,7 @@ footer { background: var(--ink); color: white; }
     <hr style="border: none; border-top: 1px solid var(--ink-10); margin: 6px 0;">
     <div style="display: flex; flex-direction: column; gap: 10px;">
       <a href="#" class="btn btn-ghost" style="text-align: center; width: 100%; justify-content: center; padding: 10px;">Login</a>
+      <button class="btn btn-outline" style="width: 100%; justify-content: center; padding: 10px;" onclick="toggleMobileMenu(); openDemo();">Sign Up</button>
       <button class="btn btn-primary" style="width: 100%; justify-content: center; padding: 10px;" onclick="toggleMobileMenu(); openDemo();">Schedule Demo</button>
     </div>
   </div>
@@ -1419,13 +1421,13 @@ function closeDemo() {
   
   // Submit button text revert
   document.getElementById('modalSubmitBtn').innerHTML = `
-    📅 Schedule Demo
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+     📅 Schedule Demo
+     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
   `;
   document.getElementById('modalSubmitBtn').disabled = false;
 }
 
-// ASLI VERIFIED ENGINE WITH PURE ENGLISH INTERACTION LOGIC
+// FIXED SEPARATE KEYS ROUTER ENGAGED SUCCESSFULLY BY BHAI
 function submitDemo() {
   // 1. Data Fetching via exact designated IDs
   const nameVal = document.getElementById('modalNameInput').value.trim();
@@ -1445,10 +1447,7 @@ function submitDemo() {
   submitBtn.innerText = "Scheduling... Please Wait...";
   submitBtn.disabled = true;
 
-  // Compile message data to insert inside DB message block
-  const fullMessageBody = `Phone: ${phoneVal} | Company: ${companyVal} | Team Size: ${teamSizeVal}`;
-
-  // 3. NATIVE FETCH HIT: Transmitting real data payload to submission endpoint
+  // 3. NATIVE FETCH HIT: Transmitting separate variables cleanly to match backend columns
   fetch('https://crm.tickoradesk.com/submit_lead.php', {
     method: 'POST',
     headers: {
@@ -1457,7 +1456,10 @@ function submitDemo() {
     body: JSON.stringify({
       name: nameVal,
       email: emailVal,
-      message: fullMessageBody
+      phone: phoneVal,         
+      company: companyVal,     
+      team_size: teamSizeVal,  
+      message: "Scheduled via Demo Portal Form" 
     })
   })
   .then(response => {
