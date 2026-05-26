@@ -215,7 +215,7 @@
             fetchLeads();
         }
 
-        // 📥 BULLETPROOF FETCH ENGINE (CORS SAFE RELATIVE PATH)
+        // 📥 FETCH DATA (RELATIVE SUBFOLDER PATH FROM ADMIN)
         function fetchLeads() {
             const columns = ['open', 'hot', 'cold', 'closed', 'dead'];
             columns.forEach(status => {
@@ -223,8 +223,8 @@
                 if (el) el.innerHTML = '';
             });
 
-            // Absolute path mapping automatically matches active parent origin domain
-            fetch('/get_leads.php')
+            // 🔥 '../crm/' matlab admin se ek step baahar nikal kar crm folder me jana
+            fetch('../crm/get_leads.php')
             .then(response => response.json())
             .then(leads => {
                 if(leads.length === 0) {
@@ -301,10 +301,10 @@
             if (column) column.classList.remove('drag-over');
         }
 
-        // 🔄 BULLETPROOF SAVE ENGINE (CORS & AREA FIREWALL BYPASS)
+        // 🔄 SAVE ENGINE (RELATIVE PATH TO CRM)
         function saveStatusToDatabase(cardId, targetStatus) {
-            // Absolute path uses direct root level architecture safely
-            const url = `/update_status.php?id=${cardId}&status=${targetStatus}`;
+            // 🔥 Exact connection bina kisi domain mismatch ke bypass hoga
+            const url = `../crm/update_status.php?id=${cardId}&status=${targetStatus}`;
             fetch(url, { method: 'GET' })
             .then(res => res.json())
             .then(data => console.log('Database Synced Status:', data))
@@ -349,7 +349,7 @@
                 var container = document.getElementById('container-' + status);
                 var countSpan = document.getElementById('count-' + status);
                 if (container && countSpan) {
-                    container.children ? countSpan.innerText = container.children.length : countSpan.innerText = 0;
+                    countSpan.innerText = container.children.length;
                 }
             });
         }
