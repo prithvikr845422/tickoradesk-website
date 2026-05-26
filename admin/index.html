@@ -28,7 +28,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Manrope', sans-serif; }
         body { background-color: var(--bg-light); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow-x: hidden; }
 
-        /* 🔒 UNICORN BLACK-CYAN LOGIN SCREEN */
+        /* 🔒 LOGIN SCREEN */
         .login-container { width: 100%; max-width: 400px; padding: 32px; background: var(--card-light); border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; }
         .login-logo { font-size: 24px; font-weight: 800; color: #151B2C; margin-top: 8px; margin-bottom: 6px; text-align: center; white-space: nowrap; }        
         .login-logo span { color: var(--cyan); }
@@ -215,7 +215,7 @@
             fetchLeads();
         }
 
-        // 📥 FETCH DATA (RELATIVE SUBFOLDER PATH FROM ADMIN)
+        // 📥 FETCH DATA FROM SUBDOMAIN DIRECTLY
         function fetchLeads() {
             const columns = ['open', 'hot', 'cold', 'closed', 'dead'];
             columns.forEach(status => {
@@ -223,11 +223,11 @@
                 if (el) el.innerHTML = '';
             });
 
-            // 🔥 '../crm/' matlab admin se ek step baahar nikal kar crm folder me jana
-            fetch('../crm/get_leads.php')
+            // 🔥 Sahi Subdomain URL jahan tumhari files hain
+            fetch('https://crm.tickoradesk.com/get_leads.php')
             .then(response => response.json())
             .then(leads => {
-                if(leads.length === 0) {
+                if(!leads || leads.length === 0) {
                     recalculateCounters();
                     return;
                 }
@@ -301,10 +301,9 @@
             if (column) column.classList.remove('drag-over');
         }
 
-        // 🔄 SAVE ENGINE (RELATIVE PATH TO CRM)
+        // 🔄 SAVE ENGINE (DIRECT SUBDOMAIN LINK WITH CORS BYPASS)
         function saveStatusToDatabase(cardId, targetStatus) {
-            // 🔥 Exact connection bina kisi domain mismatch ke bypass hoga
-            const url = `../crm/update_status.php?id=${cardId}&status=${targetStatus}`;
+            const url = `https://crm.tickoradesk.com/update_status.php?id=${cardId}&status=${targetStatus}`;
             fetch(url, { method: 'GET' })
             .then(res => res.json())
             .then(data => console.log('Database Synced Status:', data))
