@@ -235,7 +235,7 @@
                 }
 
                 leads.forEach(lead => {
-                    // 🔥 STRICT DB STATE SYNC logic (database value ko dynamic sanitize karega)
+                    // 🔥 STRICT DB STATE SYNC logic
                     let currentStatus = 'open';
                     if (lead.status) {
                         currentStatus = lead.status.toString().trim().toLowerCase();
@@ -306,7 +306,6 @@
 
         // 🔄 FIREWALL-SAFE STATE SAVE ENGINE (CORRECT RE-ROUTED FOLDER PATH)
         function saveStatusToDatabase(cardId, targetStatus) {
-            // URL exact endpoint sub-directory folder 'crm/' ke andar link kar diya hai
             const url = `https://crm.tickoradesk.com/crm/update_status.php?id=${cardId}&status=${targetStatus}`;
             fetch(url, { method: 'GET' })
             .then(res => res.json())
