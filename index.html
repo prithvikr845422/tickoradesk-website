@@ -521,6 +521,7 @@ footer { background: var(--ink); color: white; }
 .footer-link-list { list-style: none; display: flex; flex-direction: column; gap: 11px; }
 .footer-link-list li a { font-size: 14px; color: rgba(255,255,255,0.45); transition: color .15s; }
 .footer-link-list li a:hover { color: var(--cyan); }
+.footer-col h5 { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12px; color: rgba(255,255,255,0.9); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 18px; }
 .footer-contact-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(255,255,255,0.45); margin-bottom: 10px; transition: color .15s; }
 .footer-contact-item:hover { color: var(--cyan); }
 .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); }
@@ -642,6 +643,8 @@ footer { background: var(--ink); color: white; }
 }
 </style>
 </head>
+<body>
+
 <div class="offer-banner" id="offerBanner" style="position: relative; z-index: 200; width: 100%;">
   <style>
     .timer-wrap-box {
@@ -1257,7 +1260,7 @@ footer { background: var(--ink); color: white; }
         <div class="social-btn" title="LinkedIn">in</div>
         <div class="social-btn" title="Twitter">𝕏</div>
         <div class="social-btn" title="YouTube">▶</div>
-        <div class="social-btn" title="Facebook">f</div>
+        <div class="footer-social">f</div>
       </div>
     </div>
     <div class="footer-col">
@@ -1322,25 +1325,25 @@ footer { background: var(--ink); color: white; }
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Full Name *</label>
-          <input class="form-input" type="text" placeholder="Rahul Singh" required>
+          <input class="form-input" type="text" id="modalNameInput" placeholder="Rahul Singh" required>
         </div>
         <div class="form-group">
           <label class="form-label">Mobile Number *</label>
-          <input class="form-input" type="tel" placeholder="+91 98765 43210" required>
+          <input class="form-input" type="tel" id="modalPhoneInput" placeholder="+91 98765 43210" required>
         </div>
       </div>
       <div class="form-group">
         <label class="form-label">Email Address *</label>
-        <input class="form-input" type="email" placeholder="rahul@company.com" required>
+        <input class="form-input" type="email" id="modalEmailInput" placeholder="rahul@company.com" required>
       </div>
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Company Name *</label>
-          <input class="form-input" type="text" placeholder="Acme Corp" required>
+          <input class="form-input" type="text" id="modalCompanyInput" placeholder="Acme Corp" required>
         </div>
         <div class="form-group">
           <label class="form-label">Number of Users</label>
-          <select class="form-input form-select">
+          <select class="form-input form-select" id="modalTeamSizeSelect">
             <option value="">Select team size</option>
             <option>1–5 users</option>
             <option>6–15 users</option>
@@ -1350,7 +1353,8 @@ footer { background: var(--ink); color: white; }
           </select>
         </div>
       </div>
-      <button class="btn btn-primary btn-md modal-submit" onclick="submitDemo()">
+      
+      <button class="btn btn-primary btn-md modal-submit" id="modalSubmitBtn" onclick="submitDemo()">
         📅 Schedule Demo
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
@@ -1404,7 +1408,7 @@ window.addEventListener('scroll', () => {
   document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 30);
 });
 
-// Demo Modal
+// Demo Modal Open & Close Functions
 function openDemo() {
   document.getElementById('demoModal').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -1414,10 +1418,80 @@ function closeDemo() {
   document.body.style.overflow = '';
   document.getElementById('demoForm').style.display = 'block';
   document.getElementById('demoSuccess').style.display = 'none';
+  
+  // Submit button text revert
+  document.getElementById('modalSubmitBtn').innerHTML = `
+    📅 Schedule Demo
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  `;
+  document.getElementById('modalSubmitBtn').disabled = false;
 }
+
+// FULLY WORKING API INTERFACE ENGAGED WITH STRICT MULTI-ROW VALIDATION BY BHAI
 function submitDemo() {
-  document.getElementById('demoForm').style.display = 'none';
-  document.getElementById('demoSuccess').style.display = 'block';
+  // 1. Data Fetching via exact designated IDs
+  const nameVal = document.getElementById('modalNameInput').value.trim();
+  const phoneVal = document.getElementById('modalPhoneInput').value.trim();
+  const emailVal = document.getElementById('modalEmailInput').value.trim();
+  const companyVal = document.getElementById('modalCompanyInput').value.trim();
+  const teamSizeVal = document.getElementById('modalTeamSizeSelect').value;
+
+  // 2. STRICT VALIDATION: Khali fields hone par rok dega, popup nahi badlega!
+  if (!nameVal || !phoneVal || !emailVal || !companyVal) {
+    alert("Bhai, saare Asterisk (*) fields bharna zaroori hai! Kuch khali chhut gaya hai.");
+    return;
+  }
+
+  // Submit button loading state
+  const submitBtn = document.getElementById('modalSubmitBtn');
+  submitBtn.innerText = "Scheduling... Please Wait...";
+  submitBtn.disabled = true;
+
+  // Compile message data to insert inside DB message block
+  const fullMessageBody = `Phone: ${phoneVal} | Company: ${companyVal} | Team Size: ${teamSizeVal}`;
+
+  // 3. NATIVE FETCH HIT: Real time API execution on crm subdomain
+  fetch('https://crm.tickoradesk.com/submit_lead.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      name: nameVal,
+      email: emailVal,
+      message: fullMessageBody
+    })
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network component drop occurred');
+    }
+    return response.json();
+  })
+  .then(data => {
+    if (data.status === 'success') {
+      // 4. POPUP FLIP ONLY UPON REAL SUCCESSFUL TRANSMISSION
+      document.getElementById('demoForm').style.display = 'none';
+      document.getElementById('demoSuccess').style.display = 'block';
+      
+      // Clear input values after submission
+      document.getElementById('modalNameInput').value = "";
+      document.getElementById('modalPhoneInput').value = "";
+      document.getElementById('modalEmailInput').value = "";
+      document.getElementById('modalCompanyInput').value = "";
+      document.getElementById('modalTeamSizeSelect').value = "";
+    } else {
+      alert("Backend runtime mismatch: " + data.message);
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = `📅 Schedule Demo <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    }
+  })
+  .catch(err => {
+    console.error("Transmission error:", err);
+    alert("Bhai panga ho gaya! Request background me process nahi hui. Submit script check karo.");
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = `📅 Schedule Demo <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  });
 }
 
 // Intersection Observer for fade-up animations
