@@ -277,7 +277,7 @@
             document.getElementById("adminPass").value = "";
             document.getElementById("dashBox").style.display = "none";
             document.body.style.alignItems = "center";
-            document.getElementById("loginBox").style.block = "block";
+            document.getElementById("loginBox").style.display = "block";
             location.reload();
         }
 
@@ -296,12 +296,13 @@
             if (column) column.classList.remove('drag-over');
         }
 
-        // 🔄 FIREWALL-SAFE STATE SAVE ENGINE (GET METHOD)
+        // 🔄 FIREWALL-SAFE STATE SAVE ENGINE (CORRECT FIXED URL)
         function saveStatusToDatabase(cardId, targetStatus) {
-            const url = `https://crm.tickoradesk.com/crm/update_status.php?id=${cardId}&status=${targetStatus}`;
+            // Path corrected to direct domain endpoint (No /crm/ subfolder)
+            const url = `https://crm.tickoradesk.com/update_status.php?id=${cardId}&status=${targetStatus}`;
             fetch(url, { method: 'GET' })
             .then(res => res.json())
-            .then(data => console.log('Database Synced:', data))
+            .then(data => console.log('Database Synced Status:', data))
             .catch(err => console.error('Error saving state:', err));
         }
 
