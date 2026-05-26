@@ -57,7 +57,7 @@
         .btn-logout { padding: 8px 16px; background: transparent; border: 1px solid #DC3545; color: #DC3545; border-radius: 6px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s; }
         .btn-logout:hover { background: #DC3545; color: #ffffff; }
 
-        /* 🏛️ KANBAN PIPELINE GRID (MOBILE FRIENDLY RESPONSIVE) */
+        /* 🏛️ KANBAN PIPELINE GRID */
         .kanban-board { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; align-items: flex-start; margin-top: 10px; overflow-x: auto; padding-bottom: 20px; }
         .kanban-column { background: #EBF1FA; border-radius: 12px; padding: 16px; min-height: 550px; display: flex; flex-direction: column; gap: 12px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); transition: background 0.2s; }
         
@@ -218,7 +218,7 @@
             fetchLeads();
         }
 
-        // 📥 REQUIREMENT 2: FETCH DATA WITH STRICT LOGICAL MATCHING
+        // 📥 REQUIREMENT 2: FETCH DATA FROM CORRECT SUBFOLDER PATH
         function fetchLeads() {
             const columns = ['open', 'hot', 'cold', 'closed', 'dead'];
             columns.forEach(status => {
@@ -226,7 +226,8 @@
                 if (el) el.innerHTML = '';
             });
 
-            fetch('https://crm.tickoradesk.com/get_leads.php')
+            // 🔥 FIXED FETCH ENDPOINT: Added '/crm/' subdirectory to point to the live php file location
+            fetch('https://crm.tickoradesk.com/crm/get_leads.php')
             .then(response => response.json())
             .then(leads => {
                 if(leads.length === 0) {
@@ -303,16 +304,15 @@
             if (column) column.classList.remove('drag-over');
         }
 
-        // 🔄 🔥 FIX 1: REMOVED '/crm/' PATH FROM API ENDPOINT
+        // 🔄 FIXED DATABASE SAVE ENDPOINT (TARGETING ACTIVE DIRECTORY PATH)
         function saveStatusToDatabase(cardId, targetStatus) {
-            const url = `https://crm.tickoradesk.com/update_status.php?id=${cardId}&status=${targetStatus}`;
+            const url = `https://crm.tickoradesk.com/crm/update_status.php?id=${cardId}&status=${targetStatus}`;
             fetch(url, { method: 'GET' })
             .then(res => res.json())
             .then(data => console.log('Database Synced Status:', data))
             .catch(err => console.error('Error saving state:', err));
         }
 
-        // 🚀 🔥 FIX 2: DRAG & DROP CLEAN ID PARSER
         function dropCard(event, targetStatus) {
             event.preventDefault();
             var column = event.target.closest('.kanban-column');
@@ -323,7 +323,6 @@
             var targetContainer = document.getElementById('container-' + targetStatus);
 
             if (card && targetContainer) {
-                // Strips 'lead-' prefix before pushing to DB sync
                 const cleanId = cardId.replace('lead-', '');
                 saveStatusToDatabase(cleanId, targetStatus);
                 
@@ -334,12 +333,10 @@
             }
         }
 
-        // 🚀 🔥 FIX 2: DROPDOWN SELECT MANUAL CLEAN ID PARSER
         function manualMoveCard(cardId, targetStatus) {
             var card = document.getElementById(cardId);
             var targetContainer = document.getElementById('container-' + targetStatus);
             if (card && targetContainer) {
-                // Strips 'lead-' prefix before pushing to DB sync
                 const cleanId = cardId.replace('lead-', '');
                 saveStatusToDatabase(cleanId, targetStatus);
                 
