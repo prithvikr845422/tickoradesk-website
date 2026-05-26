@@ -215,7 +215,7 @@
             fetchLeads();
         }
 
-        // 📥 FETCH DATA FROM DIRECT URL (BINA ANY FOLDER PATH)
+        // 📥 FETCH DATA FROM THE DEFINITIVE DIRECT ENDPOINT
         function fetchLeads() {
             const columns = ['open', 'hot', 'cold', 'closed', 'dead'];
             columns.forEach(status => {
@@ -223,7 +223,6 @@
                 if (el) el.innerHTML = '';
             });
 
-            // Sateek absolute URL direct hit karne ke liye
             fetch('https://crm.tickoradesk.com/get_leads.php')
             .then(response => response.json())
             .then(leads => {
@@ -301,9 +300,10 @@
             if (column) column.classList.remove('drag-over');
         }
 
-        // DIRECT LIVE ENDPOINT MAPPED
+        // 🔄 🔥 DYNAMIC FIX: TARGETING THE EXACT SUBDIRECTORY FILE LOCATION FOR SAVE
         function saveStatusToDatabase(cardId, targetStatus) {
-            const url = `https://crm.tickoradesk.com/update_status.php?id=${cardId}&status=${targetStatus}`;
+            // Added /crm/ subfolder shortcut mapping because update_status.php resides there
+            const url = `https://crm.tickoradesk.com/crm/update_status.php?id=${cardId}&status=${targetStatus}`;
             fetch(url, { method: 'GET' })
             .then(res => res.json())
             .then(data => console.log('Database Synced Status:', data))
