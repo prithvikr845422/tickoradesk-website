@@ -235,7 +235,6 @@
                 }
 
                 leads.forEach(lead => {
-                    // 🔥 STRICT DB STATE SYNC logic
                     let currentStatus = 'open';
                     if (lead.status) {
                         currentStatus = lead.status.toString().trim().toLowerCase();
@@ -304,15 +303,16 @@
             if (column) column.classList.remove('drag-over');
         }
 
-        // 🔄 FIREWALL-SAFE STATE SAVE ENGINE (CORRECT RE-ROUTED FOLDER PATH)
+        // 🔄 🔥 FIX 1: REMOVED '/crm/' PATH FROM API ENDPOINT
         function saveStatusToDatabase(cardId, targetStatus) {
-            const url = `https://crm.tickoradesk.com/crm/update_status.php?id=${cardId}&status=${targetStatus}`;
+            const url = `https://crm.tickoradesk.com/update_status.php?id=${cardId}&status=${targetStatus}`;
             fetch(url, { method: 'GET' })
             .then(res => res.json())
             .then(data => console.log('Database Synced Status:', data))
             .catch(err => console.error('Error saving state:', err));
         }
 
+        // 🚀 🔥 FIX 2: DRAG & DROP CLEAN ID PARSER
         function dropCard(event, targetStatus) {
             event.preventDefault();
             var column = event.target.closest('.kanban-column');
@@ -323,7 +323,10 @@
             var targetContainer = document.getElementById('container-' + targetStatus);
 
             if (card && targetContainer) {
-                saveStatusToDatabase(cardId, targetStatus);
+                // Strips 'lead-' prefix before pushing to DB sync
+                const cleanId = cardId.replace('lead-', '');
+                saveStatusToDatabase(cleanId, targetStatus);
+                
                 targetContainer.appendChild(card);
                 var selectElement = card.querySelector('.status-select');
                 if (selectElement) selectElement.value = targetStatus;
@@ -331,11 +334,15 @@
             }
         }
 
+        // 🚀 🔥 FIX 2: DROPDOWN SELECT MANUAL CLEAN ID PARSER
         function manualMoveCard(cardId, targetStatus) {
             var card = document.getElementById(cardId);
             var targetContainer = document.getElementById('container-' + targetStatus);
             if (card && targetContainer) {
-                saveStatusToDatabase(cardId, targetStatus);
+                // Strips 'lead-' prefix before pushing to DB sync
+                const cleanId = cardId.replace('lead-', '');
+                saveStatusToDatabase(cleanId, targetStatus);
+                
                 targetContainer.appendChild(card);
                 recalculateCounters();
             }
