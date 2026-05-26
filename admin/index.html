@@ -11,26 +11,27 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Manrope', sans-serif; }
         body { background-color: var(--bg-light); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: center; }
 
+        /* LOGIN PAGE */
         .login-container { width: 100%; max-width: 400px; padding: 32px; background: var(--card-light); border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; }
-        .login-logo { font-size: 22px; font-weight: 800; color: #0F172A; margin-bottom: 24px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .login-logo { font-size: 22px; font-weight: 800; color: #0F172A; margin: 15px 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .form-group { text-align: left; margin-bottom: 18px; position: relative; }
         .form-group input { width: 100%; padding: 12px 16px; background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; }
         .eye-icon { position: absolute; right: 15px; top: 38px; cursor: pointer; color: var(--text-muted); }
         .btn-login { width: 100%; padding: 12px; background: var(--cyan); border: none; border-radius: 8px; color: white; font-weight: 700; cursor: pointer; }
 
+        /* DASHBOARD PAGE */
         .dashboard-container { width: 100%; max-width: 1440px; padding: 32px; display: none; flex-direction: column; gap: 24px; }
+        .dash-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
         .kanban-board { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; align-items: start; }
         .kanban-column { background: #EBF1FA; border-radius: 12px; padding: 16px; min-height: 550px; }
         .column-header { padding: 10px; border-radius: 6px; color: white; font-weight: 700; font-size: 13px; display: flex; justify-content: space-between; margin-bottom: 10px; }
-        .column-cards-container { min-height: 480px; display: flex; flex-direction: column; gap: 12px; }
-        
-        .lead-card { background: white; border: 1px solid var(--border); border-radius: 8px; padding: 16px; cursor: grab; box-shadow: 0 2px 4px rgba(0,0,0,0.05); font-size: 13px; }
-        .card-name { font-weight: 800; font-size: 15px; margin-bottom: 5px; }
+        .lead-card { background: white; border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 10px; cursor: grab; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
 
     <div class="login-container" id="loginBox">
+        <svg width="50" height="50" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" rx="10" fill="#151B2C"/><rect x="8" y="8" width="32" height="32" rx="6" stroke="#00BCD4" stroke-width="4" fill="none"/><path d="M16 24L22 30L34 16" stroke="#00BCD4" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <div class="login-logo">TickoraDesk CRM</div>
         <div class="form-group"><label>Admin Username</label><input type="text" id="adminUser" placeholder="admin"></div>
         <div class="form-group">
@@ -42,13 +43,16 @@
     </div>
 
     <div class="dashboard-container" id="dashBox">
-        <div class="dash-header"><h1>Deal Pipeline</h1><button onclick="location.reload()">Log Out</button></div>
+        <div class="dash-header">
+            <div><h1>TickoraDesk Deal Pipeline</h1><p>Welcome back, Boss!</p></div>
+            <button onclick="location.reload()" style="padding:8px 16px; border:1px solid #DC3545; color:#DC3545; background:none; border-radius:6px; cursor:pointer;">Log Out</button>
+        </div>
         <div class="kanban-board">
-            <div class="kanban-column" ondragover="event.preventDefault()" ondrop="dropCard(event, 'open')"><div class="column-header" style="background:var(--col-open)">NEW LEADS <span id="count-open">0</span></div><div class="column-cards-container" id="container-open"></div></div>
-            <div class="kanban-column" ondragover="event.preventDefault()" ondrop="dropCard(event, 'hot')"><div class="column-header" style="background:var(--col-hot)">HOT <span id="count-hot">0</span></div><div class="column-cards-container" id="container-hot"></div></div>
-            <div class="kanban-column" ondragover="event.preventDefault()" ondrop="dropCard(event, 'cold')"><div class="column-header" style="background:var(--col-cold)">COLD <span id="count-cold">0</span></div><div class="column-cards-container" id="container-cold"></div></div>
-            <div class="kanban-column" ondragover="event.preventDefault()" ondrop="dropCard(event, 'closed')"><div class="column-header" style="background:var(--col-closed)">WON <span id="count-closed">0</span></div><div class="column-cards-container" id="container-closed"></div></div>
-            <div class="kanban-column" ondragover="event.preventDefault()" ondrop="dropCard(event, 'dead')"><div class="column-header" style="background:var(--col-dead)">LOST <span id="count-dead">0</span></div><div class="column-cards-container" id="container-dead"></div></div>
+            <div class="kanban-column" ondragover="event.preventDefault()" ondrop="dropCard(event, 'open')"><div class="column-header" style="background:var(--col-open)">NEW LEADS <span id="count-open">0</span></div><div id="container-open"></div></div>
+            <div class="kanban-column" ondragover="event.preventDefault()" ondrop="dropCard(event, 'hot')"><div class="column-header" style="background:var(--col-hot)">HOT <span id="count-hot">0</span></div><div id="container-hot"></div></div>
+            <div class="kanban-column" ondragover="event.preventDefault()" ondrop="dropCard(event, 'cold')"><div class="column-header" style="background:var(--col-cold)">COLD <span id="count-cold">0</span></div><div id="container-cold"></div></div>
+            <div class="kanban-column" ondragover="event.preventDefault()" ondrop="dropCard(event, 'closed')"><div class="column-header" style="background:var(--col-closed)">WON <span id="count-closed">0</span></div><div id="container-closed"></div></div>
+            <div class="kanban-column" ondragover="event.preventDefault()" ondrop="dropCard(event, 'dead')"><div class="column-header" style="background:var(--col-dead)">LOST <span id="count-dead">0</span></div><div id="container-dead"></div></div>
         </div>
     </div>
 
@@ -59,41 +63,29 @@
             p.type = (p.type === "password") ? "text" : "password";
             i.classList.toggle("fa-eye"); i.classList.toggle("fa-eye-slash");
         }
-
         function checkAdminLogin() {
-            if (document.getElementById("adminUser").value === "prithvi" && document.getElementById("adminPass").value === "tickora2026") {
+            if (document.getElementById("adminUser").value === "admin" && document.getElementById("adminPass").value === "admin") {
                 document.getElementById("loginBox").style.display = "none";
                 document.getElementById("dashBox").style.display = "flex";
                 fetchLeads();
-            } else { alert("Invalid Credentials!"); }
+            } else { alert("Invalid!"); }
         }
-
         function fetchLeads() {
             fetch('https://crm.tickoradesk.com/get_leads.php')
             .then(res => res.json())
             .then(leads => {
                 leads.forEach(lead => {
                     const status = lead.status || 'open';
-                    const container = document.getElementById('container-' + status);
-                    if(container) {
-                        container.innerHTML += `
-                            <div class="lead-card" id="lead-${lead.id}" draggable="true" ondragstart="event.dataTransfer.setData('text/plain', 'lead-${lead.id}')">
-                                <div class="card-name">${lead.name}</div>
-                                <div>Email: ${lead.email}</div>
-                                <div>Mobile: ${lead['mobile number'] || 'N/A'}</div>
-                                <div>Company: ${lead['company name'] || 'N/A'}</div>
-                                <div>Team: ${lead['user count'] || 'N/A'}</div>
-                                <div>Msg: ${lead.message || 'N/A'}</div>
-                            </div>`;
-                    }
+                    document.getElementById('container-' + status).innerHTML += `
+                        <div class="lead-card" id="lead-${lead.id}" draggable="true" ondragstart="event.dataTransfer.setData('text/plain', 'lead-${lead.id}')">
+                            <b>${lead.name}</b><br><small>${lead.email}</small>
+                        </div>`;
                 });
                 updateCounts();
             });
         }
-
         function dropCard(event, targetStatus) {
             var cardId = event.dataTransfer.getData("text/plain");
-            // Save status update to database
             fetch('https://crm.tickoradesk.com/update_status.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -102,7 +94,6 @@
             document.getElementById('container-' + targetStatus).appendChild(document.getElementById(cardId));
             updateCounts();
         }
-
         function updateCounts() {
             ['open', 'hot', 'cold', 'closed', 'dead'].forEach(s => {
                 document.getElementById('count-' + s).innerText = document.getElementById('container-' + s).children.length;
