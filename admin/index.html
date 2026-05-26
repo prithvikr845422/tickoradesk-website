@@ -218,7 +218,7 @@
             fetchLeads();
         }
 
-        // 📥 REQUIREMENT 2: FETCH DATA
+        // 📥 REQUIREMENT 2: FETCH DATA WITH STRICT LOGICAL MATCHING
         function fetchLeads() {
             const columns = ['open', 'hot', 'cold', 'closed', 'dead'];
             columns.forEach(status => {
@@ -235,7 +235,15 @@
                 }
 
                 leads.forEach(lead => {
-                    const currentStatus = lead.status ? lead.status : 'open';
+                    // 🔥 STRICT DB STATE SYNC logic (database value ko dynamic sanitize karega)
+                    let currentStatus = 'open';
+                    if (lead.status) {
+                        currentStatus = lead.status.toString().trim().toLowerCase();
+                    }
+                    if (!columns.includes(currentStatus)) {
+                        currentStatus = 'open';
+                    }
+
                     const container = document.getElementById('container-' + currentStatus);
                     
                     if (container) {
@@ -245,9 +253,9 @@
                                 <div class="card-name">${lead.name}</div>
                                 <div class="card-info">
                                     <span><b>Email:</b> ${lead.email}</span>
-                                    <span><b>Mobile:</b> ${lead['mobile number'] ? lead['mobile number'] : 'N/A'}</span>
-                                    <span><b>Company:</b> ${lead['company name'] ? lead['company name'] : 'N/A'}</span>
-                                    <span><b>Team Size:</b> ${lead['user count'] ? lead['user count'] : 'N/A'}</span>
+                                    <span><b>Mobile:</b> ${lead['mobile number'] ? lead['mobile number'] : (lead.mobile ? lead.mobile : 'N/A')}</span>
+                                    <span><b>Company:</b> ${lead['company name'] ? lead['company name'] : (lead.company ? lead.company : 'N/A')}</span>
+                                    <span><b>Team Size:</b> ${lead['user count'] ? lead['user count'] : (lead.users ? lead.users : 'N/A')}</span>
                                     <span><b>Status Msg:</b> ${lead.message ? lead.message : 'No custom message specified.'}</span>
                                 </div>
                                 <div class="card-action">
@@ -296,10 +304,10 @@
             if (column) column.classList.remove('drag-over');
         }
 
-        // 🔄 FIREWALL-SAFE STATE SAVE ENGINE (CORRECT FIXED URL)
+        // 🔄 FIREWALL-SAFE STATE SAVE ENGINE (CORRECT RE-ROUTED FOLDER PATH)
         function saveStatusToDatabase(cardId, targetStatus) {
-            // Path corrected to direct domain endpoint (No /crm/ subfolder)
-            const url = `https://crm.tickoradesk.com/update_status.php?id=${cardId}&status=${targetStatus}`;
+            // URL exact endpoint sub-directory folder 'crm/' ke andar link kar diya hai
+            const url = `https://crm.tickoradesk.com/crm/update_status.php?id=${cardId}&status=${targetStatus}`;
             fetch(url, { method: 'GET' })
             .then(res => res.json())
             .then(data => console.log('Database Synced Status:', data))
