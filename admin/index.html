@@ -16,8 +16,6 @@
             --text-main: #1E293B;
             --text-muted: #64748B;
             --border: #E2E8F0;
-            
-            /* Pipeline Column Colors */
             --col-open: #28A745;   
             --col-hot: #DC3545;    
             --col-cold: #007BFF;   
@@ -28,7 +26,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Manrope', sans-serif; }
         body { background-color: var(--bg-light); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow-x: hidden; }
 
-        /* 🔒 LOGIN SCREEN */
         .login-container { width: 100%; max-width: 400px; padding: 32px; background: var(--card-light); border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; }
         .login-logo { font-size: 24px; font-weight: 800; color: #151B2C; margin-top: 8px; margin-bottom: 6px; text-align: center; white-space: nowrap; }        
         .login-logo span { color: var(--cyan); }
@@ -46,7 +43,6 @@
         .btn-login:hover { opacity: 0.9; transform: translateY(-1px); }
         .error-msg { color: #DC3545; font-size: 13px; margin-top: 12px; display: none; }
 
-        /* 📊 KANBAN BOARD DASHBOARD */
         .dashboard-container { width: 100%; max-width: 1440px; padding: 32px 24px; display: none; min-height: 100vh; flex-direction: column; gap: 24px; }
         .dash-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
         
@@ -57,10 +53,8 @@
         .btn-logout { padding: 8px 16px; background: transparent; border: 1px solid #DC3545; color: #DC3545; border-radius: 6px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s; }
         .btn-logout:hover { background: #DC3545; color: #ffffff; }
 
-        /* 🏛️ KANBAN PIPELINE GRID */
         .kanban-board { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; align-items: flex-start; margin-top: 10px; overflow-x: auto; padding-bottom: 20px; }
         .kanban-column { background: #EBF1FA; border-radius: 12px; padding: 16px; min-height: 550px; display: flex; flex-direction: column; gap: 12px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); transition: background 0.2s; }
-        
         .kanban-column.drag-over { background: #DFE7F5; border: 2px dashed rgba(0, 188, 212, 0.4); }
 
         .column-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 6px; font-weight: 700; font-size: 13px; letter-spacing: 0.5px; color: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
@@ -73,7 +67,7 @@
         .lead-count { background: rgba(255,255,255,0.25); padding: 2px 8px; border-radius: 20px; font-size: 11px; color: #ffffff; font-weight: 800; }
         .column-cards-container { min-height: 480px; display: flex; flex-direction: column; gap: 12px; }
 
-        /* 🎴 CLIENT CARD STYLES */
+        /* CARD STYLE WITH REMARK CONTAINER */
         .lead-card { background: var(--card-light); border: 1px solid var(--border); border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.02), 0 1px 3px rgba(0,0,0,0.05); cursor: grab; transition: transform 0.1s, box-shadow 0.2s; position: relative; text-align: left; }
         .lead-card:active { cursor: grabbing; transform: scale(0.98); opacity: 0.6; }
         .lead-card:hover { box-shadow: 0 10px 15px rgba(0,0,0,0.05); border-color: #CBD5E1; }
@@ -83,7 +77,14 @@
         .card-info { font-size: 12px; color: var(--text-muted); display: flex; flex-direction: column; gap: 5px; border-top: 1px solid #F1F5F9; padding-top: 10px; }
         .card-info span b { color: #334155; font-weight: 600; }
 
-        .card-action { margin-top: 6px; border-top: 1px dashed #E2E8F0; padding-top: 8px; }
+        /* 📝 EXTRA STYLE FOR PERSONAL REMARKS */
+        .card-remark-box { display: flex; gap: 6px; align-items: center; border-top: 1px dashed #E2E8F0; padding-top: 8px; margin-top: 2px; }
+        .remark-input { flex: 1; font-size: 11px; padding: 6px 8px; border: 1px solid var(--border); border-radius: 4px; outline: none; background: #FFFDF4; color: #5C4033; font-weight: 500; }
+        .remark-input:focus { border-color: #FFC107; background: #ffffff; }
+        .btn-save-remark { background: #FFC107; border: none; padding: 6px 9px; border-radius: 4px; color: #ffffff; cursor: pointer; font-size: 11px; transition: 0.2s; }
+        .btn-save-remark:hover { background: #E0A800; }
+
+        .card-action { margin-top: 2px; border-top: 1px dashed #E2E8F0; padding-top: 8px; }
         .status-select { width: 100%; background: #F8FAFC; color: #334155; border: 1px solid var(--border); padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; outline: none; transition: 0.2s; }
 
         @media (max-width: 1100px) {
@@ -101,18 +102,15 @@
         </svg>
         <div class="login-logo">TickoraDesk CRM</div>
         <div class="login-subtitle">Enter credentials to access Hybrid Kanban</div>
-        
         <div class="form-group">
             <label>Admin Username</label>
             <input type="text" id="adminUser" placeholder="Username">
         </div>
-        
         <div class="form-group password-container">
             <label>Secret Password</label>
             <input type="password" id="adminPass" placeholder="••••••••">
             <i class="fas fa-eye eye-icon" id="togglePass" onclick="togglePassword()"></i>
         </div>
-        
         <button class="btn-login" onclick="checkAdminLogin()">Login to CRM</button>
         <div class="error-msg" id="loginError">Invalid username or password! Please try again. ❌</div>
     </div>
@@ -127,7 +125,7 @@
                 </svg>
                 <div class="dash-title">
                     <h1>TickoraDesk Deal Pipeline</h1>
-                    <p>Welcome back, Boss! Drag cards or select categories from dropdown manually.</p>
+                    <p>Welcome back, Boss! Manage stages and type notes dynamically.</p>
                 </div>
             </div>
             <button class="btn-logout" onclick="adminLogout()">Log Out</button>
@@ -138,22 +136,18 @@
                 <div class="column-header"><span>🟢 NEW LEADS</span><span class="lead-count" id="count-open">0</span></div>
                 <div class="column-cards-container" id="container-open"></div>
             </div>
-
             <div class="kanban-column col-hot" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="dropCard(event, 'hot')">
                 <div class="column-header"><span>🔴 HOT PIPELINE</span><span class="lead-count" id="count-hot">0</span></div>
                 <div class="column-cards-container" id="container-hot"></div>
             </div>
-
             <div class="kanban-column col-cold" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="dropCard(event, 'cold')">
                 <div class="column-header"><span>🔵 COLD STAGE</span><span class="lead-count" id="count-cold">0</span></div>
                 <div class="column-cards-container" id="container-cold"></div>
             </div>
-
             <div class="kanban-column col-closed" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="dropCard(event, 'closed')">
                 <div class="column-header"><span>✨ CLOSED (WON)</span><span class="lead-count" id="count-closed">0</span></div>
                 <div class="column-cards-container" id="container-closed"></div>
             </div>
-
             <div class="kanban-column col-dead" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="dropCard(event, 'dead')">
                 <div class="column-header"><span>❌ DEAD / LOST</span><span class="lead-count" id="count-dead">0</span></div>
                 <div class="column-cards-container" id="container-dead"></div>
@@ -164,22 +158,10 @@
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             const sessionActive = localStorage.getItem('crm_authenticated');
-            if (sessionActive === 'true') {
-                loadDashboardView();
-            }
+            if (sessionActive === 'true') { loadDashboardView(); }
             
-            document.getElementById("adminPass").addEventListener("keypress", function(e) {
-                if (e.key === "Enter") {
-                    e.preventDefault();
-                    checkAdminLogin();
-                }
-            });
-            document.getElementById("adminUser").addEventListener("keypress", function(e) {
-                if (e.key === "Enter") {
-                    e.preventDefault();
-                    checkAdminLogin();
-                }
-            });
+            document.getElementById("adminPass").addEventListener("keypress", (e) => { if (e.key === "Enter") checkAdminLogin(); });
+            document.getElementById("adminUser").addEventListener("keypress", (e) => { if (e.key === "Enter") checkAdminLogin(); });
         });
 
         function togglePassword() {
@@ -198,14 +180,11 @@
             var user = document.getElementById("adminUser").value;
             var pass = document.getElementById("adminPass").value;
             var error = document.getElementById("loginError");
-
             if (user === "prithvi" && pass === "tickora2026") {
                 error.style.display = "none";
                 localStorage.setItem('crm_authenticated', 'true');
                 loadDashboardView();
-            } else {
-                error.style.display = "block";
-            }
+            } else { error.style.display = "block"; }
         }
 
         function loadDashboardView() {
@@ -215,7 +194,7 @@
             fetchLeads();
         }
 
-        // 📥 FETCH DATA FROM SUBDOMAIN DIRECTLY
+        // FETCH ENGINE
         function fetchLeads() {
             const columns = ['open', 'hot', 'cold', 'closed', 'dead'];
             columns.forEach(status => {
@@ -223,23 +202,15 @@
                 if (el) el.innerHTML = '';
             });
 
-            // 🔥 Sahi Subdomain URL jahan tumhari files hain
             fetch('https://crm.tickoradesk.com/get_leads.php')
             .then(response => response.json())
             .then(leads => {
-                if(!leads || leads.length === 0) {
-                    recalculateCounters();
-                    return;
-                }
+                if(!leads || leads.length === 0) { recalculateCounters(); return; }
 
                 leads.forEach(lead => {
                     let currentStatus = 'open';
-                    if (lead.status) {
-                        currentStatus = lead.status.toString().trim().toLowerCase();
-                    }
-                    if (!columns.includes(currentStatus)) {
-                        currentStatus = 'open';
-                    }
+                    if (lead.status) { currentStatus = lead.status.toString().trim().toLowerCase(); }
+                    if (!columns.includes(currentStatus)) { currentStatus = 'open'; }
 
                     const container = document.getElementById('container-' + currentStatus);
                     
@@ -253,8 +224,14 @@
                                     <span><b>Mobile:</b> ${lead['mobile number'] ? lead['mobile number'] : (lead.mobile ? lead.mobile : 'N/A')}</span>
                                     <span><b>Company:</b> ${lead['company name'] ? lead['company name'] : (lead.company ? lead.company : 'N/A')}</span>
                                     <span><b>Team Size:</b> ${lead['user count'] ? lead['user count'] : (lead.users ? lead.users : 'N/A')}</span>
-                                    <span><b>Status Msg:</b> ${lead.message ? lead.message : 'No custom message specified.'}</span>
+                                    <span><b>Status Msg:</b> ${lead.message ? lead.message : 'No message.'}</span>
                                 </div>
+                                
+                                <div class="card-remark-box">
+                                    <input type="text" class="remark-input" id="remark-input-${lead.id}" placeholder="Type personal note..." value="${lead.remarks ? lead.remarks : ''}">
+                                    <button class="btn-save-remark" onclick="manualSaveRemark('${lead.id}')" title="Save Remark"><i class="fas fa-save"></i></button>
+                                </div>
+
                                 <div class="card-action">
                                     <select class="status-select" onchange="manualMoveCard('lead-${lead.id}', this.value)">
                                         <option value="open" ${currentStatus === 'open' ? 'selected' : ''}>🟢 New Lead</option>
@@ -271,58 +248,48 @@
                 });
                 recalculateCounters();
             })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
+            .catch(error => console.error('Error fetching data:', error));
         }
 
-        function adminLogout() {
-            localStorage.removeItem('crm_authenticated');
-            document.getElementById("adminUser").value = "";
-            document.getElementById("adminPass").value = "";
-            document.getElementById("dashBox").style.display = "none";
-            document.body.style.alignItems = "center";
-            document.getElementById("loginBox").style.display = "block";
-            location.reload();
-        }
-
-        function dragStart(event) {
-            event.dataTransfer.setData("text/plain", event.target.id);
-        }
-
-        function allowDrop(event) {
-            event.preventDefault();
-            var column = event.target.closest('.kanban-column');
-            if (column) column.classList.add('drag-over');
-        }
-
-        function dragLeave(event) {
-            var column = event.target.closest('.kanban-column');
-            if (column) column.classList.remove('drag-over');
-        }
-
-        // 🔄 SAVE ENGINE (DIRECT SUBDOMAIN LINK WITH CORS BYPASS)
+        // SAVE PIPELINE STAGE
         function saveStatusToDatabase(cardId, targetStatus) {
             const url = `https://crm.tickoradesk.com/update_status.php?id=${cardId}&status=${targetStatus}`;
             fetch(url, { method: 'GET' })
             .then(res => res.json())
-            .then(data => console.log('Database Synced Status:', data))
+            .then(data => console.log('Stage Synced:', data))
             .catch(err => console.error('Error saving state:', err));
         }
+
+        // 🔥 NEW FEATURE: SAVE YOUR TEXT REMARK VIA API TO THE PHP
+        function manualSaveRemark(leadId) {
+            const remarkValue = document.getElementById(`remark-input-${leadId}`).value;
+            // encodeURIComponent use kiya hai taaki spaces ya special symbols safely URL me chale jayein
+            const url = `https://crm.tickoradesk.com/update_status.php?id=${leadId}&remark=${encodeURIComponent(remarkValue)}`;
+            
+            fetch(url, { method: 'GET' })
+            .then(res => res.json())
+            .then(data => {
+                console.log('Remark Synced Successfully:', data);
+                alert('Note Saved Permanently! 📝');
+            })
+            .catch(err => console.error('Error saving remark:', err));
+        }
+
+        function adminLogout() { localStorage.removeItem('crm_authenticated'); location.reload(); }
+        function dragStart(event) { event.dataTransfer.setData("text/plain", event.target.id); }
+        function allowDrop(event) { event.preventDefault(); var column = event.target.closest('.kanban-column'); if (column) column.classList.add('drag-over'); }
+        function dragLeave(event) { var column = event.target.closest('.kanban-column'); if (column) column.classList.remove('drag-over'); }
 
         function dropCard(event, targetStatus) {
             event.preventDefault();
             var column = event.target.closest('.kanban-column');
             if (column) column.classList.remove('drag-over');
-
             var cardId = event.dataTransfer.getData("text/plain");
             var card = document.getElementById(cardId);
             var targetContainer = document.getElementById('container-' + targetStatus);
-
             if (card && targetContainer) {
                 const cleanId = cardId.replace('lead-', '');
                 saveStatusToDatabase(cleanId, targetStatus);
-                
                 targetContainer.appendChild(card);
                 var selectElement = card.querySelector('.status-select');
                 if (selectElement) selectElement.value = targetStatus;
@@ -336,7 +303,6 @@
             if (card && targetContainer) {
                 const cleanId = cardId.replace('lead-', '');
                 saveStatusToDatabase(cleanId, targetStatus);
-                
                 targetContainer.appendChild(card);
                 recalculateCounters();
             }
@@ -347,9 +313,7 @@
             statuses.forEach(function(status) {
                 var container = document.getElementById('container-' + status);
                 var countSpan = document.getElementById('count-' + status);
-                if (container && countSpan) {
-                    countSpan.innerText = container.children.length;
-                }
+                if (container && countSpan) { countSpan.innerText = container.children.length; }
             });
         }
     </script>
