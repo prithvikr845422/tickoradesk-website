@@ -30,7 +30,8 @@
 
         /* 🔒 UNICORN BLACK-CYAN LOGIN SCREEN */
         .login-container { width: 100%; max-width: 400px; padding: 32px; background: var(--card-light); border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; }
-.login-logo { font-size: 24px; font-weight: 800; color: #151B2C; margin-top: 8px; margin-bottom: 6px; text-align: center; white-space: nowrap; }        .login-logo span { color: var(--cyan); }
+        .login-logo { font-size: 24px; font-weight: 800; color: #151B2C; margin-top: 8px; margin-bottom: 6px; text-align: center; white-space: nowrap; }        
+        .login-logo span { color: var(--cyan); }
         .login-subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
         .form-group { text-align: left; margin-bottom: 18px; position: relative; }
         .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text-main); }
@@ -98,7 +99,7 @@
             <rect x="8" y="8" width="32" height="32" rx="6" stroke="#00BCD4" stroke-width="4" fill="none"/>
             <path d="M16 24L22 30L34 16" stroke="#00BCD4" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        <div class="login-logo">TickoraDesk</span> CRM</div>
+        <div class="login-logo">TickoraDesk CRM</div>
         <div class="login-subtitle">Enter credentials to access Hybrid Kanban</div>
         
         <div class="form-group">
@@ -161,7 +162,7 @@
     </div>
 
     <script>
-        // 🔄 REQUIREMENT 4: REFRESH PERSISTENCE (Page refresh par dashboard locked rahega)
+        // 🔄 REQUIREMENT 4: REFRESH PERSISTENCE
         window.addEventListener('DOMContentLoaded', () => {
             const sessionActive = localStorage.getItem('crm_authenticated');
             if (sessionActive === 'true') {
@@ -217,7 +218,7 @@
             fetchLeads();
         }
 
-        // 📥 REQUIREMENT 2: FETCH DATA FROM DATABASE TABLE DIRECTLY
+        // 📥 REQUIREMENT 2: FETCH DATA
         function fetchLeads() {
             const columns = ['open', 'hot', 'cold', 'closed', 'dead'];
             columns.forEach(status => {
@@ -276,7 +277,8 @@
             document.getElementById("adminPass").value = "";
             document.getElementById("dashBox").style.display = "none";
             document.body.style.alignItems = "center";
-            document.getElementById("loginBox").style.display = "block";
+            document.getElementById("loginBox").style.block = "block";
+            location.reload();
         }
 
         function dragStart(event) {
@@ -294,7 +296,15 @@
             if (column) column.classList.remove('drag-over');
         }
 
-        // 🔄 REQUIREMENT 3: DRAG & MOVE STATUS UPDATE SAVE ENGINE
+        // 🔄 FIREWALL-SAFE STATE SAVE ENGINE (GET METHOD)
+        function saveStatusToDatabase(cardId, targetStatus) {
+            const url = `https://crm.tickoradesk.com/crm/update_status.php?id=${cardId}&status=${targetStatus}`;
+            fetch(url, { method: 'GET' })
+            .then(res => res.json())
+            .then(data => console.log('Database Synced:', data))
+            .catch(err => console.error('Error saving state:', err));
+        }
+
         function dropCard(event, targetStatus) {
             event.preventDefault();
             var column = event.target.closest('.kanban-column');
@@ -313,7 +323,6 @@
             }
         }
 
-        // DROPDOWN STATUS UPDATE SAVE ENGINE
         function manualMoveCard(cardId, targetStatus) {
             var card = document.getElementById(cardId);
             var targetContainer = document.getElementById('container-' + targetStatus);
@@ -322,14 +331,6 @@
                 targetContainer.appendChild(card);
                 recalculateCounters();
             }
-        }
-
-        function saveStatusToDatabase(cardId, targetStatus) {
-            fetch('https://crm.tickoradesk.com/update_status.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: cardId, status: targetStatus })
-            }).catch(err => console.error('Error saving state:', err));
         }
 
         function recalculateCounters() {
