@@ -709,7 +709,27 @@ footer { background: var(--ink); color: white; }
     <div class="nav-links-desktop" style="display: flex; align-items: center; gap: 24px; margin-left: auto; margin-right: auto;">
       <a href="#features" class="nav-link">Product</a>
       <a href="#pricing" class="nav-link">Pricing</a>
-      <a href="#blogs" class="nav-link">Resources</a>
+      <!-- Dropdown wrapper start -->
+<div class="nav-dropdown">
+  <a class="nav-link">Resources ▾</a>
+  <div class="nav-dropdown-menu">
+    <a href="#blogs" class="nav-drop-item">
+      <div class="nav-drop-icon">📝</div>
+      <div>
+        <div class="nav-drop-label">Blogs</div>
+        <div class="nav-drop-sub">Expert support insights</div>
+      </div>
+    </a>
+    <a href="#" class="nav-drop-item">
+      <div class="nav-drop-icon">🚀</div>
+      <div>
+        <div class="nav-drop-label">Guides</div>
+        <div class="nav-drop-sub">How to use TickoraDesk</div>
+      </div>
+    </a>
+  </div>
+</div>
+<!-- Dropdown wrapper end -->
       <a href="#team" class="nav-link">About</a>
       <a href="#contact" class="nav-link">Contact</a>
     </div>
