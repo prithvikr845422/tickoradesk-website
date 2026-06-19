@@ -1402,7 +1402,7 @@ let countdownTarget = localStorage.getItem('tickora_timer_target');
 
 if (!countdownTarget) {
   countdownTarget = new Date().getTime() + initialDuration;
-  localStorage.setItem('tickora_timer_target', countdownTarget);
+  localStorage.setItem('tickora_timer_target_v2', countdownTarget);
 } else {
   countdownTarget = parseInt(countdownTarget, 10);
 }
