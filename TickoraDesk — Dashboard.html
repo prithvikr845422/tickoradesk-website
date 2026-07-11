@@ -1,0 +1,2230 @@
+<!DOCTYPE html>
+<!-- saved from url=(0041)https://app.tickoradesk.com/dashboard.php -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>TickoraDesk — Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./TickoraDesk — Dashboard_files/css2" rel="stylesheet">
+    <link rel="stylesheet" href="./TickoraDesk — Dashboard_files/all.min.css">
+    <link rel="stylesheet" href="./TickoraDesk — Dashboard_files/style.css">
+
+    <style>
+        /* VIEW SYSTEM */
+        .view { display: none; }
+        .view.active { display: block; }
+
+        /* ══════════════════════════════════════════════════
+           SIDEBAR — 80px icon rail
+           Logo hidden here (lives in topbar).
+           Icon centred, label below.
+           User: initials avatar + full name + green dot.
+        ══════════════════════════════════════════════════ */
+        .sidebar {
+            width: 80px !important;
+            background: #0F1C2E !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            border-right: 1px solid rgba(255,255,255,.06) !important;
+            flex-shrink: 0 !important;
+        }
+        .sidebar::-webkit-scrollbar { display: none !important; }
+
+        /* Logo strip hidden — logo is in topbar */
+        .sb-logo { display: none !important; }
+
+        /* Create button — icon only */
+        .sb-create-btn {
+            margin: 16px auto 10px !important;
+            width: 46px !important;
+            height: 46px !important;
+            padding: 0 !important;
+            background: linear-gradient(135deg,#0099DD,#00B7FF) !important;
+            border: none !important;
+            border-radius: 12px !important;
+            color: #fff !important;
+            font-size: 0 !important;
+            cursor: pointer !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            box-shadow: 0 3px 12px rgba(0,183,255,.3) !important;
+            transition: all .2s !important;
+            flex-shrink: 0 !important;
+        }
+        .sb-create-btn svg { width: 20px !important; height: 20px !important; }
+        .sb-create-btn:hover {
+            transform: translateY(-1px) !important;
+            box-shadow: 0 5px 18px rgba(0,183,255,.4) !important;
+        }
+
+        /* Sections + labels */
+        .sb-section { width: 100% !important; padding: 2px 0 !important; }
+        .sb-section-label { display: none !important; }
+
+        /* Nav items: icon top, label below */
+        .sb-item {
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 4px !important;
+            padding: 10px 2px 9px !important;
+            font-size: 10px !important;
+            font-weight: 600 !important;
+            color: rgba(255,255,255,.42) !important;
+            cursor: pointer !important;
+            transition: all .15s !important;
+            border-left: 3px solid transparent !important;
+            text-align: center !important;
+            line-height: 1.2 !important;
+            letter-spacing: .01em !important;
+            position: relative !important;
+            word-break: break-word !important;
+        }
+        .sb-item:hover {
+            background: rgba(255,255,255,.05) !important;
+            color: rgba(255,255,255,.85) !important;
+        }
+        .sb-item.active {
+            background: rgba(0,183,255,.1) !important;
+            color: #00B7FF !important;
+            font-weight: 700 !important;
+            border-left-color: #00B7FF !important;
+        }
+
+        /* Icons */
+        .sb-icon { width: 24px !important; height: 24px !important; flex-shrink: 0 !important; opacity: .55 !important; }
+        .sb-item:hover .sb-icon  { opacity: .85 !important; }
+        .sb-item.active .sb-icon { opacity: 1   !important; }
+
+        /* Badges */
+        .sb-badge {
+            position: absolute !important;
+            top: 7px !important; right: 5px !important;
+            font-size: 9px !important; font-weight: 800 !important;
+            padding: 1px 5px !important; border-radius: 99px !important;
+            background: rgba(0,183,255,.25) !important; color: #80CFFF !important;
+            line-height: 1.4 !important; pointer-events: none !important;
+        }
+        .sb-badge.amber { background: rgba(245,158,11,.25) !important; color: #FCD34D !important; }
+        .sb-badge.red   { background: rgba(229,57,53,.25)  !important; color: #EF9A9A !important; }
+
+        /* User footer: initials + full name + green online dot */
+        .sb-user {
+            margin-top: auto !important;
+            width: 100% !important;
+            padding: 14px 4px 16px !important;
+            border-top: 1px solid rgba(255,255,255,.07) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            gap: 6px !important;
+            flex-shrink: 0 !important;
+        }
+        .sb-user-av {
+            width: 34px !important;
+            height: 34px !important;
+            border-radius: 50% !important;
+            background: linear-gradient(135deg,#00897B,#00B7FF) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            color: #fff !important;
+            flex-shrink: 0 !important;
+            letter-spacing: .5px !important;
+        }
+        .sb-user > div:last-child {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            gap: 3px !important;
+        }
+        .sb-user-name {
+            display: block !important;
+            font-size: 10px !important;
+            font-weight: 700 !important;
+            color: rgba(255,255,255,.75) !important;
+            text-align: center !important;
+            line-height: 1.2 !important;
+            max-width: 72px !important;
+            word-break: break-word !important;
+        }
+        .sb-online {
+            display: flex !important;
+            align-items: center !important;
+            gap: 4px !important;
+            font-size: 9px !important;
+            font-weight: 600 !important;
+            color: #4CAF50 !important;
+        }
+        .sb-online-dot {
+            display: inline-block !important;
+            width: 6px !important;
+            height: 6px !important;
+            border-radius: 50% !important;
+            background: #4CAF50 !important;
+            flex-shrink: 0 !important;
+        }
+
+        /* ══════════════════════════════════════════════════
+           TOPBAR — Logo left, then search + actions right
+        ══════════════════════════════════════════════════ */
+        .topbar {
+            padding: 0 24px 0 20px !important;  /* left padding for logo breathing room */
+        }
+        /* Logo sits directly IN the topbar — no box, no border, no separate div styling */
+        .topbar-logo {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            margin-right: 28px;        /* gap between logo and title text */
+            background: transparent;   /* NO background box */
+            border: none;              /* NO border */
+            padding: 0;
+        }
+        .topbar-logo img {
+            width: auto;
+            height: 64px;              /* bigger — flows naturally in the topbar */
+            max-width: 190px;
+            object-fit: contain;
+            display: block;
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- ══════════════════════════════════
+         SIDEBAR — 80px icon rail
+         All onclick values UNCHANGED
+    ══════════════════════════════════ -->
+    <aside class="sidebar" id="sidebar">
+
+      <!-- Hidden logo placeholder (logo is in topbar) -->
+      <div class="sb-logo"></div>
+
+      <!-- Create New Ticket — icon only, onclick UNCHANGED -->
+      <button class="sb-create-btn" onclick="showView(&#39;view-create&#39;, this)" title="Create New Ticket">
+        <svg width="20" height="20" viewBox="0 0 14 14" fill="none">
+          <path d="M7 1v12M1 7h12" stroke="white" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+      </button>
+
+      <!-- 1. Dashboard -->
+      <div class="sb-section">
+        <div class="sb-item active" onclick="showView(&#39;view-dashboard&#39;, this)">
+          <svg class="sb-icon" viewBox="0 0 16 16" fill="none">
+            <rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.4"></rect>
+            <rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.4"></rect>
+            <rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.4"></rect>
+            <rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.4"></rect>
+          </svg>
+          Dashboard
+        </div>
+      </div>
+
+   <!-- 2. Tickets -->
+<div class="sb-section">
+  <div class="sb-item" onclick="window.location.href=&#39;tickets.php&#39;">
+    <svg class="sb-icon" viewBox="0 0 16 16" fill="none">
+      <path d="M2 5a2 2 0 012-2h8a2 2 0 012 2v1a2 2 0 000 3v2a2 2 0 01-2 2H4a2 2 0 01-2-2v-2a2 2 0 000-3V5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path>
+    </svg>
+
+    Tickets
+
+    <span class="sb-badge">
+      6    </span>
+  </div>
+</div>
+
+      <!-- 3. Customers -->
+      <div class="sb-section">
+        <div class="sb-item" onclick="showToast(&#39;Customers coming soon&#39;,&#39;👥&#39;)">
+          <svg class="sb-icon" viewBox="0 0 16 16" fill="none">
+            <circle cx="6" cy="5" r="2.5" stroke="currentColor" stroke-width="1.4"></circle>
+            <path d="M1 13c0-2.76 2.24-5 5-5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
+            <circle cx="12" cy="6" r="2" stroke="currentColor" stroke-width="1.3"></circle>
+            <path d="M10 13c0-2.21 1.34-4 3-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path>
+          </svg>
+          Customers
+        </div>
+      </div>
+
+      <!-- 4. Knowledge Base -->
+      <div class="sb-section">
+        <div class="sb-item" onclick="showToast(&#39;Knowledge Base coming soon&#39;,&#39;📚&#39;)">
+          <svg class="sb-icon" viewBox="0 0 16 16" fill="none">
+            <path d="M3 2h10a1 1 0 011 1v10a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.4"></path>
+            <path d="M5 5h6M5 7.5h6M5 10h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path>
+          </svg>
+          Knowledge
+        </div>
+      </div>
+
+      <!-- 5. Reports -->
+      <div class="sb-section">
+        <div class="sb-item" onclick="showView(&#39;view-reports&#39;, this)">
+          <svg class="sb-icon" viewBox="0 0 16 16" fill="none">
+            <path d="M2 14V6l4-4h4l4 4v8H2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path>
+            <path d="M6 14v-4h4v4" stroke="currentColor" stroke-width="1.4"></path>
+          </svg>
+          Reports
+        </div>
+      </div>
+
+      <!-- 6. Analytics -->
+      <div class="sb-section">
+        <div class="sb-item" onclick="showToast(&#39;Analytics coming soon&#39;,&#39;📊&#39;)">
+          <svg class="sb-icon" viewBox="0 0 16 16" fill="none">
+            <path d="M2 12L5 8l3 2 3-5 3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M2 14h12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
+          </svg>
+          Analytics
+        </div>
+      </div>
+
+      <!-- 7. Automation -->
+      <div class="sb-section">
+        <div class="sb-item" onclick="showToast(&#39;Automation coming soon&#39;,&#39;⚡&#39;)">
+          <svg class="sb-icon" viewBox="0 0 16 16" fill="none">
+            <path d="M9 2L4 9h4.5L7 14l6-8H8.5L9 2z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          Automation
+        </div>
+      </div>
+
+      <!-- 8. AI Assistant -->
+      <div class="sb-section">
+        <div class="sb-item" onclick="showToast(&#39;AI Assistant coming soon&#39;,&#39;🤖&#39;)">
+          <svg class="sb-icon" viewBox="0 0 16 16" fill="none">
+            <rect x="3" y="4" width="10" height="8" rx="2" stroke="currentColor" stroke-width="1.4"></rect>
+            <path d="M6 4V3M10 4V3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
+            <circle cx="6" cy="8" r="1" fill="currentColor"></circle>
+            <circle cx="10" cy="8" r="1" fill="currentColor"></circle>
+            <path d="M5 11h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path>
+          </svg>
+          AI Assistant
+        </div>
+      </div>
+
+      <!-- 9. Integrations -->
+      <div class="sb-section">
+        <div class="sb-item" onclick="showToast(&#39;Integrations coming soon&#39;,&#39;🔌&#39;)">
+          <svg class="sb-icon" viewBox="0 0 16 16" fill="none">
+            <path d="M6 3v2M10 3v2M4 7h8M4 7a2 2 0 00-2 2v1a2 2 0 002 2h8a2 2 0 002-2V9a2 2 0 00-2-2M6 12v1M10 12v1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
+          </svg>
+          Integrations
+        </div>
+      </div>
+
+      <!-- 10. Settings -->
+      <div class="sb-section">
+        <div class="sb-item" onclick="showView(&#39;view-settings&#39;, this)">
+          <svg class="sb-icon" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.4"></circle>
+            <path d="M8 1.5V3M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M12.6 3.4l-1.1 1.1M4.5 11.5l-1.1 1.1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
+          </svg>
+          Settings
+        </div>
+      </div>
+
+      <!-- User footer: initials + full dynamic name + green online dot -->
+      <div class="sb-user">
+        <div class="sb-user-av">P</div>
+        <div>
+          <div class="sb-user-name">Prithvi</div>
+          <div class="sb-online">
+            <span class="sb-online-dot"></span>
+            Online
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- ══════════════════════════════════
+         MAIN AREA
+    ══════════════════════════════════ -->
+    <div class="main-area">
+
+      <!-- TOPBAR: Logo + Title + Search + Actions -->
+      <header class="topbar">
+
+        <!-- Logo seamlessly inside topbar — no box, no border, just the image -->
+        <div class="topbar-logo">
+          <img src="./TickoraDesk — Dashboard_files/logo.png" alt="TickoraDesk Logo" style="height:65px;width:auto;max-width:190px;object-fit:contain;background:transparent;">
+        </div>
+
+        <div class="topbar-title" id="pageTitle">Dashboard <span id="pageSub">Overview</span></div>
+
+        <div class="search-wrap">
+          <svg class="search-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="6" cy="6" r="5" stroke="#6B8A9E" stroke-width="1.4"></circle>
+            <path d="M10.5 10.5L13 13" stroke="#6B8A9E" stroke-width="1.4" stroke-linecap="round"></path>
+          </svg>
+          <input class="search-input" placeholder="Search tickets, customers, agents...">
+        </div>
+
+        <div class="topbar-actions">
+          <div class="session-timer">
+            <div class="session-dot"></div>
+            <span id="sessionClock">00:27:16</span>
+          </div>
+
+          <div class="tb-icon-btn" onclick="toggleNotif(event)" title="Notifications" style="cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M9 1.5a6 6 0 0 0 6 6v3l1.5 2.5H1.5L3 10.5v-3a6 6 0 0 0 6-6z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
+              <path d="M7 15a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.5"></path>
+            </svg>
+            <div class="notif-count" id="notifCount" style="display:none;">
+              0            </div>
+          </div>
+
+          <div class="agent-profile">
+            <div class="agent-av">P</div>
+            <div>
+              <div class="agent-name">Prithvi</div>
+              <div class="agent-status">● Online · Admin</div>
+            </div>
+          </div>
+
+          <a href="https://app.tickoradesk.com/logout.php" class="logout-btn" onclick="return handleLogout(event)">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M5 7h7m9.5 4.5L12 2.5M9 2H3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            Logout
+          </a>
+        </div>
+      </header>
+
+      <!-- NOTIFICATION DROPDOWN -->
+      <div class="notif-dropdown" id="notifDropdown" style="display:none">
+        <div class="nd-hd">
+          <span id="dropdownNotifCount" style="background:var(--rl);color:var(--red);font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;margin-left:6px;">
+            0 New
+          </span>
+          <div class="nd-mark" onclick="markAllRead()" style="cursor:pointer;color:blue;">Mark all read</div>
+        </div>
+        <div class="nd-body" id="notifList"></div>
+        <div class="nd-ft"><a href="https://app.tickoradesk.com/dashboard.php#">View all notifications</a></div>
+      </div>
+
+      <!-- ══════════════════════════════════
+           CONTENT — all views unchanged
+      ══════════════════════════════════ -->
+      <div class="content">
+
+        <!-- VIEW 1: DASHBOARD -->
+        <div class="view active" id="view-dashboard">
+          <div class="dash-greeting">
+            <h1><span id="greetingText">Good evening</span>, Prithvi 👋</h1>
+            <p>Here's what's happening with your support operations today · Saturday, 11 July 2026</p>
+          </div>
+          <div class="kpi-grid">
+            <div class="kpi-card" onclick="showView(&#39;view-ticket-detail&#39;, null)">
+              <div class="kpi-icon" style="background:var(--bl)">🎫</div>
+              <div class="kpi-val" style="color:var(--blue)">24,851</div>
+              <div class="kpi-label">Total Tickets</div>
+              <div class="kpi-change up">↑ 12.5% from last month</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:var(--cl)">📂</div>
+              <div class="kpi-val" style="color:var(--c)">4,215</div>
+              <div class="kpi-label">Open Tickets</div>
+              <div class="kpi-change up">↑ 8.4% from last month</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:var(--al)">⏳</div>
+              <div class="kpi-val" style="color:var(--amber)">2,354</div>
+              <div class="kpi-label">Pending Tickets</div>
+              <div class="kpi-change down">↓ 5.7% from last month</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:var(--gl)">✅</div>
+              <div class="kpi-val" style="color:var(--green)">18,282</div>
+              <div class="kpi-label">Closed Tickets</div>
+              <div class="kpi-change up">↑ 15.3% from last month</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:var(--rl)">🚨</div>
+              <div class="kpi-val" style="color:var(--red)">47</div>
+              <div class="kpi-label">SLA Breached</div>
+              <div class="kpi-change down">↑ 2 since yesterday</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:var(--pl)">⚡</div>
+              <div class="kpi-val" style="color:var(--purple)">6h 24m</div>
+              <div class="kpi-label">Avg Resolution</div>
+              <div class="kpi-change up">↓ 11.2% faster</div>
+            </div>
+          </div>
+          <div class="dash-grid">
+            <div class="dash-card">
+              <div class="dash-card-hd">
+                <div>
+                  <div class="dash-card-title">Ticket Volume — Last 7 Days</div>
+                  <div class="dash-card-sub">Daily ticket inflow and resolution rate</div>
+                </div>
+                <div class="dash-card-action">Export →</div>
+              </div>
+              <div class="dash-card-body">
+                <div style="display:flex;gap:16px;margin-bottom:14px;">
+                  <div style="display:flex;align-items:center;gap:6px;font-size:12px;">
+                    <div style="width:10px;height:10px;border-radius:2px;background:var(--c)"></div>Created
+                  </div>
+                  <div style="display:flex;align-items:center;gap:6px;font-size:12px;">
+                    <div style="width:10px;height:10px;border-radius:2px;background:var(--green)"></div>Resolved
+                  </div>
+                </div>
+                <div class="chart-wrap">
+                  <div class="chart-bar" style="height:55%;background:var(--c);opacity:.7;"></div>
+                  <div class="chart-bar" style="height:65%;background:var(--green);opacity:.6;"></div>
+                  <div class="chart-bar" style="height:72%;background:var(--c);opacity:.7;"></div>
+                  <div class="chart-bar" style="height:60%;background:var(--green);opacity:.6;"></div>
+                  <div class="chart-bar" style="height:90%;background:var(--c);opacity:.9;"></div>
+                  <div class="chart-bar" style="height:80%;background:var(--green);opacity:.8;"></div>
+                  <div class="chart-bar" style="height:100%;background:var(--c);"></div>
+                  <div class="chart-bar" style="height:88%;background:var(--green);opacity:.85;"></div>
+                  <div class="chart-bar" style="height:70%;background:var(--c);opacity:.75;"></div>
+                  <div class="chart-bar" style="height:60%;background:var(--green);opacity:.65;"></div>
+                  <div class="chart-bar" style="height:85%;background:var(--c);opacity:.85;"></div>
+                  <div class="chart-bar" style="height:75%;background:var(--green);opacity:.75;"></div>
+                  <div class="chart-bar" style="height:95%;background:var(--c);"></div>
+                  <div class="chart-bar" style="height:82%;background:var(--green);opacity:.8;"></div>
+                </div>
+                <div class="chart-labels">
+                  <div class="chart-label">Mon</div><div class="chart-label"></div>
+                  <div class="chart-label">Tue</div><div class="chart-label"></div>
+                  <div class="chart-label">Wed</div><div class="chart-label"></div>
+                  <div class="chart-label">Thu</div><div class="chart-label"></div>
+                  <div class="chart-label">Fri</div><div class="chart-label"></div>
+                  <div class="chart-label">Sat</div><div class="chart-label"></div>
+                  <div class="chart-label">Sun</div>
+                </div>
+                <hr class="divider">
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:4px;">
+                  <div><div style="font-size:18px;font-family:var(--font-disp);font-weight:800;">342</div><div style="font-size:11px;color:var(--i40)">Today's new</div></div>
+                  <div><div style="font-size:18px;font-family:var(--font-disp);font-weight:800;color:var(--green)">287</div><div style="font-size:11px;color:var(--i40)">Today's closed</div></div>
+                  <div><div style="font-size:18px;font-family:var(--font-disp);font-weight:800;color:var(--amber)">55</div><div style="font-size:11px;color:var(--i40)">Still open today</div></div>
+                  <div><div style="font-size:18px;font-family:var(--font-disp);font-weight:800;color:var(--red)">12</div><div style="font-size:11px;color:var(--i40)">Escalated</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="dash-card">
+              <div class="dash-card-hd">
+                <div>
+                  <div class="dash-card-title">Ticket Status Distribution</div>
+                  <div class="dash-card-sub">Real-time breakdown</div>
+                </div>
+              </div>
+              <div class="dash-card-body">
+                <div class="donut-wrap">
+                  <div class="donut">
+                    <svg width="100" height="100" viewBox="0 0 100 100">
+                      <circle cx="50" cy="50" r="38" fill="none" stroke="#F2F7FA" stroke-width="12"></circle>
+                      <circle cx="50" cy="50" r="38" fill="none" stroke="#00BCD4" stroke-width="12" stroke-dasharray="239.4" stroke-dashoffset="57.5" opacity=".9"></circle>
+                      <circle cx="50" cy="50" r="38" fill="none" stroke="#F59E0B" stroke-width="12" stroke-dasharray="239.4" stroke-dashoffset="153.2" opacity=".85"></circle>
+                      <circle cx="50" cy="50" r="38" fill="none" stroke="#00897B" stroke-width="12" stroke-dasharray="239.4" stroke-dashoffset="190.0" opacity=".9"></circle>
+                      <circle cx="50" cy="50" r="38" fill="none" stroke="#E53935" stroke-width="12" stroke-dasharray="239.4" stroke-dashoffset="221.8" opacity=".85"></circle>
+                    </svg>
+                    <div class="donut-center"><div class="donut-val">24.8K</div><div class="donut-sub">Total</div></div>
+                  </div>
+                  <div class="donut-legend">
+                    <div class="legend-item"><div class="legend-dot" style="background:var(--c)"></div><div class="legend-lbl">Open</div><div class="legend-val">4,215</div></div>
+                    <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div><div class="legend-lbl">Pending</div><div class="legend-val">2,354</div></div>
+                    <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div><div class="legend-lbl">Resolved</div><div class="legend-val">1,542</div></div>
+                    <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div><div class="legend-lbl">Breached SLA</div><div class="legend-val">47</div></div>
+                    <div class="legend-item"><div class="legend-dot" style="background:var(--i20)"></div><div class="legend-lbl">Closed</div><div class="legend-val">16,693</div></div>
+                  </div>
+                </div>
+                <hr class="divider">
+                <div style="font-size:12px;font-weight:600;color:var(--i60);margin-bottom:8px;">SLA Compliance</div>
+                <div style="background:var(--i05);border-radius:var(--r8);overflow:hidden;height:8px;margin-bottom:6px;">
+                  <div style="height:100%;width:92%;background:linear-gradient(90deg,var(--green),#4CAF50);border-radius:var(--r8);"></div>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--i40);">
+                  <span>92.4% Met</span><span>7.6% Breached</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+            <div class="dash-card">
+              <div class="dash-card-hd">
+                <div>
+                  <div class="dash-card-title">Recent Tickets</div>
+                  <div class="dash-card-sub">Latest incoming support requests</div>
+                </div>
+                <div class="dash-card-action" onclick="showView(&#39;view-ticket-detail&#39;, null)">View all →</div>
+              </div>
+              <div class="dash-card-body" id="recentTickets"></div>
+            </div>
+            <div class="dash-card">
+              <div class="dash-card-hd">
+                <div>
+                  <div class="dash-card-title">Agent Workload</div>
+                  <div class="dash-card-sub">Current ticket distribution</div>
+                </div>
+              </div>
+              <div class="dash-card-body">
+                <div class="agent-row">
+                  <div class="agent-av-sm" style="background:linear-gradient(135deg,#00897B,var(--c))">RS</div>
+                  <div class="agent-info"><div class="agent-n">Rahul Singh</div><div class="agent-cnt">32 open tickets</div></div>
+                  <div class="agent-bar-wrap"><div class="agent-bar-fill" style="width:82%"></div></div>
+                  <div class="agent-pct">82%</div>
+                </div>
+                <div class="agent-row">
+                  <div class="agent-av-sm" style="background:linear-gradient(135deg,#7C3AED,#0891b2)">PM</div>
+                  <div class="agent-info"><div class="agent-n">Priya Mehta</div><div class="agent-cnt">28 open tickets</div></div>
+                  <div class="agent-bar-wrap"><div class="agent-bar-fill" style="width:70%"></div></div>
+                  <div class="agent-pct">70%</div>
+                </div>
+                <div class="agent-row">
+                  <div class="agent-av-sm" style="background:linear-gradient(135deg,#F59E0B,#EF5350)">AK</div>
+                  <div class="agent-info"><div class="agent-n">Arjun Kumar</div><div class="agent-cnt">19 open tickets</div></div>
+                  <div class="agent-bar-wrap"><div class="agent-bar-fill" style="width:48%"></div></div>
+                  <div class="agent-pct">48%</div>
+                </div>
+                <div class="agent-row">
+                  <div class="agent-av-sm" style="background:linear-gradient(135deg,#1565C0,#0097A7)">SL</div>
+                  <div class="agent-info"><div class="agent-n">Sneha Lal</div><div class="agent-cnt">24 open tickets</div></div>
+                  <div class="agent-bar-wrap"><div class="agent-bar-fill" style="width:60%"></div></div>
+                  <div class="agent-pct">60%</div>
+                </div>
+                <div class="agent-row">
+                  <div class="agent-av-sm" style="background:linear-gradient(135deg,#00695C,#26C6DA)">MV</div>
+                  <div class="agent-info"><div class="agent-n">Meera Verma</div><div class="agent-cnt">14 open tickets</div></div>
+                  <div class="agent-bar-wrap"><div class="agent-bar-fill" style="width:35%"></div></div>
+                  <div class="agent-pct">35%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /#view-dashboard -->
+
+        <!-- VIEW 2: CREATE TICKET -->
+        <div class="view" id="view-create">
+          <form action="https://app.tickoradesk.com/save_create_ticket.php" method="POST" enctype="multipart/form-data">
+          <div class="form-page">
+            <div class="form-page-hd">
+              <h2>Create New Ticket</h2>
+              <p>Fill in the details below to create a new support ticket. All fields marked * are required.</p>
+            </div>
+            <div class="form-card">
+              <div class="form-card-hd">
+                <div class="form-card-icon" style="background:var(--bl)">👤</div>
+                <div class="form-card-title">Customer Information</div>
+              </div>
+              <div class="form-card-body">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label class="form-label">Company Name <span class="req">*</span></label>
+                    <input class="form-input" name="company_name" placeholder="e.g. Acme Corporation">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Customer Name <span class="req">*</span></label>
+                    <input class="form-input" name="requester_name" placeholder="e.g. John Doe">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Email Address <span class="req">*</span></label>
+                    <input class="form-input" name="customer_email" placeholder="john@acmecorp.com">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Mobile Number</label>
+                    <input class="form-input" name="customer_phone" placeholder="+91 98765 43210">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-card">
+              <div class="form-card-hd">
+                <div class="form-card-icon" style="background:var(--cl)">🎫</div>
+                <div class="form-card-title">Ticket Details</div>
+              </div>
+              <div class="form-card-body">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label class="form-label">Department <span class="req">*</span></label>
+                    <select class="form-select" name="department" required="">
+                      <option value="">Select department</option>
+                      <option value="Technical Support">Technical Support</option>
+                      <option value="Billing &amp; Payments">Billing &amp; Payments</option>
+                      <option value="Sales &amp; Onboarding">Sales &amp; Onboarding</option>
+                      <option value="Product Feedback">Product Feedback</option>
+                      <option value="Security &amp; Compliance">Security &amp; Compliance</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Ticket Category <span class="req">*</span></label>
+                    <select class="form-select" name="ticket_category" required="">
+                      <option value="">Select category</option>
+                      <option>Bug / Error</option>
+                      <option>Feature Request</option>
+                      <option>Account Issue</option>
+                      <option>Billing Dispute</option>
+                      <option>General Query</option>
+                      <option>Integration Issue</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">SLA Policy</label>
+                    <select class="form-select" name="sla_policy">
+                      <option value="Standard">Standard (24h response)</option>
+                      <option value="Priority">Priority (4h response)</option>
+                      <option value="Critical">Critical (1h response)</option>
+                      <option value="Enterprise">Enterprise (30min response)</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Assign to Agent</label>
+                    <select class="form-select" name="assign_to">
+                      <option value="Auto-assign">Auto-assign</option>
+                      <option value="Rahul Singh">Rahul Singh</option>
+                      <option value="Priya Mehta">Priya Mehta</option>
+                      <option value="Arjun Kumar">Arjun Kumar</option>
+                      <option value="Sneha Lal">Sneha Lal</option>
+                    </select>
+                  </div>
+                  <div class="form-group full">
+                    <label class="form-label">Subject <span class="req">*</span></label>
+                    <input class="form-input" name="subject" placeholder="Brief description of the issue" required="">
+                  </div>
+                  <div class="form-group full">
+                    <label class="form-label">Priority Level <span class="req">*</span></label>
+                    <div class="priority-selector" id="prioritySelector">
+                      <input type="hidden" name="priority" id="priority_value" value="Medium">
+                      <div class="priority-opt" onclick="selectPriority(this,&#39;Critical&#39;)">🔴 Critical</div>
+                      <div class="priority-opt" onclick="selectPriority(this,&#39;High&#39;)">🟠 High</div>
+                      <div class="priority-opt" onclick="selectPriority(this,&#39;Medium&#39;)">🟡 Medium</div>
+                      <div class="priority-opt" onclick="selectPriority(this,&#39;Low&#39;)">🟢 Low</div>
+                    </div>
+                  </div>
+                  <div class="form-group full">
+                    <label class="form-label">Ticket Description <span class="req">*</span></label>
+                    <textarea class="form-textarea" name="message_body" placeholder="Describe the issue in detail..." style="min-height:160px;"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-card">
+              <div class="form-card-hd">
+                <div class="form-card-icon" style="background:var(--pl)">📎</div>
+                <div class="form-card-title">Attachments</div>
+              </div>
+              <div class="form-card-body">
+                <div class="upload-area" onclick="document.getElementById(&#39;fileInput&#39;).click()">
+                  <input type="file" id="fileInput" name="attachment[]" multiple="" style="display:none;">
+                  <div class="upload-icon">📁</div>
+                  <div class="upload-text">Drop files here or click to upload</div>
+                  <div class="upload-sub">PNG, JPG, PDF, DOC up to 25MB each</div>
+                </div>
+                <div id="fileList" style="margin-top:10px;padding:5px;font-size:14px;color:#555;border:1px dashed #ccc;border-radius:5px;">
+                  No file selected
+                </div>
+              </div>
+            </div>
+            <script>
+            document.getElementById('fileInput').addEventListener('change', function() {
+                var fileList = document.getElementById('fileList');
+                if (this.files.length > 0) {
+                    fileList.innerHTML = "Selected file: <strong>" + this.files[0].name + "</strong>";
+                }
+            });
+            </script>
+            <div class="form-card">
+              <div class="form-card-hd">
+                <div class="form-card-icon" style="background:var(--al)">📝</div>
+                <div class="form-card-title">Internal Notes</div>
+              </div>
+              <div class="form-card-body">
+                <textarea class="form-textarea" name="internal_notes" placeholder="Add internal notes visible only to support agents..."></textarea>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn-submit" type="submit">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M13.5 2.5L6 10M13.5 2.5L9 14l-3-4-4-3 11.5-4z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                Submit Ticket
+              </button>
+              <button class="btn-draft" type="button" onclick="showToast(&#39;Saved as draft&#39;,&#39;💾&#39;)">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M2 2h8l2 2v8H2V2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path>
+                  <path d="M4 2v4h6V2M5 9h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
+                </svg>
+                Save as Draft
+              </button>
+              <button class="btn-cancel" type="button" onclick="showView(&#39;view-dashboard&#39;, null)">Cancel</button>
+            </div>
+          </div>
+          </form>
+        </div><!-- /#view-create -->
+
+        <!-- VIEW 3: TICKET DETAIL -->
+        <div class="view" id="view-ticket-detail">
+          
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TickoraDesk — Ticket #TK-1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./TickoraDesk — Dashboard_files/css2(1)" rel="stylesheet">
+<style>
+:root{
+  --cyan:#00B7FF;--cyan-d:#0099DD;--cyan-dd:#0077BB;--cyan-l:#E6F8FF;--cyan-m:#B3E8FF;
+  --ink:#0C1929;--i80:#1E3348;--i60:#3D5872;--i50:#527089;--i40:#7A96AC;
+  --i30:#A8BDCA;--i20:#CDD8DF;--i10:#E6ECEF;--i06:#F2F5F7;--i03:#F8FAFB;
+  --white:#FFFFFF;
+  --green:#00A86B;--green-l:#E6F7F1;--green-m:#B3E8D4;
+  --amber:#F59E0B;--amber-l:#FEF3C7;--amber-m:#FCD34D;
+  --red:#E53935;--red-l:#FEECEB;--red-m:#FFAB99;
+  --purple:#7C3AED;--purple-l:#EDE9FE;
+  --blue:#1565C0;--blue-l:#E3F2FD;
+  --orange:#EA6C00;--orange-l:#FFF3E0;
+  --r4:4px;--r6:6px;--r8:8px;--r10:10px;--r12:12px;--r16:16px;--r20:20px;
+  --sh1:0 1px 3px rgba(12,25,41,.07),0 1px 2px rgba(12,25,41,.05);
+  --sh2:0 4px 14px rgba(12,25,41,.09),0 2px 6px rgba(12,25,41,.06);
+  --sh3:0 10px 32px rgba(12,25,41,.11),0 4px 10px rgba(12,25,41,.07);
+  --sh4:0 20px 56px rgba(12,25,41,.14),0 6px 18px rgba(12,25,41,.09);
+  --font:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;
+  --lp-w:300px;--rp-w:360px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:13px;height:100%;}
+body{font-family:var(--font);background:var(--i03);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;height:100%;overflow:hidden;}
+input,select,textarea,button{font-family:var(--font);font-size:inherit;}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--i20);border-radius:99px;}
+::-webkit-scrollbar-thumb:hover{background:var(--i30);}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;}
+.page-body{display:flex;height:100vh;padding-top:0;overflow:hidden;}
+
+/* LEFT PANEL */
+.left-panel{width:var(--lp-w);flex-shrink:0;background:var(--white);border-right:1px solid var(--i10);display:flex;flex-direction:column;overflow:hidden;}
+.lp-head{padding:14px 16px;border-bottom:1px solid var(--i10);flex-shrink:0;}
+.lp-title{font-size:15px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+.lp-title-count{font-size:11px;font-weight:500;color:var(--i40);background:var(--i06);padding:2px 8px;border-radius:99px;}
+.lp-search{display:flex;align-items:center;gap:8px;padding:8px 11px;background:var(--i06);border:1.5px solid var(--i10);border-radius:var(--r10);transition:all .15s;}
+.lp-search:focus-within{border-color:var(--cyan);background:#fff;box-shadow:0 0 0 3px rgba(0,183,255,.1);}
+.lp-search input{flex:1;border:none;background:transparent;outline:none;font-size:12px;color:var(--ink);}
+.lp-search input::placeholder{color:var(--i40);}
+.lp-search-icon{color:var(--i40);flex-shrink:0;}
+.lp-filters{display:flex;gap:4px;padding:10px 16px 0;flex-shrink:0;overflow-x:auto;padding-bottom:8px;}
+.lp-filter{flex-shrink:0;padding:5px 10px;border-radius:99px;border:1.5px solid var(--i10);font-size:11px;font-weight:600;color:var(--i50);background:transparent;transition:all .15s;white-space:nowrap;}
+.lp-filter:hover{border-color:var(--cyan);color:var(--cyan-d);}
+.lp-filter.active{background:var(--cyan-l);border-color:var(--cyan);color:var(--cyan-d);}
+.lp-list{flex:1;overflow-y:auto;padding:8px;}
+.ticket-card{padding:12px;border-radius:var(--r10);border:1.5px solid transparent;cursor:pointer;transition:all .15s;margin-bottom:4px;background:var(--white);}
+.ticket-card:hover{background:var(--i06);border-color:var(--i10);}
+.ticket-card.selected{background:var(--cyan-l);border-color:var(--cyan);}
+.ticket-card.unread{border-left:3px solid var(--cyan);}
+.tc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
+.tc-id{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--cyan-d);}
+.tc-time{font-size:10px;color:var(--i40);}
+.tc-subject{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tc-bottom{display:flex;align-items:center;justify-content:space-between;}
+.tc-company{font-size:11px;color:var(--i50);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;}
+.badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;white-space:nowrap;flex-shrink:0;}
+.b-critical{background:#FFEBEE;color:#C62828;}
+.b-high{background:#FBE9E7;color:#BF360C;}
+.b-medium{background:var(--amber-l);color:#92400E;}
+.b-low{background:#E8F5E9;color:#2E7D32;}
+.b-open{background:var(--cyan-l);color:var(--cyan-d);}
+.b-pending{background:var(--amber-l);color:#B45309;}
+.b-resolved{background:var(--green-l);color:#00695C;}
+.b-closed{background:var(--i10);color:var(--i50);}
+.b-new{background:var(--blue-l);color:var(--blue);}
+.b-internal{background:var(--amber-l);color:#78350F;}
+
+/* CENTER PANEL */
+.center-panel{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+.cp-topbar{padding:12px 20px;background:var(--white);border-bottom:1px solid var(--i10);flex-shrink:0;box-shadow:var(--sh1);}
+.cp-tb-row1{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.cp-ticket-num{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--cyan-d);}
+.cp-subject{font-size:16px;font-weight:700;color:var(--ink);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cp-tb-row2{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.cp-meta{font-size:11px;color:var(--i40);}
+.cp-meta strong{color:var(--i60);font-weight:600;}
+.cp-sep{font-size:11px;color:var(--i30);}
+.cp-actions{display:flex;align-items:center;gap:6px;margin-left:auto;}
+.cp-btn{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:var(--r8);font-size:12px;font-weight:600;border:1.5px solid var(--i10);background:var(--i06);color:var(--i60);transition:all .15s;}
+.cp-btn:hover{border-color:var(--cyan);color:var(--cyan-d);background:var(--cyan-l);}
+.cp-btn.primary{background:var(--cyan);border-color:var(--cyan);color:#fff;box-shadow:0 3px 12px rgba(0,183,255,.3);}
+.cp-btn.primary:hover{background:var(--cyan-d);box-shadow:0 5px 16px rgba(0,183,255,.4);}
+.cp-btn.success{background:var(--green);border-color:var(--green);color:#fff;}
+.cp-btn.success:hover{background:#00895A;}
+.cp-btn.danger{background:var(--red-l);border-color:#FFCDD2;color:var(--red);}
+.cp-btn.danger:hover{background:#FFCDD2;}
+
+/* CONVERSATION (rendered client-side, no AJAX file, instant on click) */
+#convo-container{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0;}
+.cp-convo{flex:1;overflow-y:auto;padding:20px;min-height:0;}
+.convo-day-label{text-align:center;font-size:11px;font-weight:600;color:var(--i40);margin:16px 0 14px;display:flex;align-items:center;gap:10px;}
+.convo-day-label::before,.convo-day-label::after{content:'';flex:1;height:1px;background:var(--i10);}
+.msg-wrap{margin-bottom:12px;}
+.msg-card{border-radius:var(--r12);overflow:hidden;border:1px solid var(--i10);box-shadow:var(--sh1);transition:box-shadow .2s;}
+.msg-card:hover{box-shadow:var(--sh2);}
+.msg-header{display:flex;align-items:center;gap:10px;padding:11px 16px;background:var(--i06);border-bottom:1px solid var(--i10);cursor:pointer;user-select:none;}
+.msg-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;}
+.msg-author-name{font-size:13px;font-weight:700;color:var(--ink);flex:1;}
+.msg-author-role{font-size:11px;font-weight:500;margin-top:1px;}
+.msg-header-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.msg-timestamp{font-size:11px;color:var(--i40);}
+.msg-type-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;}
+.msg-actions{display:flex;gap:4px;}
+.msg-action-btn{width:26px;height:26px;border-radius:var(--r6);border:1px solid var(--i10);background:transparent;display:flex;align-items:center;justify-content:center;color:var(--i40);transition:all .12s;cursor:pointer;}
+.msg-action-btn:hover{background:var(--white);border-color:var(--cyan);color:var(--cyan-d);}
+.msg-body{padding:16px;background:var(--white);}
+.msg-body p{font-size:13px;color:var(--i80);line-height:1.75;margin-bottom:10px;}
+.msg-body p:last-child{margin-bottom:0;}
+.msg-body code{font-family:var(--mono);font-size:11px;background:var(--i06);padding:2px 5px;border-radius:4px;color:var(--red);}
+.msg-attachments{padding:12px 16px;background:var(--i03);border-top:1px solid var(--i10);}
+.msg-attach-label{font-size:10px;font-weight:700;color:var(--i40);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
+.attach-grid{display:flex;gap:8px;flex-wrap:wrap;}
+.attach-item{display:flex;align-items:center;gap:7px;padding:7px 11px;background:var(--white);border:1px solid var(--i10);border-radius:var(--r8);cursor:pointer;transition:all .15s;max-width:180px;}
+.attach-item:hover{border-color:var(--cyan);box-shadow:var(--sh1);}
+.attach-icon{font-size:18px;flex-shrink:0;}
+.attach-name{font-size:11px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.attach-size{font-size:10px;color:var(--i40);margin-top:1px;}
+.msg-card.internal{border-color:#FCD34D;}
+.msg-card.internal .msg-header{background:#FFFDE7;border-bottom-color:#FCD34D;}
+.msg-card.internal .msg-body{background:linear-gradient(to bottom,#FFFEF5,#fff);}
+.activity-item{display:flex;align-items:flex-start;gap:10px;padding:8px 14px;background:var(--i06);border:1px solid var(--i10);border-radius:var(--r8);margin-bottom:8px;}
+.act-icon-wrap{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--i20);display:flex;align-items:center;justify-content:center;font-size:13px;background:var(--white);flex-shrink:0;margin-top:1px;}
+.act-content{flex:1;}
+.act-text{font-size:12px;color:var(--i80);line-height:1.5;}
+.act-text strong{color:var(--ink);font-weight:600;}
+.act-time{font-size:11px;color:var(--i40);margin-top:2px;}
+#convo-bottom{height:1px;}
+.convo-loading{display:flex;align-items:center;justify-content:center;height:100%;color:var(--i40);font-size:13px;gap:10px;}
+.convo-spinner{width:18px;height:18px;border:2px solid var(--i10);border-top-color:var(--cyan);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* REPLY AREA */
+.reply-area{flex-shrink:0;background:var(--white);border-top:1px solid var(--i10);}
+.reply-tabs{display:flex;gap:0;padding:10px 20px 0;border-bottom:1px solid var(--i10);}
+.reply-tab{padding:8px 16px;font-size:12px;font-weight:600;color:var(--i50);border-bottom:2px solid transparent;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px;}
+.reply-tab:hover{color:var(--ink);}
+.reply-tab.active{color:var(--cyan-d);border-bottom-color:var(--cyan);}
+.reply-content{padding:14px 20px;}
+.rte-wrap{border:1.5px solid var(--i20);border-radius:var(--r10);overflow:hidden;transition:border-color .15s,box-shadow .15s;}
+.rte-wrap:focus-within{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,183,255,.1);}
+.rte-toolbar{display:flex;align-items:center;gap:2px;padding:7px 10px;background:var(--i06);border-bottom:1px solid var(--i10);flex-wrap:wrap;}
+.rte-btn{width:28px;height:28px;border-radius:var(--r6);background:transparent;border:none;display:flex;align-items:center;justify-content:center;color:var(--i60);font-size:12px;font-weight:700;transition:all .12s;}
+.rte-btn:hover{background:var(--i10);color:var(--ink);}
+.rte-sep{width:1px;height:16px;background:var(--i20);margin:0 4px;}
+.rte-body{min-height:80px;max-height:160px;overflow-y:auto;padding:12px 14px;font-size:13px;color:var(--ink);line-height:1.65;outline:none;background:var(--white);}
+.rte-body:empty::before{content:attr(data-placeholder);color:var(--i30);}
+.rte-footer{padding:10px 14px;background:var(--i06);border-top:1px solid var(--i10);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.rte-char-count{font-size:10px;color:var(--i40);margin-left:auto;}
+.reply-actions{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.ra-btn{display:flex;align-items:center;gap:5px;padding:8px 16px;border-radius:var(--r8);font-size:12px;font-weight:700;border:1.5px solid;transition:all .2s;}
+.ra-send{background:var(--cyan);border-color:var(--cyan);color:#fff;box-shadow:0 3px 12px rgba(0,183,255,.3);}
+.ra-send:hover{background:var(--cyan-d);transform:translateY(-1px);box-shadow:0 5px 18px rgba(0,183,255,.4);}
+.ra-resolve{background:var(--green);border-color:var(--green);color:#fff;}
+.ra-resolve:hover{background:#00895A;}
+.ra-note{background:var(--amber-l);border-color:var(--amber-m);color:#78350F;}
+.ra-note:hover{background:var(--amber-m);}
+.ra-draft{background:var(--i06);border-color:var(--i20);color:var(--i60);}
+.ra-draft:hover{border-color:var(--i30);color:var(--ink);}
+.ra-attach{background:transparent;border-color:var(--i20);color:var(--i60);}
+.ra-attach:hover{border-color:var(--cyan);color:var(--cyan-d);}
+
+/* RIGHT PANEL */
+.right-panel{width:var(--rp-w);flex-shrink:0;background:var(--i06);border-left:1px solid var(--i10);overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;}
+.rp-card{background:var(--white);border-radius:var(--r12);border:1px solid var(--i10);box-shadow:var(--sh1);margin:12px 12px 0;overflow:hidden;}
+.rp-card:last-child{margin-bottom:12px;}
+.rpc-head{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--i10);cursor:pointer;transition:background .12s;}
+.rpc-head:hover{background:var(--i06);}
+.rpc-head-icon{width:28px;height:28px;border-radius:var(--r8);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.rpc-title{font-size:12px;font-weight:700;color:var(--ink);flex:1;}
+.rpc-chevron{color:var(--i40);transition:transform .2s;}
+.rpc-chevron.open{transform:rotate(180deg);}
+.rpc-body{padding:12px 14px;}
+.rpc-body.hidden{display:none;}
+.info-row{display:flex;align-items:flex-start;gap:0;padding:6px 0;border-bottom:1px solid var(--i06);}
+.info-row:last-child{border-bottom:none;}
+.info-label{font-size:10px;font-weight:700;color:var(--i40);text-transform:uppercase;letter-spacing:.05em;width:100px;flex-shrink:0;padding-top:0;}
+.info-value{font-size:12px;font-weight:500;color:var(--ink);flex:1;word-break:break-all;}
+.info-value.email{color:var(--cyan-d);}
+.info-value.phone{color:var(--i60);}
+.info-since{font-size:10px;color:var(--i40);margin-top:0;}
+.status-selector{width:100%;padding:10px 12px;font-size:13px;font-weight:600;border:2px solid var(--i10);border-radius:var(--r10);color:var(--ink);background:var(--white);outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%237A96AC' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;transition:border-color .15s;margin-bottom:8px;}
+.status-selector:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,183,255,.1);}
+.status-selector.s-open{border-color:var(--cyan);background-color:var(--cyan-l);color:var(--cyan-d);}
+.status-selector.s-pending{border-color:var(--amber);background-color:var(--amber-l);color:#92400E;}
+.status-selector.s-resolved{border-color:var(--green);background-color:var(--green-l);color:#00695C;}
+.status-selector.s-closed{border-color:var(--i30);background-color:var(--i06);color:var(--i50);}
+.rp-select{width:100%;padding:8px 10px;font-size:12px;font-weight:500;border:1.5px solid var(--i10);border-radius:var(--r8);color:var(--ink);background:var(--white);outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%237A96AC' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:all .15s;}
+.rp-select:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,183,255,.1);}
+.rp-field{margin-bottom:10px;}
+.rp-field:last-child{margin-bottom:0;}
+.rp-label{font-size:10px;font-weight:700;color:var(--i40);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;}
+.sla-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r8);margin-bottom:8px;border:1.5px solid;}
+.sla-row.safe{background:var(--green-l);border-color:var(--green-m);}
+.sla-row.warn{background:var(--amber-l);border-color:var(--amber-m);}
+.sla-row.breach{background:var(--red-l);border-color:var(--red-m);}
+.sla-icon{font-size:18px;flex-shrink:0;}
+.sla-type{font-size:11px;font-weight:700;color:var(--i60);margin-bottom:2px;}
+.sla-time{font-size:16px;font-weight:800;letter-spacing:-.5px;}
+.sla-row.safe .sla-time{color:var(--green);}
+.sla-row.warn .sla-time{color:var(--amber);}
+.sla-row.breach .sla-time{color:var(--red);}
+.sla-label{font-size:10px;color:var(--i50);}
+.sla-progress{height:5px;background:var(--i10);border-radius:3px;overflow:hidden;margin-top:6px;}
+.sla-bar{height:100%;border-radius:3px;transition:width .5s;}
+.timeline{position:relative;padding-left:20px;}
+.timeline::before{content:'';position:absolute;left:6px;top:0;bottom:0;width:1.5px;background:var(--i10);}
+.tl-item{position:relative;margin-bottom:12px;}
+.tl-item:last-child{margin-bottom:0;}
+.tl-dot{position:absolute;left:-17px;top:4px;width:12px;height:12px;border-radius:50%;border:2px solid var(--white);box-shadow:0 0 0 1.5px var(--i20);background:var(--white);}
+.tl-dot.created{background:var(--cyan);box-shadow:0 0 0 1.5px var(--cyan);}
+.tl-dot.assigned{background:var(--purple);box-shadow:0 0 0 1.5px var(--purple);}
+.tl-dot.changed{background:var(--amber);box-shadow:0 0 0 1.5px var(--amber);}
+.tl-dot.reply{background:var(--green);box-shadow:0 0 0 1.5px var(--green);}
+.tl-action{font-size:11px;font-weight:600;color:var(--ink);}
+.tl-action span{color:var(--cyan-d);}
+.tl-meta{font-size:10px;color:var(--i40);margin-top:2px;}
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.qa-btn{display:flex;align-items:center;gap:6px;padding:8px 10px;border:1.5px solid var(--i10);border-radius:var(--r8);background:var(--white);font-size:11px;font-weight:600;color:var(--i60);transition:all .15s;text-align:left;}
+.qa-btn:hover{border-color:var(--cyan);color:var(--cyan-d);background:var(--cyan-l);}
+.qa-btn.danger:hover{border-color:var(--red-m);color:var(--red);background:var(--red-l);}
+.qa-btn.success:hover{border-color:var(--green-m);color:var(--green);background:var(--green-l);}
+.qa-icon{font-size:14px;}
+.agent-card-body{display:flex;align-items:center;gap:10px;padding:12px 14px;}
+.agent-card-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#00897B,var(--cyan));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0;}
+.agent-card-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.agent-card-role{font-size:11px;color:var(--i50);}
+.agent-card-load{font-size:11px;color:var(--i60);display:flex;align-items:center;gap:5px;margin-top:4px;}
+.load-bar{flex:1;height:4px;background:var(--i10);border-radius:2px;overflow:hidden;}
+.load-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--cyan),var(--cyan-m));}
+.change-agent-btn{margin:0 14px 12px;width:calc(100% - 28px);padding:7px;border:1.5px solid var(--i10);border-radius:var(--r8);background:var(--i06);font-size:11px;font-weight:600;color:var(--i60);transition:all .15s;}
+.change-agent-btn:hover{border-color:var(--cyan);color:var(--cyan-d);background:var(--cyan-l);}
+.tag-wrap{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px;}
+.tag{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px;background:var(--cyan-l);color:var(--cyan-d);cursor:pointer;transition:all .12s;}
+.tag:hover{background:var(--cyan);color:#fff;}
+.tag.add{background:var(--i06);color:var(--i50);border:1px dashed var(--i20);}
+.tag.add:hover{border-color:var(--cyan);color:var(--cyan-d);background:var(--cyan-l);}
+.pending-on-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700;background:var(--purple-l);color:var(--purple);border:1px solid rgba(124,58,237,.2);}
+.workflow-steps{display:flex;align-items:center;gap:0;margin:8px 0;}
+.wf-step{flex:1;text-align:center;font-size:9px;font-weight:700;color:var(--i40);padding:4px 2px;border-radius:var(--r4);}
+.wf-step.active{background:var(--cyan-l);color:var(--cyan-d);}
+.wf-step.done{background:var(--green-l);color:var(--green);}
+.wf-arrow{color:var(--i30);font-size:10px;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(12,25,41,.55);backdrop-filter:blur(4px);align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;animation:fadeIn .15s ease;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:var(--white);border-radius:var(--r20);width:420px;box-shadow:var(--sh4);animation:slideUp .2s ease;overflow:hidden;}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.modal-hd{padding:20px 24px 16px;border-bottom:1px solid var(--i10);}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:4px;}
+.modal-sub{font-size:12px;color:var(--i50);}
+.modal-body{padding:20px 24px;}
+.modal-ft{padding:14px 24px;border-top:1px solid var(--i10);display:flex;gap:8px;justify-content:flex-end;}
+.modal-btn{padding:8px 20px;border-radius:var(--r8);font-size:13px;font-weight:600;border:1.5px solid;}
+.modal-cancel{background:var(--i06);border-color:var(--i20);color:var(--i60);}
+.modal-confirm{background:var(--cyan);border-color:var(--cyan);color:#fff;box-shadow:0 3px 12px rgba(0,183,255,.3);}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;z-index:999;background:var(--ink);color:#fff;padding:11px 18px;border-radius:var(--r10);font-size:12px;font-weight:500;box-shadow:var(--sh4);display:flex;align-items:center;gap:10px;opacity:0;transform:translateY(8px);pointer-events:none;transition:all .25s;}
+.toast.show{opacity:1;transform:translateY(0);pointer-events:auto;}
+.toast-icon{font-size:16px;}
+
+@media(max-width:1300px){:root{--rp-w:300px;}}
+@media(max-width:1100px){:root{--lp-w:250px;}}
+@media(max-width:900px){.left-panel{display:none;}:root{--rp-w:280px;}}
+@media(max-width:720px){.right-panel{display:none;}.cp-subject{font-size:14px;}}
+</style>
+
+
+
+<div class="page-body">
+
+  <!-- ═══ LEFT PANEL: Ticket Queue ═══ -->
+  <aside class="left-panel">
+    <div class="lp-head">
+      <div class="lp-title">Tickets <span class="lp-title-count">6 total</span></div>
+      <div class="lp-search">
+        <svg class="lp-search-icon" width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="5.5" cy="5.5" r="4.5" stroke="currentColor" stroke-width="1.3"></circle><path d="M9.5 9.5L12 12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>
+        <input type="text" placeholder="Search tickets..." id="ticketSearch" oninput="filterTickets()">
+      </div>
+    </div>
+    <div class="lp-filters">
+      <button class="lp-filter active" onclick="setFilter(this,&#39;all&#39;)">All (6)</button>
+      <button class="lp-filter" onclick="setFilter(this,&#39;new&#39;)">New (5)</button>
+      <button class="lp-filter" onclick="setFilter(this,&#39;open&#39;)">Open (1)</button>
+      <button class="lp-filter" onclick="setFilter(this,&#39;pending&#39;)">Pending (0)</button>
+      <button class="lp-filter" onclick="setFilter(this,&#39;resolved&#39;)">Resolved (0)</button>
+      <button class="lp-filter" onclick="setFilter(this,&#39;closed&#39;)">Closed (0)</button>
+    </div>
+    <div class="lp-list" id="ticketList">
+        <div class="ticket-card unread" onclick="selectTicket(&#39;TK-6&#39;)">
+            <div class="tc-top"><span class="tc-id">#TK-6</span><span class="tc-time">Just now</span></div>
+            <div class="tc-subject">sjnfjldsbfhbdsifhoieurbfj</div>
+            <div class="tc-bottom">
+                <span class="tc-company">abcs</span>
+                <span class="badge b-high">🟠 High</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:5px;">
+                <span style="font-size:11px;color:var(--i50);">jwkdnd</span>
+                <span class="badge b-new">New</span>
+            </div>
+        </div>
+        <div class="ticket-card unread" onclick="selectTicket(&#39;TK-5&#39;)">
+            <div class="tc-top"><span class="tc-id">#TK-5</span><span class="tc-time">Just now</span></div>
+            <div class="tc-subject">Simple Text Link (Sabse aasan)</div>
+            <div class="tc-bottom">
+                <span class="tc-company">Tickoradesk</span>
+                <span class="badge b-medium">🟡 Medium</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:5px;">
+                <span style="font-size:11px;color:var(--i50);">Prithvi Kumar</span>
+                <span class="badge b-new">New</span>
+            </div>
+        </div>
+        <div class="ticket-card unread" onclick="selectTicket(&#39;TK-4&#39;)">
+            <div class="tc-top"><span class="tc-id">#TK-4</span><span class="tc-time">Just now</span></div>
+            <div class="tc-subject">+Amazing testing</div>
+            <div class="tc-bottom">
+                <span class="tc-company">TATA 1MG</span>
+                <span class="badge b-medium">🟡 Medium</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:5px;">
+                <span style="font-size:11px;color:var(--i50);">Kunal</span>
+                <span class="badge b-new">New</span>
+            </div>
+        </div>
+        <div class="ticket-card unread" onclick="selectTicket(&#39;TK-3&#39;)">
+            <div class="tc-top"><span class="tc-id">#TK-3</span><span class="tc-time">Just now</span></div>
+            <div class="tc-subject">Test Test Ticket</div>
+            <div class="tc-bottom">
+                <span class="tc-company">Daashpe</span>
+                <span class="badge b-medium">🟡 Medium</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:5px;">
+                <span style="font-size:11px;color:var(--i50);">Sandhya</span>
+                <span class="badge b-new">New</span>
+            </div>
+        </div>
+        <div class="ticket-card unread" onclick="selectTicket(&#39;TK-2&#39;)">
+            <div class="tc-top"><span class="tc-id">#TK-2</span><span class="tc-time">Just now</span></div>
+            <div class="tc-subject">Urgent Help Required: Unable to fetch reports</div>
+            <div class="tc-bottom">
+                <span class="tc-company">Jagran New Media TEST</span>
+                <span class="badge b-critical">🔴 Critical</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:5px;">
+                <span style="font-size:11px;color:var(--i50);">PRITHVI KUMAR SAH</span>
+                <span class="badge b-new">New</span>
+            </div>
+        </div>
+        <div class="ticket-card selected unread" onclick="selectTicket(&#39;TK-1&#39;)">
+            <div class="tc-top"><span class="tc-id">#TK-1</span><span class="tc-time">Just now</span></div>
+            <div class="tc-subject">Unable to access admin dashboard</div>
+            <div class="tc-bottom">
+                <span class="tc-company"></span>
+                <span class="badge b-medium">🟡 Medium</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:5px;">
+                <span style="font-size:11px;color:var(--i50);"></span>
+                <span class="badge b-open">Open</span>
+            </div>
+        </div></div>
+  </aside>
+
+  <!-- ═══ CENTER PANEL: Conversation ═══ -->
+  <main class="center-panel">
+    <div class="cp-topbar">
+      <div class="cp-tb-row1">
+       <span class="cp-ticket-num" id="cpTicketNum">#TK-6</span>
+        <h1 class="cp-subject" id="cpSubject">sjnfjldsbfhbdsifhoieurbfj</h1>
+        <div class="cp-actions">
+          <button class="cp-btn" onclick="showToast(&#39;Merge dialog opened&#39;,&#39;🔀&#39;)">Merge</button>
+          <button class="cp-btn" onclick="showToast(&#39;Ticket escalated&#39;,&#39;⚡&#39;)">Escalate</button>
+          <button class="cp-btn danger" onclick="showToast(&#39;Ticket closed&#39;,&#39;🔒&#39;)">Close</button>
+          <button class="cp-btn success" onclick="resolveTicket()">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M10 3L5 8.5 2 5.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            Resolve
+          </button>
+        </div>
+      </div>
+      <div class="cp-tb-row2" id="cpMetaRow">
+                <span class="badge b-high" id="cpPriorityBadge">High</span>
+                <span class="badge b-new" id="cpStatusBadge">New</span>
+        <span class="badge" style="background:var(--i06);color:var(--i50)">📧 Email</span>
+        <span class="cp-sep">·</span>
+        <span class="cp-meta">Created <strong id="cpCreated">29 Jun 2026, 09:54 AM</strong></span>
+        <span class="cp-sep">·</span>
+        <span class="cp-meta">Updated <strong>2 minutes ago</strong></span>
+      </div>
+    </div>
+
+    <!-- Conversation thread is rendered HERE by JavaScript (renderConversation) -->
+    <div id="convo-container"><div class="cp-convo" id="conversation"><div class="convo-day-label">29 Jun 2026</div>
+        <div class="msg-wrap">
+            <div class="msg-card">
+                <div class="msg-header">
+                    <div class="msg-av" style="background:linear-gradient(135deg,#1565C0,#7C3AED)">J</div>
+                    <div>
+                        <div class="msg-author-name">jwkdnd</div>
+                        <div class="msg-author-role" style="color:var(--i50)">snadkj · Customer</div>
+                    </div>
+                    <div class="msg-header-right">
+                        <span class="msg-type-badge" style="background:var(--blue-l);color:var(--blue)">Customer</span>
+                        <span class="badge b-high">🟠 High</span>
+                        <span class="msg-timestamp">09:54 AM</span>
+                        <div class="msg-actions">
+                            <button class="msg-action-btn" title="Reply" onclick="focusReply()">↩</button>
+                            <button class="msg-action-btn" title="More">⋯</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="msg-body"><p>sdnfkjsdnnnnnnnnnnnnnnnnnnnnnnnn ckndewjknefo;qnfjknsda f;kj.nsad kf,nakjsf,m</p></div>
+            </div>
+        </div>
+        <div class="activity-item">
+            <div class="act-icon-wrap" style="background:var(--cyan-l);border-color:var(--cyan-m);">🎫</div>
+            <div class="act-content">
+                <div class="act-text">Ticket created via <strong>Email</strong> · Priority set to <strong>🟠 High</strong></div>
+                <div class="act-time">29 Jun 2026 · 09:54 AM · by System</div>
+            </div>
+        </div>
+            <div class="activity-item">
+                <div class="act-icon-wrap" style="background:var(--i06);border-color:var(--i20);">💬</div>
+                <div class="act-content">
+                    <div class="act-text">No replies yet on this ticket. Use the reply box below to respond.</div>
+                    <div class="act-time">Waiting for first response</div>
+                </div>
+            </div><div id="convo-bottom" style="height:1px;"></div></div></div>
+
+    <!-- Reply box (static — stays mounted, only #convo-container content changes) -->
+    <div class="reply-area" id="replyArea">
+      <div class="reply-tabs">
+        <button class="reply-tab active" onclick="setReplyTab(this,&#39;reply&#39;)">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M10.5 1.5L5 7M10.5 1.5L7 11L5 7L1 5L10.5 1.5Z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          Reply to Customer
+        </button>
+        <button class="reply-tab" onclick="setReplyTab(this,&#39;note&#39;)">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1.5" y="1.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"></rect><path d="M3.5 4.5h5M3.5 7.5h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>
+          Internal Note
+        </button>
+        <button class="reply-tab" onclick="setReplyTab(this,&#39;forward&#39;)">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 6h9M7.5 3l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          Forward
+        </button>
+      </div>
+      <div class="reply-content">
+        <div class="rte-wrap" id="rteWrap">
+          <div class="rte-toolbar">
+            <button class="rte-btn" title="Bold" onclick="execCmd(&#39;bold&#39;)"><b>B</b></button>
+            <button class="rte-btn" title="Italic" onclick="execCmd(&#39;italic&#39;)"><i>I</i></button>
+            <button class="rte-btn" title="Underline" onclick="execCmd(&#39;underline&#39;)"><u>U</u></button>
+            <div class="rte-sep"></div>
+            <button class="rte-btn" title="Bullets" onclick="execCmd(&#39;insertUnorderedList&#39;)">≡</button>
+            <button class="rte-btn" title="Numbers" onclick="execCmd(&#39;insertOrderedList&#39;)">1.</button>
+            <div class="rte-sep"></div>
+            <button class="rte-btn" title="Link" onclick="insertLink()">🔗</button>
+            <button class="rte-btn" title="Image" onclick="showToast(&#39;Image picker&#39;,&#39;🖼️&#39;)">🖼️</button>
+            <button class="rte-btn" title="Code" onclick="showToast(&#39;Code block added&#39;,&#39;💻&#39;)">{ }</button>
+            <div class="rte-sep"></div>
+            <button class="rte-btn" title="Emoji" onclick="showToast(&#39;Emoji picker&#39;,&#39;😊&#39;)">😊</button>
+            <button class="rte-btn" title="Templates" onclick="showToast(&#39;Canned responses&#39;,&#39;📋&#39;)">📋</button>
+            <button class="rte-btn" title="Signature" onclick="showToast(&#39;Signature inserted&#39;,&#39;✍️&#39;)">✍️</button>
+            <div class="rte-sep"></div>
+            <button class="rte-btn" onclick="showToast(&#39;AI generating response...&#39;,&#39;🤖&#39;)" style="background:var(--cyan-l);color:var(--cyan-d);border-radius:var(--r6);padding:2px 8px;font-size:10px;font-weight:700;width:auto;">✦ AI Assist</button>
+          </div>
+          <div class="rte-body" id="rteBody" contenteditable="true" data-placeholder="Type your reply here... Use @mention to tag a teammate, or type / for shortcuts." oninput="updateCharCount()"></div>
+          <div class="rte-footer">
+            <span style="font-size:11px;color:var(--i50);">Replying to: <strong id="rteReplyingTo">snadkj</strong></span>
+            <span class="rte-char-count" id="charCount">0 characters</span>
+          </div>
+        </div>
+        <div class="reply-actions">
+          <button class="ra-btn ra-send" onclick="sendReply()">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M11.5 1.5L6 7M11.5 1.5L8 12L6 7L1.5 5L11.5 1.5Z" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            Send Reply
+          </button>
+          <button class="ra-btn ra-resolve" onclick="resolveTicket()">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M11 3.5L5.5 9 2.5 6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            Send &amp; Resolve
+          </button>
+          <button class="ra-btn ra-note" onclick="addNote()">🔒 Add Internal Note</button>
+          <button class="ra-btn ra-draft" onclick="showToast(&#39;Saved as draft&#39;,&#39;💾&#39;)">Save Draft</button>
+          <button class="ra-btn ra-attach" onclick="showToast(&#39;File picker opened&#39;,&#39;📎&#39;)">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M10.5 5.5L5.5 10.5a3 3 0 01-4.243-4.243l5-5a2 2 0 012.829 2.829L4.586 8.586a1 1 0 01-1.415-1.415l4.5-4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path></svg>
+            Attach
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ═══ RIGHT PANEL: Ticket Properties ═══ -->
+  <aside class="right-panel">
+
+    <!-- Status & Routing -->
+    <div class="rp-card" style="margin-top:12px;">
+      <div class="rpc-head">
+        <div class="rpc-head-icon" style="background:var(--cyan-l);">📌</div>
+        <div class="rpc-title">Ticket Status &amp; Routing</div>
+        <svg class="rpc-chevron open" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+      </div>
+      <div class="rpc-body">
+        <div class="rp-field">
+          <div class="rp-label">Main Status</div>
+          <select class="status-selector s-new" id="statusSelect" onchange="handleStatusChange()" data-prev="new">
+            <option value="open" selected="">● Open</option>
+            <option value="pending">⏳ Pending</option>
+            <option value="resolved">✅ Resolved</option>
+            <option value="closed">🔒 Closed</option>
+          </select>
+        </div>
+        <div class="rp-field" id="pendingOnField" style="display:none;">
+          <div class="rp-label">Pending On <span style="color:var(--red)">*</span></div>
+          <select class="rp-select" id="pendingOnSelect" onchange="handlePendingOn()">
+            <option value="">— Select team —</option>
+            <option value="tech">Tech Team</option>
+            <option value="product">Product Team</option>
+            <option value="customer">Customer</option>
+            <option value="internal">Internal Team</option>
+            <option value="finance">Finance Team</option>
+            <option value="management">Management</option>
+            <option value="vendor">Third Party Vendor</option>
+          </select>
+          <div id="pendingOnBadge" style="margin-top:6px;display:none;">
+            <div class="pending-on-badge" id="pendingOnBadgeText"></div>
+          </div>
+        </div>
+        <div class="rp-field">
+          <div class="rp-label">Resolution Category</div>
+          <select class="rp-select" onchange="showToast(&#39;Category updated&#39;,&#39;📁&#39;)">
+            <option>— Select category —</option>
+            <option selected="">Bug</option>
+            <option>Feature Request</option>
+            <option>Configuration</option>
+            <option>Billing</option>
+            <option>Training</option>
+            <option>Integration</option>
+            <option>Product Issue</option>
+            <option>Enhancement</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="rp-field">
+          <div class="rp-label">Priority</div>
+          <select class="rp-select" onchange="showToast(&#39;Priority updated&#39;,&#39;🎯&#39;)">
+            <option>🔴 Critical</option>
+            <option selected="">🟠 High</option>
+            <option>🟡 Medium</option>
+            <option>🟢 Low</option>
+          </select>
+        </div>
+        <div>
+          <div class="rp-label" style="margin-bottom:4px;">Workflow Progress</div>
+          <div class="workflow-steps">
+            <div class="wf-step done">New</div>
+            <div class="wf-arrow">→</div>
+            <div class="wf-step active">Open</div>
+            <div class="wf-arrow">→</div>
+            <div class="wf-step">Pending</div>
+            <div class="wf-arrow">→</div>
+            <div class="wf-step">Resolved</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Assigned Agent -->
+    <div class="rp-card">
+      <div class="rpc-head" onclick="toggleCard(this)">
+        <div class="rpc-head-icon" style="background:#E8F5E9;">👤</div>
+        <div class="rpc-title">Assigned Agent</div>
+        <svg class="rpc-chevron open" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+      </div>
+      <div class="rpc-body" style="padding:0;">
+        <div class="agent-card-body">
+          <div class="agent-card-av">PK</div>
+          <div>
+            <div class="agent-card-name">Prithvi Kumar</div>
+            <div class="agent-card-role">Senior Support Agent</div>
+            <div class="agent-card-load"><span>Workload:</span><div class="load-bar"><div class="load-fill" style="width:68%"></div></div><span>68%</span></div>
+          </div>
+        </div>
+        <button class="change-agent-btn" onclick="showToast(&#39;Agent reassignment panel&#39;,&#39;👥&#39;)">↔ Reassign to Another Agent</button>
+        <div style="padding:0 14px 12px;">
+          <div class="rp-label" style="margin-bottom:5px;">Department</div>
+          <select class="rp-select" onchange="showToast(&#39;Department updated&#39;,&#39;🏢&#39;)">
+            <option selected="">Technical Support</option>
+            <option>Billing &amp; Payments</option>
+            <option>Sales &amp; Onboarding</option>
+            <option>Product Feedback</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer Details (updated via JS when ticket changes) -->
+    <div class="rp-card">
+      <div class="rpc-head" onclick="toggleCard(this)">
+        <div class="rpc-head-icon" style="background:var(--blue-l);">🏢</div>
+        <div class="rpc-title">Customer Details</div>
+        <svg class="rpc-chevron open" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+      </div>
+      <div class="rpc-body" id="customerDetailsBody">
+        <div class="info-row"><div class="info-label">Name</div><div class="info-value"><strong id="cdName">jwkdnd</strong></div></div>
+        <div class="info-row"><div class="info-label">Email</div><div class="info-value email" id="cdEmail">snadkj</div></div>
+        <div class="info-row"><div class="info-label">Phone</div><div class="info-value phone" id="cdPhone">8787878787</div></div>
+        <div class="info-row"><div class="info-label">Company</div><div class="info-value"><strong id="cdCompany">abcs</strong></div></div>
+        <div class="info-row"><div class="info-label">Users</div><div class="info-value" id="cdUsers">0 Users</div></div>
+        <div class="info-row"><div class="info-label">Plan</div><div class="info-value"><span class="badge b-open" style="font-size:10px;" id="cdPlan"></span></div></div>
+        <div class="info-row"><div class="info-label">Account Type</div><div class="info-value">Enterprise</div></div>
+        <div class="info-row"><div class="info-label">Since</div><div class="info-value" id="cdSince">Nov -0001</div></div>
+      </div>
+    </div>
+
+    <!-- Ticket Details (updated via JS when ticket changes) -->
+    <div class="rp-card">
+      <div class="rpc-head" onclick="toggleCard(this)">
+        <div class="rpc-head-icon" style="background:var(--purple-l);">🎫</div>
+        <div class="rpc-title">Ticket Details</div>
+        <svg class="rpc-chevron open" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+      </div>
+      <div class="rpc-body" id="ticketDetailsBody">
+        <div class="info-row"><div class="info-label">Ticket ID</div><div class="info-value" style="font-family:var(--mono);color:var(--cyan-d);" id="tdId">#TK-6</div></div>
+        <div class="info-row"><div class="info-label">Source</div><div class="info-value">📧 Email</div></div>
+        <div class="info-row"><div class="info-label">Created</div><div class="info-value" id="tdCreated">29 Jun 2026, 09:54 AM</div></div>
+        <div class="info-row"><div class="info-label">Updated</div><div class="info-value">2 minutes ago</div></div>
+        <div class="rp-field" style="margin-top:10px;">
+          <div class="rp-label">Tags</div>
+          <div class="tag-wrap">
+            <div class="tag">login-issue</div>
+            <div class="tag">403-error</div>
+            <div class="tag add" onclick="showToast(&#39;Tag input opened&#39;,&#39;🏷️&#39;)">+ Add tag</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLA Monitoring -->
+    <div class="rp-card">
+      <div class="rpc-head" onclick="toggleCard(this)">
+        <div class="rpc-head-icon" style="background:var(--amber-l);">⏱️</div>
+        <div class="rpc-title">SLA Monitoring</div>
+        <svg class="rpc-chevron open" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+      </div>
+      <div class="rpc-body">
+        <div class="sla-row safe">
+          <div class="sla-icon">✅</div>
+          <div style="flex:1;"><div class="sla-type">First Response SLA</div><div class="sla-time">18 min</div><div class="sla-label">Target: 30 min · Met ✅</div></div>
+        </div>
+        <div class="sla-row warn" id="resolutionSla">
+          <div class="sla-icon">⚠️</div>
+          <div style="flex:1;">
+            <div class="sla-type">Resolution SLA</div>
+            <div class="sla-time" id="slaTimer">04:14:59</div>
+            <div class="sla-label">Target: 8 hours · ⚠ At Risk</div>
+            <div class="sla-progress"><div class="sla-bar" style="width: 53.1215%; background: linear-gradient(90deg,var(--amber),#FCD34D);" id="slaBar"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity Timeline -->
+    <div class="rp-card">
+      <div class="rpc-head" onclick="toggleCard(this)">
+        <div class="rpc-head-icon" style="background:#F3E5F5;">📋</div>
+        <div class="rpc-title">Activity Timeline</div>
+        <svg class="rpc-chevron open" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+      </div>
+      <div class="rpc-body">
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-dot created"></div><div class="tl-action">Ticket created via <span>Email</span></div><div class="tl-meta">System</div></div>
+          <div class="tl-item"><div class="tl-dot assigned"></div><div class="tl-action">Assigned to <span>Prithvi Kumar</span></div><div class="tl-meta">Auto-assign</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="rp-card">
+      <div class="rpc-head" onclick="toggleCard(this)">
+        <div class="rpc-head-icon" style="background:var(--cyan-l);">⚡</div>
+        <div class="rpc-title">Quick Actions</div>
+        <svg class="rpc-chevron open" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+      </div>
+      <div class="rpc-body">
+        <div class="qa-grid">
+          <button class="qa-btn" onclick="showToast(&#39;Agent assignment&#39;,&#39;👤&#39;)"><span class="qa-icon">👤</span>Assign Agent</button>
+          <button class="qa-btn" onclick="showToast(&#39;Priority changed&#39;,&#39;🔴&#39;)"><span class="qa-icon">🔴</span>Change Priority</button>
+          <button class="qa-btn" onclick="showToast(&#39;Merge dialog opened&#39;,&#39;🔀&#39;)"><span class="qa-icon">🔀</span>Merge Ticket</button>
+          <button class="qa-btn" onclick="showToast(&#39;Child ticket created&#39;,&#39;🎫&#39;)"><span class="qa-icon">🎫</span>Create Child</button>
+          <button class="qa-btn" onclick="showToast(&#39;Ticket escalated&#39;,&#39;⚡&#39;)"><span class="qa-icon">⚡</span>Escalate Now</button>
+          <button class="qa-btn" onclick="showToast(&#39;Watcher added&#39;,&#39;👁️&#39;)"><span class="qa-icon">👁️</span>Add Watcher</button>
+          <button class="qa-btn success" onclick="resolveTicket()"><span class="qa-icon">✅</span>Resolve</button>
+          <button class="qa-btn danger" onclick="showToast(&#39;Ticket closed&#39;,&#39;🔒&#39;)"><span class="qa-icon">🔒</span>Close Ticket</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="height:16px;flex-shrink:0;"></div>
+  </aside>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="statusModal">
+  <div class="modal">
+    <div class="modal-hd">
+      <div class="modal-title" id="modalTitle">Change Ticket Status</div>
+      <div class="modal-sub" id="modalSub">This action will update the ticket and notify the customer.</div>
+    </div>
+    <div class="modal-body">
+      <div style="font-size:12px;color:var(--i60);line-height:1.7;background:var(--cyan-l);border:1px solid var(--cyan-m);border-radius:var(--r8);padding:10px 14px;">
+        <strong style="color:var(--cyan-d)">Status Logic:</strong> Setting status to <strong>Resolved</strong> moves this ticket to the Resolved queue and notifies the customer. The SLA timer will stop.
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button class="modal-btn modal-cancel" onclick="closeModal()">Cancel</button>
+      <button class="modal-btn modal-confirm" id="modalConfirm" onclick="confirmStatusChange()">Confirm Change</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"><span class="toast-icon" id="toastIcon">✅</span><span id="toastMsg">Action completed</span></div>
+
+<script>
+/* ============================================================
+   ALL TICKET DATA — straight from your MySQL query above.
+   No second PHP file, no fetch() round-trip. Clicking a
+   ticket in the left list just re-renders #convo-container
+   and the right panel from this in-memory array.
+============================================================ */
+const TICKETS = [{"id":"TK-6","numericId":6,"subject":"sjnfjldsbfhbdsifhoieurbfj","customer":"jwkdnd","customerEmail":"snadkj","customerPhone":"8787878787","company":"abcs","userCount":"0","planType":"","customerSince":"Nov -0001","priority":"high","status":"new","createdAt":"29 Jun 2026","createdTime":"09:54 AM","createdFull":"29 Jun 2026, 09:54 AM","messageBody":"sdnfkjsdnnnnnnnnnnnnnnnnnnnnnnnn ckndewjknefo;qnfjknsda f;kj.nsad kf,nakjsf,m","attachments":[],"initials":"J","messages":[],"time":"Just now","unread":true,"selected":false},{"id":"TK-5","numericId":5,"subject":"Simple Text Link (Sabse aasan)","customer":"Prithvi Kumar","customerEmail":"support@tickoradesk.com","customerPhone":"8581973282","company":"Tickoradesk","userCount":"0","planType":"","customerSince":"Nov -0001","priority":"medium","status":"new","createdAt":"29 Jun 2026","createdTime":"09:43 AM","createdFull":"29 Jun 2026, 09:43 AM","messageBody":"Agar aap kisi website builder (jaise WordPress, Wix, ya Blogger) ka use kar rahe hain:\r\n\r\nApne page ka \"Edit\" mode open karein.\r\n\r\nUs text ya image ko select karein jise aap click-able banana chahte hain.\r\n\r\nWahan \"Insert Link\" ya \"Link\" ka icon hoga, uspar click karein","attachments":[],"initials":"PK","messages":[],"time":"Just now","unread":true,"selected":false},{"id":"TK-4","numericId":4,"subject":"+Amazing testing","customer":"Kunal","customerEmail":"kunal@yopmail.com","customerPhone":"8581973282","company":"TATA 1MG","userCount":"0","planType":"","customerSince":"Nov -0001","priority":"medium","status":"new","createdAt":"25 Jun 2026","createdTime":"07:04 PM","createdFull":"25 Jun 2026, 07:04 PM","messageBody":"issues that im facing need to be resolved by the given\r\ntimeline\r\nasap\r\ngot it tested\r\ntastedesdsd","attachments":[],"initials":"K","messages":[],"time":"Just now","unread":true,"selected":false},{"id":"TK-3","numericId":3,"subject":"Test Test Ticket","customer":"Sandhya","customerEmail":"sandy@yopmail.com","customerPhone":"1234567891","company":"Daashpe","userCount":"0","planType":"","customerSince":"Nov -0001","priority":"medium","status":"new","createdAt":"24 Jun 2026","createdTime":"06:53 PM","createdFull":"24 Jun 2026, 06:53 PM","messageBody":"Dear Author,\r\n\r\nThank you for reaching out, and I sincerely apologize for the delay and the lack of communication regarding your manuscript submission.\r\n\r\nI completely understand how frustrating this situation must be, especially since you were provided with an expected publication timeline of 7 working days and have not received a response to your follow-up messages. We appreciate your patience, and I am sorry that we have not met your expectations.\r\n\r\nI have escalated your case for immediate review and will work with the relevant team to obtain a status update on your manuscript as quickly as possible. We understand the importance of timely communication and will ensure that you receive a clear update regarding the progress of your publication.\r\n\r\nIf there has been an unexpected","attachments":[],"initials":"S","messages":[],"time":"Just now","unread":true,"selected":false},{"id":"TK-2","numericId":2,"subject":"Urgent Help Required: Unable to fetch reports","customer":"PRITHVI KUMAR SAH","customerEmail":"PRITHVIKR845422@GMAIL.COM","customerPhone":"+917004293858","company":"Jagran New Media TEST","userCount":"0","planType":"","customerSince":"Nov -0001","priority":"critical","status":"new","createdAt":"22 Jun 2026","createdTime":"07:36 PM","createdFull":"22 Jun 2026, 07:36 PM","messageBody":"TEST ","attachments":[],"initials":"PK","messages":[],"time":"Just now","unread":true,"selected":false},{"id":"TK-1","numericId":1,"subject":"Unable to access admin dashboard","customer":"","customerEmail":"","customerPhone":"","company":"","userCount":"0","planType":"","customerSince":"Nov -0001","priority":"medium","status":"open","createdAt":"03 Jun 2026","createdTime":"08:59 AM","createdFull":"03 Jun 2026, 08:59 AM","messageBody":"User cannot log in to the admin dashboard, showing authentication error.","attachments":[],"initials":"??","messages":[],"time":"Just now","unread":true,"selected":true}];
+const CURRENT_TICKET_ID = '1';
+
+let activeFilter = 'all';
+const pCls = { critical:'b-critical', high:'b-high', medium:'b-medium', low:'b-low' };
+const sCls = { open:'b-open', pending:'b-pending', resolved:'b-resolved', closed:'b-closed', new:'b-new' };
+const pLbl = { critical:'🔴 Critical', high:'🟠 High', medium:'🟡 Medium', low:'🟢 Low' };
+const sLbl = { open:'Open', pending:'Pending', resolved:'Resolved', closed:'Closed', new:'New' };
+
+function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+function nl2br(str) {
+    return escapeHtml(str).replace(/\n/g, '<br>');
+}
+function initialsOf(name) {
+    if (!name) return '??';
+    const parts = name.trim().split(/\s+/);
+    let out = '';
+    for (const p of parts) { out += p.charAt(0).toUpperCase(); if (out.length >= 2) break; }
+    return out || '??';
+}
+
+/* ============================================================
+   LEFT PANEL: ticket list rendering + filtering
+============================================================ */
+function renderTickets(data) {
+    const list = document.getElementById('ticketList');
+    if (!list) return;
+    if (!data || !data.length) {
+        list.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--i40);"><div style="font-size:32px;margin-bottom:10px;">🎉</div><div style="font-size:12px;font-weight:600;">No tickets found</div></div>';
+        return;
+    }
+    list.innerHTML = data.map(t => `
+        <div class="ticket-card${t.selected ? ' selected' : ''}${t.unread ? ' unread' : ''}" onclick="selectTicket('${t.id}')">
+            <div class="tc-top"><span class="tc-id">#${escapeHtml(t.id)}</span><span class="tc-time">${escapeHtml(t.time)}</span></div>
+            <div class="tc-subject">${escapeHtml(t.subject)}</div>
+            <div class="tc-bottom">
+                <span class="tc-company">${escapeHtml(t.company)}</span>
+                <span class="badge ${pCls[t.priority] || 'b-medium'}">${pLbl[t.priority] || escapeHtml(t.priority)}</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:5px;">
+                <span style="font-size:11px;color:var(--i50);">${escapeHtml(t.customer)}</span>
+                <span class="badge ${sCls[t.status] || 'b-open'}">${sLbl[t.status] || escapeHtml(t.status)}</span>
+            </div>
+        </div>`).join('');
+}
+
+function setFilter(el, filter) {
+    document.querySelectorAll('.lp-filter').forEach(f => f.classList.remove('active'));
+    el.classList.add('active');
+    activeFilter = filter;
+    filterTickets();
+}
+
+function filterTickets() {
+    const searchInput = document.getElementById('ticketSearch');
+    const q = searchInput ? searchInput.value.toLowerCase() : '';
+    let data = TICKETS;
+    if (activeFilter !== 'all') data = data.filter(t => t.status === activeFilter);
+    if (q) {
+        data = data.filter(t =>
+            (t.subject || '').toLowerCase().includes(q) ||
+            (t.customer || '').toLowerCase().includes(q) ||
+            (t.company || '').toLowerCase().includes(q)
+        );
+    }
+    renderTickets(data);
+}
+
+/* ============================================================
+   CORE FIX: clicking a ticket re-renders EVERYTHING —
+   conversation thread, topbar, and right panel — instantly,
+   from the in-memory TICKETS array. No AJAX file needed.
+============================================================ */
+function selectTicket(id) {
+    const t = TICKETS.find(x => x.id === id);
+    if (!t) { showToast('Ticket not found', '⚠️'); return; }
+
+    TICKETS.forEach(x => { x.selected = (x.id === id); x.unread = false; });
+    filterTickets();
+
+    renderConversation(t);
+    updateTopbar(t);
+    updateRightPanel(t);
+    showToast('Opened ticket #' + t.id, '🎫');
+}
+
+/* ── Render the message thread for a ticket ── */
+function renderConversation(t) {
+    const container = document.getElementById('convo-container');
+
+    let html = '<div class="cp-convo" id="conversation">';
+    html += `<div class="convo-day-label">${escapeHtml(t.createdAt)}</div>`;
+
+    // Customer's original message (always present, comes straight from message_body)
+    html += `
+        <div class="msg-wrap">
+            <div class="msg-card">
+                <div class="msg-header">
+                    <div class="msg-av" style="background:linear-gradient(135deg,#1565C0,#7C3AED)">${escapeHtml(t.initials)}</div>
+                    <div>
+                        <div class="msg-author-name">${escapeHtml(t.customer)}</div>
+                        <div class="msg-author-role" style="color:var(--i50)">${escapeHtml(t.customerEmail)} · Customer</div>
+                    </div>
+                    <div class="msg-header-right">
+                        <span class="msg-type-badge" style="background:var(--blue-l);color:var(--blue)">Customer</span>
+                        ${t.priority ? `<span class="badge ${pCls[t.priority] || 'b-medium'}">${pLbl[t.priority] || escapeHtml(t.priority)}</span>` : ''}
+                        <span class="msg-timestamp">${escapeHtml(t.createdTime)}</span>
+                        <div class="msg-actions">
+                            <button class="msg-action-btn" title="Reply" onclick="focusReply()">↩</button>
+                            <button class="msg-action-btn" title="More">⋯</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="msg-body"><p>${nl2br(t.messageBody) || 'No message provided.'}</p></div>
+            </div>
+        </div>`;
+
+    // System activity: ticket created
+    html += `
+        <div class="activity-item">
+            <div class="act-icon-wrap" style="background:var(--cyan-l);border-color:var(--cyan-m);">🎫</div>
+            <div class="act-content">
+                <div class="act-text">Ticket created via <strong>Email</strong>${t.priority ? ` · Priority set to <strong>${pLbl[t.priority] || escapeHtml(t.priority)}</strong>` : ''}</div>
+                <div class="act-time">${escapeHtml(t.createdAt)} · ${escapeHtml(t.createdTime)} · by System</div>
+            </div>
+        </div>`;
+
+    // Real thread messages (if a Tickora_Messages table exists & has rows for this ticket)
+    if (t.messages && t.messages.length) {
+        t.messages.forEach(m => {
+            const isAgent = (m.sender_type || '').toLowerCase() === 'agent';
+            const isInternal = !!m.is_internal;
+            const senderName = m.sender_name || (isAgent ? 'Support Agent' : t.customer);
+            const avBg = isAgent ? 'linear-gradient(135deg,#00897B,#00B7FF)' : 'linear-gradient(135deg,#1565C0,#7C3AED)';
+            const roleColor = isInternal ? '#92400E' : (isAgent ? 'var(--cyan-d)' : 'var(--i50)');
+            const roleText = isInternal ? 'Internal Note · Not visible to customer' : (isAgent ? 'Support Agent · TickoraDesk' : escapeHtml(t.customerEmail) + ' · Customer');
+            const badge = isInternal
+                ? '<span class="msg-type-badge b-internal">🔒 Internal</span>'
+                : (isAgent ? '<span class="msg-type-badge" style="background:var(--cyan-l);color:var(--cyan-d)">Agent Reply</span>' : '<span class="msg-type-badge" style="background:var(--blue-l);color:var(--blue)">Customer</span>');
+
+            html += `
+                <div class="msg-wrap">
+                    <div class="msg-card${isInternal ? ' internal' : ''}">
+                        <div class="msg-header"${isAgent && !isInternal ? ' style="background:linear-gradient(to right,#F0FBFF,var(--i06));"' : ''}>
+                            <div class="msg-av" style="background:${avBg}">${escapeHtml(initialsOf(senderName))}</div>
+                            <div>
+                                <div class="msg-author-name">${escapeHtml(senderName)}</div>
+                                <div class="msg-author-role" style="color:${roleColor}">${roleText}</div>
+                            </div>
+                            <div class="msg-header-right">
+                                ${badge}
+                                <span class="msg-timestamp">${escapeHtml(m.time)}</span>
+                            </div>
+                        </div>
+                        <div class="msg-body"><p>${nl2br(m.message)}</p></div>
+                    </div>
+                </div>`;
+        });
+    } else {
+        html += `
+            <div class="activity-item">
+                <div class="act-icon-wrap" style="background:var(--i06);border-color:var(--i20);">💬</div>
+                <div class="act-content">
+                    <div class="act-text">No replies yet on this ticket. Use the reply box below to respond.</div>
+                    <div class="act-time">Waiting for first response</div>
+                </div>
+            </div>`;
+    }
+
+    html += '<div id="convo-bottom" style="height:1px;"></div></div>';
+    container.innerHTML = html;
+}
+
+/* ── Update topbar subject/badges/created date ── */
+function updateTopbar(t) {
+    document.getElementById('cpTicketNum').textContent = '#' + t.id;
+    document.getElementById('cpSubject').textContent = t.subject;
+    document.getElementById('cpCreated').textContent = t.createdFull;
+    document.getElementById('rteReplyingTo').textContent = t.customerEmail;
+
+    const priorityBadge = document.getElementById('cpPriorityBadge');
+    if (priorityBadge) {
+        priorityBadge.className = 'badge ' + (pCls[t.priority] || 'b-medium');
+        priorityBadge.textContent = (t.priority || '').charAt(0).toUpperCase() + (t.priority || '').slice(1);
+    }
+    const statusBadge = document.getElementById('cpStatusBadge');
+    if (statusBadge) {
+        statusBadge.className = 'badge ' + (sCls[t.status] || 'b-open');
+        statusBadge.textContent = (t.status || '').charAt(0).toUpperCase() + (t.status || '').slice(1);
+    }
+}
+
+/* ── Update right panel (customer + ticket detail cards + status selector) ── */
+function updateRightPanel(t) {
+    document.getElementById('cdName').textContent = t.customer;
+    document.getElementById('cdEmail').textContent = t.customerEmail;
+    document.getElementById('cdPhone').textContent = t.customerPhone;
+    document.getElementById('cdCompany').textContent = t.company;
+    document.getElementById('cdUsers').textContent = (t.userCount || '') + ' Users';
+    document.getElementById('cdPlan').textContent = t.planType || '';
+    document.getElementById('cdSince').textContent = t.customerSince || '—';
+
+    document.getElementById('tdId').textContent = '#' + t.id;
+    document.getElementById('tdCreated').textContent = t.createdFull;
+
+    const sel = document.getElementById('statusSelect');
+    if (sel) {
+        sel.value = t.status;
+        sel.className = 'status-selector s-' + t.status;
+        sel.setAttribute('data-prev', t.status);
+    }
+    document.getElementById('pendingOnField').style.display = (t.status === 'pending') ? 'block' : 'none';
+}
+
+/* ============================================================
+   REPLY BOX
+============================================================ */
+let currentTab = 'reply';
+
+function setReplyTab(el, tab) {
+    document.querySelectorAll('.reply-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    currentTab = tab;
+    const rte = document.getElementById('rteBody');
+    const wrap = document.getElementById('rteWrap');
+    if (tab === 'note') {
+        wrap.style.borderColor = '#FCD34D';
+        rte.setAttribute('data-placeholder', 'Add internal note (not visible to customer)...');
+        rte.style.background = '#FFFDE7';
+    } else {
+        wrap.style.borderColor = 'var(--i20)';
+        rte.setAttribute('data-placeholder', 'Type your reply here...');
+        rte.style.background = 'var(--white)';
+    }
+}
+
+function execCmd(cmd) { document.execCommand(cmd, false, null); document.getElementById('rteBody').focus(); }
+function insertLink() { const url = prompt('Enter URL:'); if (url) document.execCommand('createLink', false, url); }
+function updateCharCount() {
+    const len = document.getElementById('rteBody').innerText.length;
+    document.getElementById('charCount').textContent = len + ' character' + (len !== 1 ? 's' : '');
+}
+function focusReply() {
+    document.getElementById('rteBody').focus();
+    document.getElementById('replyArea').scrollIntoView({ behavior: 'smooth' });
+}
+function scrollConvoToBottom() {
+    const anchor = document.getElementById('convo-bottom');
+    if (anchor) anchor.scrollIntoView({ behavior: 'smooth' });
+}
+
+function sendReply() {
+    const body = document.getElementById('rteBody');
+    if (!body.innerText.trim()) { showToast('Please write a reply first', '⚠️'); return; }
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    const html = '<div class="msg-wrap" style="animation:slideUp .25s ease;"><div class="msg-card"><div class="msg-header" style="background:linear-gradient(to right,#F0FBFF,var(--i06));"><div class="msg-av" style="background:linear-gradient(135deg,#00897B,#00B7FF)">PK</div><div><div class="msg-author-name">Prithvi Kumar</div><div class="msg-author-role" style="color:var(--cyan-d)">Senior Support Agent</div></div><div class="msg-header-right"><span class="msg-type-badge" style="background:var(--cyan-l);color:var(--cyan-d)">Agent Reply</span><span class="msg-timestamp">' + timeStr + '</span></div></div><div class="msg-body"><p>' + body.innerHTML + '</p></div></div></div>';
+    const anchor = document.getElementById('convo-bottom');
+    if (anchor) anchor.insertAdjacentHTML('beforebegin', html);
+    body.innerHTML = '';
+    updateCharCount();
+    scrollConvoToBottom();
+    showToast('Reply sent successfully!', '📤');
+}
+
+function addNote() {
+    const body = document.getElementById('rteBody');
+    if (!body.innerText.trim()) { showToast('Please write a note', '⚠️'); return; }
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    const html = '<div class="msg-wrap" style="animation:slideUp .25s ease;"><div class="msg-card internal"><div class="msg-header"><div class="msg-av" style="background:linear-gradient(135deg,#F59E0B,#EA6C00)">PK</div><div><div class="msg-author-name">Prithvi Kumar</div><div class="msg-author-role" style="color:#92400E">Internal Note</div></div><div class="msg-header-right"><span class="msg-type-badge b-internal">🔒 Internal</span><span class="msg-timestamp">' + timeStr + '</span></div></div><div class="msg-body"><p>' + body.innerHTML + '</p></div></div></div>';
+    const anchor = document.getElementById('convo-bottom');
+    if (anchor) anchor.insertAdjacentHTML('beforebegin', html);
+    body.innerHTML = '';
+    updateCharCount();
+    scrollConvoToBottom();
+    showToast('Internal note added', '🔒');
+}
+
+/* ============================================================
+   STATUS / WORKFLOW LOGIC
+============================================================ */
+let pendingStatus = '';
+
+function handleStatusChange() {
+    const sel = document.getElementById('statusSelect');
+    const val = sel.value;
+    document.getElementById('pendingOnField').style.display = (val === 'pending') ? 'block' : 'none';
+    sel.className = 'status-selector s-' + val;
+
+    if (val === 'resolved' || val === 'closed') {
+        pendingStatus = val;
+        document.getElementById('modalTitle').textContent = (val === 'resolved') ? 'Resolve Ticket' : 'Close Ticket';
+        document.getElementById('modalSub').textContent = (val === 'resolved')
+            ? 'This will mark the ticket as resolved and notify the customer.'
+            : 'This will close the ticket permanently.';
+        document.getElementById('modalConfirm').textContent = (val === 'resolved') ? 'Resolve Ticket' : 'Close Ticket';
+        document.getElementById('statusModal').classList.add('open');
+    } else {
+        showToast('Status updated to ' + val, '🔄');
+        updateWorkflow(val);
+    }
+}
+
+function handlePendingOn() {
+    const val = document.getElementById('pendingOnSelect').value;
+    const badge = document.getElementById('pendingOnBadge');
+    const bt = document.getElementById('pendingOnBadgeText');
+    const labels = { tech:'Tech Team', product:'Product Team', customer:'Customer', internal:'Internal Team', finance:'Finance Team', management:'Management', vendor:'Third Party Vendor' };
+    if (val) {
+        badge.style.display = 'block';
+        bt.textContent = '⏳ Pending on ' + labels[val];
+        showToast('Ticket → Pending — ' + labels[val], '⏳');
+        updateWorkflow('pending');
+    } else {
+        badge.style.display = 'none';
+    }
+}
+
+function updateWorkflow(status) {
+    const steps = document.querySelectorAll('.wf-step');
+    const order = ['new', 'open', 'pending', 'resolved'];
+    const idx = order.indexOf(status);
+    steps.forEach((s, i) => {
+        s.className = 'wf-step';
+        if (i < idx) s.classList.add('done');
+        else if (i === idx) s.classList.add('active');
+    });
+}
+
+function confirmStatusChange() {
+    closeModal();
+    const sel = document.getElementById('statusSelect');
+    sel.className = 'status-selector s-' + pendingStatus;
+    showToast('Ticket ' + pendingStatus + '!', pendingStatus === 'resolved' ? '✅' : '🔒');
+    updateWorkflow(pendingStatus);
+}
+
+function resolveTicket() {
+    pendingStatus = 'resolved';
+    document.getElementById('modalTitle').textContent = 'Resolve Ticket';
+    document.getElementById('modalSub').textContent = 'Mark as resolved and send resolution email to customer.';
+    document.getElementById('modalConfirm').textContent = 'Resolve Ticket';
+    document.getElementById('statusModal').classList.add('open');
+}
+
+function closeModal() {
+    document.getElementById('statusModal').classList.remove('open');
+    if (pendingStatus) {
+        const sel = document.getElementById('statusSelect');
+        const prev = sel.getAttribute('data-prev') || 'open';
+        sel.value = prev;
+        sel.className = 'status-selector s-' + prev;
+        pendingStatus = '';
+    }
+}
+
+/* ============================================================
+   COLLAPSIBLE RIGHT-PANEL CARDS
+============================================================ */
+function toggleCard(head) {
+    const body = head.nextElementSibling;
+    const ch = head.querySelector('.rpc-chevron');
+    body.classList.toggle('hidden');
+    ch.classList.toggle('open');
+}
+
+/* ============================================================
+   SLA COUNTDOWN TIMER
+============================================================ */
+let slaSeconds = 4 * 3600 + 22 * 60 + 8;
+setInterval(function () {
+    if (slaSeconds > 0) slaSeconds--;
+    const h = Math.floor(slaSeconds / 3600);
+    const m = Math.floor((slaSeconds % 3600) / 60);
+    const s = slaSeconds % 60;
+    const str = String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    const el = document.getElementById('slaTimer');
+    if (el) el.textContent = str;
+
+    const pct = Math.max(0, Math.min(100, (slaSeconds / (8 * 3600)) * 100));
+    const bar = document.getElementById('slaBar');
+    const row = document.getElementById('resolutionSla');
+    if (bar) {
+        bar.style.width = pct + '%';
+        if (pct > 40) { bar.style.background = 'linear-gradient(90deg,var(--amber),#FCD34D)'; row.className = 'sla-row warn'; }
+        else { bar.style.background = 'linear-gradient(90deg,var(--red),#EF9A9A)'; row.className = 'sla-row breach'; }
+    }
+}, 1000);
+
+/* ============================================================
+   TOAST
+============================================================ */
+let tt;
+function showToast(msg, icon) {
+    icon = icon || '✅';
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    document.getElementById('toastIcon').textContent = icon;
+    t.classList.add('show');
+    clearTimeout(tt);
+    tt = setTimeout(function () { t.classList.remove('show'); }, 3000);
+}
+
+/* ============================================================
+   GLOBAL EXPORTS
+============================================================ */
+window.renderTickets = renderTickets;
+window.setFilter = setFilter;
+window.filterTickets = filterTickets;
+window.selectTicket = selectTicket;
+window.setReplyTab = setReplyTab;
+window.execCmd = execCmd;
+window.insertLink = insertLink;
+window.updateCharCount = updateCharCount;
+window.focusReply = focusReply;
+window.sendReply = sendReply;
+window.addNote = addNote;
+window.handleStatusChange = handleStatusChange;
+window.handlePendingOn = handlePendingOn;
+window.updateWorkflow = updateWorkflow;
+window.confirmStatusChange = confirmStatusChange;
+window.resolveTicket = resolveTicket;
+window.closeModal = closeModal;
+window.toggleCard = toggleCard;
+window.showToast = showToast;
+
+/* ============================================================
+   INIT — render list + render the ticket the PHP page loaded
+============================================================ */
+document.addEventListener('DOMContentLoaded', function () {
+    renderTickets(TICKETS);
+    const current = TICKETS.find(t => t.id === CURRENT_TICKET_ID) || TICKETS[0];
+    if (current) {
+        renderConversation(current);
+        updateTopbar(current);
+        updateRightPanel(current);
+    }
+    const modal = document.getElementById('statusModal');
+    if (modal) {
+        modal.addEventListener('click', function (e) { if (e.target === this) closeModal(); });
+    }
+});
+</script>
+
+
+        </div><!-- /#view-ticket-detail -->
+
+        <!-- VIEW 4: SLA TRACKER -->
+        <div class="view" id="view-sla">
+          <div class="dash-greeting">
+            <h2>SLA Tracker</h2>
+            <p>Monitor SLA compliance and manage breach risks in real-time.</p>
+          </div>
+          <div class="sla-tracker-grid">
+            <div class="sla-stat"><div class="sla-stat-val" style="color:var(--green)">92.4%</div><div class="sla-stat-label">Overall SLA Compliance</div></div>
+            <div class="sla-stat"><div class="sla-stat-val" style="color:var(--red)">47</div><div class="sla-stat-label">SLA Breached (This Month)</div></div>
+            <div class="sla-stat"><div class="sla-stat-val" style="color:var(--amber)">12</div><div class="sla-stat-label">At Risk (Next 2 Hours)</div></div>
+          </div>
+          <div class="sla-table-wrap">
+            <div style="padding:14px 20px;border-bottom:1px solid var(--i10);display:flex;align-items:center;justify-content:space-between;">
+              <div style="font-family:var(--font-disp);font-weight:700;font-size:14px;">SLA Breach Risk Tickets</div>
+              <span class="badge b-sla">12 At Risk</span>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Ticket ID</th><th>Subject</th><th>Customer</th>
+                  <th>Priority</th><th>SLA Remaining</th><th>Status</th><th>Agent</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr onclick="showView(&#39;view-ticket-detail&#39;, null)">
+                  <td class="td-id">#TK-24975</td>
+                  <td class="td-subject">API rate limit causing production outage</td>
+                  <td>Stark Industries</td>
+                  <td><span class="badge p-critical">Critical</span></td>
+                  <td><span class="sla-pill breach">⚠ 0:14:32</span></td>
+                  <td><span class="badge b-open">Open</span></td>
+                  <td><div class="ag-chip"><div class="ag-av" style="background:#7C3AED">PM</div>Priya</div></td>
+                </tr>
+                <tr onclick="showView(&#39;view-ticket-detail&#39;, null)">
+                  <td class="td-id">#TK-24973</td>
+                  <td class="td-subject">Payment gateway returning 500 errors</td>
+                  <td>Wayne Enterprises</td>
+                  <td><span class="badge p-high">High</span></td>
+                  <td><span class="sla-pill warn">⏳ 0:48:15</span></td>
+                  <td><span class="badge b-pending">Pending</span></td>
+                  <td><div class="ag-chip"><div class="ag-av" style="background:#F59E0B">AK</div>Arjun</div></td>
+                </tr>
+                <tr onclick="showView(&#39;view-ticket-detail&#39;, null)">
+                  <td class="td-id">#TK-24970</td>
+                  <td class="td-subject">Data export missing last 30 days</td>
+                  <td>Globex Corp</td>
+                  <td><span class="badge p-high">High</span></td>
+                  <td><span class="sla-pill warn">⏳ 1:22:08</span></td>
+                  <td><span class="badge b-open">Open</span></td>
+                  <td><div class="ag-chip"><div class="ag-av" style="background:#00897B">RS</div>Rahul</div></td>
+                </tr>
+                <tr onclick="showView(&#39;view-ticket-detail&#39;, null)">
+                  <td class="td-id">#TK-24968</td>
+                  <td class="td-subject">SSO login broken for all users</td>
+                  <td>Initech</td>
+                  <td><span class="badge p-critical">Critical</span></td>
+                  <td><span class="sla-pill breach">⚠ 0:08:45</span></td>
+                  <td><span class="badge b-pending">Pending</span></td>
+                  <td><div class="ag-chip"><div class="ag-av" style="background:#1565C0">SL</div>Sneha</div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div><!-- /#view-sla -->
+
+        <!-- VIEW 5: REPORTS -->
+        <div class="view" id="view-reports">
+          <div class="dash-greeting">
+            <h2>Reports &amp; Analytics</h2>
+            <p>Detailed insights into your support team performance.</p>
+          </div>
+          <div class="kpi-grid">
+            <div class="kpi-card"><div class="kpi-icon" style="background:var(--cl)">📊</div><div class="kpi-val" style="color:var(--c)">4.8★</div><div class="kpi-label">Avg CSAT Score</div><div class="kpi-change up">↑ 0.3 this month</div></div>
+            <div class="kpi-card"><div class="kpi-icon" style="background:var(--gl)">⚡</div><div class="kpi-val" style="color:var(--green)">6h 24m</div><div class="kpi-label">Avg Resolution</div><div class="kpi-change up">↓ 18% faster</div></div>
+            <div class="kpi-card"><div class="kpi-icon" style="background:var(--al)">📬</div><div class="kpi-val" style="color:var(--amber)">14 min</div><div class="kpi-label">First Response</div><div class="kpi-change up">↓ 12% faster</div></div>
+            <div class="kpi-card"><div class="kpi-icon" style="background:var(--pl)">🔄</div><div class="kpi-val" style="color:var(--purple)">2.3</div><div class="kpi-label">Avg Replies/Ticket</div><div class="kpi-change up">↓ 0.4 per ticket</div></div>
+            <div class="kpi-card"><div class="kpi-icon" style="background:var(--bl)">🎯</div><div class="kpi-val" style="color:var(--blue)">92.4%</div><div class="kpi-label">SLA Compliance</div><div class="kpi-change up">↑ 3.6% this month</div></div>
+            <div class="kpi-card"><div class="kpi-icon" style="background:var(--rl)">😊</div><div class="kpi-val" style="color:var(--red)">1.8%</div><div class="kpi-label">Escalation Rate</div><div class="kpi-change up">↓ 0.5% this month</div></div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-card-hd">
+              <div class="dash-card-title">Monthly Ticket Volume Trend</div>
+              <div class="dash-card-action">Export Report →</div>
+            </div>
+            <div class="dash-card-body">
+              <div class="chart-wrap" style="height:120px;gap:8px;">
+                <div class="chart-bar" style="height:40%;background:linear-gradient(180deg,var(--c),var(--cm));border-radius:6px 6px 0 0;"></div>
+                <div class="chart-bar" style="height:55%;background:linear-gradient(180deg,var(--c),var(--cm));border-radius:6px 6px 0 0;"></div>
+                <div class="chart-bar" style="height:48%;background:linear-gradient(180deg,var(--c),var(--cm));border-radius:6px 6px 0 0;"></div>
+                <div class="chart-bar" style="height:70%;background:linear-gradient(180deg,var(--c),var(--cm));border-radius:6px 6px 0 0;"></div>
+                <div class="chart-bar" style="height:62%;background:linear-gradient(180deg,var(--c),var(--cm));border-radius:6px 6px 0 0;"></div>
+                <div class="chart-bar" style="height:80%;background:linear-gradient(180deg,var(--c),var(--cm));border-radius:6px 6px 0 0;"></div>
+                <div class="chart-bar" style="height:75%;background:linear-gradient(180deg,var(--c),var(--cm));border-radius:6px 6px 0 0;"></div>
+                <div class="chart-bar" style="height:90%;background:linear-gradient(180deg,var(--c),var(--cm));border-radius:6px 6px 0 0;"></div>
+                <div class="chart-bar" style="height:85%;background:linear-gradient(180deg,var(--c),var(--cm));border-radius:6px 6px 0 0;"></div>
+                <div class="chart-bar" style="height:100%;background:linear-gradient(180deg,var(--cd),var(--c));border-radius:6px 6px 0 0;"></div>
+                <div class="chart-bar" style="height:95%;background:linear-gradient(180deg,var(--cd),var(--c));border-radius:6px 6px 0 0;"></div>
+                <div class="chart-bar" style="height:88%;background:linear-gradient(180deg,var(--c),var(--cm));border-radius:6px 6px 0 0;opacity:.7"></div>
+              </div>
+              <div class="chart-labels">
+                <div class="chart-label">Jun</div><div class="chart-label">Jul</div>
+                <div class="chart-label">Aug</div><div class="chart-label">Sep</div>
+                <div class="chart-label">Oct</div><div class="chart-label">Nov</div>
+                <div class="chart-label">Dec</div><div class="chart-label">Jan</div>
+                <div class="chart-label">Feb</div><div class="chart-label">Mar</div>
+                <div class="chart-label">Apr</div><div class="chart-label">May</div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /#view-reports -->
+
+        <!-- VIEW 6: SETTINGS -->
+        <div class="view" id="view-settings">
+          <div class="dash-greeting">
+            <h2>Settings</h2>
+            <p>Configure your TickoraDesk workspace preferences.</p>
+          </div>
+          <div class="form-card" style="max-width:640px;">
+            <div class="form-card-hd">
+              <div class="form-card-icon" style="background:var(--cl)">⚙️</div>
+              <div class="form-card-title">General Settings</div>
+            </div>
+            <div class="form-card-body">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Organisation Name</label>
+                  <input class="form-input" value="TickoraDesk Inc.">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Support Email</label>
+                  <input class="form-input" value="support@tickoradesk.com">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Default SLA Policy</label>
+                  <select class="form-select">
+                    <option>Standard (24h)</option>
+                    <option>Priority (4h)</option>
+                    <option>Critical (1h)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Timezone</label>
+                  <select class="form-select">
+                    <option>Asia/Kolkata (IST +5:30)</option>
+                    <option>UTC</option>
+                  </select>
+                </div>
+              </div>
+              <button class="btn-submit" style="margin-top:8px;" onclick="showToast(&#39;Settings saved!&#39;,&#39;✅&#39;)">
+                Save Settings
+              </button>
+            </div>
+          </div>
+        </div><!-- /#view-settings -->
+
+      </div><!-- /.content -->
+    </div><!-- /.main-area -->
+  </div><!-- /.app -->
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <span class="toast-icon" id="toastIcon">✅</span>
+    <span id="toastMsg">Action completed</span>
+  </div>
+
+  <script>
+    const loginTime = 1783787282;
+
+    /* showView — unchanged from original */
+    function showView(viewId, clickedEl) {
+        document.querySelectorAll('.view').forEach(function(v) {
+            v.classList.remove('active');
+        });
+        var target = document.getElementById(viewId);
+        if (target) {
+            target.classList.add('active');
+        } else {
+            console.warn('showView: no element with id="' + viewId + '"');
+        }
+        if (clickedEl) {
+            document.querySelectorAll('.sb-item').forEach(function(item) {
+                item.classList.remove('active');
+            });
+            clickedEl.classList.add('active');
+        }
+        var dropdown = document.getElementById('notifDropdown');
+        if (dropdown) dropdown.style.display = 'none';
+        var contentArea = document.querySelector('.content');
+        if (contentArea) contentArea.scrollTop = 0;
+    }
+
+    /* Notification toggle — unchanged */
+    function toggleNotif(e) {
+        e.stopPropagation();
+        var dropdown = document.getElementById('notifDropdown');
+        dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
+    }
+    document.addEventListener('click', function(e) {
+        var dropdown = document.getElementById('notifDropdown');
+        var bell = e.target.closest('.tb-icon-btn');
+        if (dropdown && dropdown.style.display === 'block' && !bell && !e.target.closest('#notifDropdown')) {
+            dropdown.style.display = 'none';
+        }
+    });
+    function markAllRead() {
+        document.getElementById('notifCount').style.display = 'none';
+        document.getElementById('dropdownNotifCount').textContent = '0 New';
+        showToast('All notifications marked as read', '✅');
+    }
+
+    /* Priority selector — unchanged */
+    function selectPriority(el, activeClass) {
+        document.querySelectorAll('.priority-opt').forEach(function(opt) {
+            opt.className = 'priority-opt';
+        });
+        el.classList.add(activeClass);
+        document.getElementById('priority_value').value = el.innerText
+            .replace('🔴 ','').replace('🟠 ','').replace('🟡 ','').replace('🟢 ','').trim();
+    }
+
+    /* Toast — unchanged */
+    function showToast(message, icon) {
+        var toast = document.getElementById('toast');
+        document.getElementById('toastMsg').textContent = message;
+        document.getElementById('toastIcon').textContent = icon || '✅';
+        toast.classList.add('show');
+        setTimeout(function() { toast.classList.remove('show'); }, 3000);
+    }
+
+    /* Logout — unchanged */
+    function handleLogout(e) {
+        return confirm('Are you sure you want to log out?');
+    }
+
+    /* Session timer — unchanged */
+    function updateSessionClock() {
+        var now  = Math.floor(Date.now() / 1000);
+        var diff = now - loginTime;
+        var hrs  = Math.floor(diff / 3600);
+        var mins = Math.floor((diff % 3600) / 60);
+        var secs = diff % 60;
+        var formatted = String(hrs).padStart(2,'0') + ':' +
+                        String(mins).padStart(2,'0') + ':' +
+                        String(secs).padStart(2,'0');
+        var clockEl = document.getElementById('sessionClock');
+        if (clockEl) clockEl.textContent = formatted;
+        var detailTimerEl = document.getElementById('detailTimer');
+        if (detailTimerEl) detailTimerEl.textContent = formatted;
+    }
+    setInterval(updateSessionClock, 1000);
+    updateSessionClock();
+
+    /* Init */
+    document.addEventListener('DOMContentLoaded', function() {
+        showView('view-dashboard', document.querySelector('.sb-item.active'));
+    });
+  </script>
+
+  <script src="./TickoraDesk — Dashboard_files/script.js.download"></script>
+
+</body></html>
