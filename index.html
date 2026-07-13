@@ -1532,53 +1532,6 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.12 });
 document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 </script>
-  <!-- WhatsApp Float Button -->
-<a href="https://wa.me/918581973282?text=Hello%20TickoraDesk" class="whatsapp-float" target="_blank" rel="noopener noreferrer">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
-</a>
-
-<style>
-/* Base Style for Desktop & Mobile */
-.whatsapp-float {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 60px;
-    height: 60px;
-    background-color: #25d366; /* WhatsApp Green */
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    z-index: 9999;
-    transition: transform 0.3s ease;
-}
-
-/* Hover effect for Desktop */
-.whatsapp-float:hover {
-    transform: scale(1.1);
-}
-
-/* Icon Styling */
-.whatsapp-float img {
-    width: 35px;
-    height: 35px;
-}
-
-/* Mobile Responsive Adjustments */
-@media screen and (max-width: 768px) {
-    .whatsapp-float {
-        bottom: 20px;
-        right: 20px;
-        width: 50px;
-        height: 50px;
-    }
-    .whatsapp-float img {
-        width: 30px;
-        height: 30px;
-    }
-}
   
    <!--Start of Tawk.to Script-->
  <script type="text/javascript">
