@@ -669,20 +669,26 @@ footer { background: var(--ink); color: white; }
     height:auto;
     border-radius:20px;
 }
-  @media (max-width: 768px) {
+  @media (max-width: 768px){
 
   .hero-dashboard{
     width:100%;
     margin:20px auto 0;
   }
 
-  .hero-dashboard-img{
-    width:100%;
-    height:auto;
+  .float-card{
+    transform:scale(0.75);
+    transform-origin:center;
   }
 
-  .float-card{
-    display:none;
+  .float-card-1{
+    top:-15px;
+    right:-15px;
+  }
+
+  .float-card-2{
+    bottom:-15px;
+    left:-15px;
   }
 
 }
