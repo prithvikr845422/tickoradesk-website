@@ -323,12 +323,16 @@ nav.scrolled { box-shadow: var(--shadow); }
   color: #00B7FF;
 }
 .trust-logos {
+  width: 100%;
+  overflow: hidden;
+}
+
+.trust-logo-track {
   display: flex;
   align-items: center;
   gap: 32px;
-  flex-wrap: nowrap;
-  overflow: hidden;
-  animation: trustSlide 4s linear infinite;
+  width: max-content;
+  animation: trustSlide 6s linear infinite;
 }
 
 @keyframes trustSlide {
@@ -337,7 +341,7 @@ nav.scrolled { box-shadow: var(--shadow); }
   }
 
   to {
-    transform: translateX(-50%);
+    transform: translateX(calc(-50% - 16px));
   }
 }
 .trust-logo-item {
