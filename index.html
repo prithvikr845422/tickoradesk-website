@@ -330,22 +330,21 @@ nav.scrolled { box-shadow: var(--shadow); }
 
 .trust-logo-track {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: 32px;
   width: max-content;
-
   animation: trustSlide 6s linear infinite;
 }
-
+.trust-logo-group {
+  display: flex;
+  gap: 32px;
+  padding-right: 32px;
+  flex-shrink: 0;
+}
 @keyframes trustSlide {
   from {
     transform: translateX(0);
   }
-
   to {
-    transform: translateX(calc(-50% - 16px));
+    transform: translateX(-50%);
   }
 }
   .trust-logo-item {
