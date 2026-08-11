@@ -326,6 +326,8 @@ trust-logos
 
 .trust-logo-track {
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 32px;
   width: max-content;
@@ -344,10 +346,10 @@ trust-logos
 .trust-logo-item {
   width: 150px;
   height: 60px;
+  flex: 0 0 150px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 }
 
 .trust-logo-item img {
