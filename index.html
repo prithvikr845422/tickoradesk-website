@@ -322,7 +322,13 @@ nav.scrolled { box-shadow: var(--shadow); }
   .trust-label strong {
   color: #00B7FF;
 }
-.trust-logos { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
+.trust-logos {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
 .trust-logo-item {
   width: 150px;
   height: 60px;
