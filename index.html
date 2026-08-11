@@ -62,6 +62,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 }
 *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
 html { scroll-behavior: smooth; font-size: 16px; }
+html, body { max-width: 100%; overflow-x: hidden; }
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
   background: var(--white);
@@ -303,6 +304,7 @@ nav.scrolled { box-shadow: var(--shadow); }
 .trust-strip {
   background: var(--ink-05); border-top: 1px solid var(--ink-10);
   border-bottom: 1px solid var(--ink-10); padding: 26px 40px;
+  width: 100%; overflow: hidden; box-sizing: border-box;
 }
 .trust-inner {
   max-width: 1280px;
@@ -312,6 +314,8 @@ nav.scrolled { box-shadow: var(--shadow); }
   align-items: center;
   justify-content: center;
   gap: 22px;
+  width: 100%;
+  overflow: hidden;
 }
 .trust-label {
   font-size: 24px;
@@ -326,6 +330,7 @@ nav.scrolled { box-shadow: var(--shadow); }
 }
 .trust-logos {
   width: 100%;
+  max-width: 100%;
   overflow: hidden;
   position: relative;
 }
@@ -335,23 +340,24 @@ nav.scrolled { box-shadow: var(--shadow); }
   width: max-content;
   flex-wrap: nowrap;
   align-items: center;
-  gap: 32px;
-  animation: trustSlide 12s linear infinite;
+  animation: trustSlide 25s linear infinite;
   will-change: transform;
 }
 .trust-logo-group {
   display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
   gap: 32px;
   padding-right: 32px;
   flex-shrink: 0;
 }
 @keyframes trustSlide {
   from {
-    transform: translateX(100vw);
+    transform: translateX(0%);
   }
 
   to {
-    transform: translateX(-100%);
+    transform: translateX(-50%);
   }
 }
   .trust-logo-item {
@@ -385,11 +391,11 @@ nav.scrolled { box-shadow: var(--shadow); }
    FEATURES SECTION
 ═══════════════════════════════════════════ */
 .features-bg { background: linear-gradient(180deg, #F4FBFD 0%, white 100%); }
-.features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+.features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; width: 100%; }
 .feat-card {
   background: white; border: 1px solid var(--ink-10); border-radius: var(--r-xl);
   overflow: hidden; box-shadow: var(--shadow-sm); transition: all .3s; cursor: pointer;
-  position: relative;
+  position: relative; width: 100%; box-sizing: border-box; min-width: 0;
 }
 .feat-card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
@@ -402,7 +408,7 @@ nav.scrolled { box-shadow: var(--shadow); }
   height: 180px; background: #0F1923; position: relative; overflow: hidden;
   display: flex; flex-direction: column;
 }
-.feat-card-preview-inner { flex: 1; padding: 12px; }
+.feat-card-preview-inner { flex: 1; padding: 12px; min-width: 0; overflow: hidden; }
 .feat-card-body { padding: 24px; }
 .feat-card-icon { width: 44px; height: 44px; border-radius: var(--r); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 14px; }
 .feat-card-title { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 17px; margin-bottom: 8px; }
@@ -410,13 +416,13 @@ nav.scrolled { box-shadow: var(--shadow); }
 
 /* Mini dashboard components inside feature cards */
 .mini-kpi-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; margin-bottom: 8px; }
-.mini-kpi { background: rgba(255,255,255,0.06); border-radius: 6px; padding: 6px 8px; border: 1px solid rgba(255,255,255,0.06); }
+.mini-kpi { background: rgba(255,255,255,0.06); border-radius: 6px; padding: 6px 8px; border: 1px solid rgba(255,255,255,0.06); min-width: 0; }
 .mini-kpi-val { font-weight: 800; font-size: 14px; color: white; line-height: 1; }
 .mini-kpi-label { font-size: 8px; color: rgba(255,255,255,0.4); }
 .mini-trow { display: flex; align-items: center; gap: 6px; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
 .mini-trow:last-child { border-bottom: none; }
 .mini-av-xs { width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 6px; font-weight: 700; flex-shrink: 0; }
-.mini-tsubj { font-size: 9px; color: rgba(255,255,255,0.7); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mini-tsubj { font-size: 9px; color: rgba(255,255,255,0.7); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 .mini-badge { font-size: 7px; padding: 1px 4px; border-radius: 3px; font-weight: 700; flex-shrink: 0; }
 .mini-sla-bar { height: 4px; border-radius: 2px; background: rgba(255,255,255,0.08); overflow: hidden; margin-bottom: 6px; }
 .mini-sla-fill { height: 100%; border-radius: 2px; }
@@ -429,10 +435,10 @@ nav.scrolled { box-shadow: var(--shadow); }
 .mini-chart-bar { display: flex; align-items: flex-end; gap: 3px; height: 50px; }
 .mini-bar { flex: 1; border-radius: 3px 3px 0 0; }
 .mini-agent-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
-.mini-agent-name { font-size: 9px; color: rgba(255,255,255,0.7); flex: 1; }
-.mini-agent-bar-wrap { width: 60px; height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
+.mini-agent-name { font-size: 9px; color: rgba(255,255,255,0.7); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mini-agent-bar-wrap { width: 60px; height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; flex-shrink: 0; }
 .mini-agent-bar { height: 100%; border-radius: 2px; background: var(--cyan); }
-.mini-agent-val { font-size: 9px; color: white; font-weight: 700; width: 22px; text-align: right; }
+.mini-agent-val { font-size: 9px; color: white; font-weight: 700; width: 22px; text-align: right; flex-shrink: 0; }
 
 /* ═══════════════════════════════════════════
    HOW IT WORKS
@@ -661,19 +667,6 @@ footer { background: var(--ink); color: white; }
 .fade-up-d3 { transition-delay: .3s; }
 
 /* ── RESPONSIVE ── */
-  @media (max-width: 600px) {
-  .features-grid {
-    width: 100%;
-    padding: 0 16px;
-    box-sizing: border-box;
-  }
-
-  .feat-card {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-}
 @media (max-width: 1024px) {
   .hero-inner { flex-direction: column; gap: 48px; }
   .hero-right { width: 100%; max-width: 600px; }
@@ -715,10 +708,11 @@ footer { background: var(--ink); color: white; }
   }  .nav-links { display: none; }
   .offer-banner-inner { flex-direction: column; text-align: center; gap: 12px; }
   .offer-cards { flex-wrap: wrap !important; justify-content: center; gap: 6px; }
-  .hero { padding: 80px 20px 60px; }
-  .section { padding: 60px 20px; }
-  .section-sm { padding: 50px 20px; }
-  .features-grid, .pricing-grid, .testi-grid, .blog-grid, .team-grid { grid-template-columns: 1fr; }
+  .hero { padding: 80px 16px 60px; }
+  .section { padding: 60px 16px; }
+  .section-sm { padding: 50px 16px; }
+  .features-grid, .pricing-grid, .testi-grid, .blog-grid, .team-grid { grid-template-columns: 1fr; gap: 20px; }
+  .feat-card { max-width: 100%; }
   .hiw-grid { grid-template-columns: 1fr; }
   .hiw-grid::before { display: none; }
   .cta-inner { flex-direction: column; }
@@ -726,8 +720,10 @@ footer { background: var(--ink); color: white; }
   .footer-bottom-inner { flex-direction: column; gap: 12px; text-align: center; }
   .form-row { grid-template-columns: 1fr; }
   .int-grid { grid-template-columns: repeat(3,1fr); }
-  .trust-inner { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .trust-inner { align-items: center; gap: 14px; }
   .hero-stats { gap: 16px; }
+  .trust-strip { padding: 22px 0; }
+  .trust-label { font-size: 18px; padding: 0 16px; white-space: normal; }
 }
   .hero-dashboard{
     border-radius:20px;
@@ -768,6 +764,14 @@ footer { background: var(--ink); color: white; }
   .trust-logo-item {
   width: 120px;
   height: 55px;
+}
+@media (max-width: 480px) {
+  .hero { padding: 70px 16px 50px; }
+  .section { padding: 48px 16px; }
+  .section-sm { padding: 40px 16px; }
+  .feat-card-body { padding: 20px; }
+  .int-grid { grid-template-columns: repeat(2,1fr); }
+  .price-card { padding: 32px 20px; }
 }
 </style>
 </head>
@@ -959,23 +963,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="trust-label">Trusted by <strong>growing businesses</strong></span>
    <div class="trust-logos">
   <div class="trust-logo-track">
-
-    <div class="trust-logo-item">
-      <img src="assets/logos/BMI.jpeg" alt="Bihar Metal Industries">
+    <div class="trust-logo-group">
+      <div class="trust-logo-item">
+        <img src="assets/logos/BMI.jpeg" alt="Bihar Metal Industries">
+      </div>
+      <div class="trust-logo-item">
+        <img src="assets/logos/GifXi.jpg" alt="GIFXi">
+      </div>
+      <div class="trust-logo-item">
+        <img src="assets/logos/BMI.jpeg" alt="Bihar Metal Industries">
+      </div>
+      <div class="trust-logo-item">
+        <img src="assets/logos/GifXi.jpg" alt="GIFXi">
+      </div>
     </div>
-
-    <div class="trust-logo-item">
-      <img src="assets/logos/GifXi.jpg" alt="GIFXi">
+    <div class="trust-logo-group" aria-hidden="true">
+      <div class="trust-logo-item">
+        <img src="assets/logos/BMI.jpeg" alt="">
+      </div>
+      <div class="trust-logo-item">
+        <img src="assets/logos/GifXi.jpg" alt="">
+      </div>
+      <div class="trust-logo-item">
+        <img src="assets/logos/BMI.jpeg" alt="">
+      </div>
+      <div class="trust-logo-item">
+        <img src="assets/logos/GifXi.jpg" alt="">
+      </div>
     </div>
-
-    <div class="trust-logo-item">
-      <img src="assets/logos/BMI.jpeg" alt="Bihar Metal Industries">
-    </div>
-
-    <div class="trust-logo-item">
-      <img src="assets/logos/GifXi.jpg" alt="GIFXi">
-    </div>
-</div>    
+  </div>
+  </div>
   </div>
 </div>
 <div class="features-bg" id="features">
