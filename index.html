@@ -491,6 +491,65 @@ nav.scrolled { box-shadow: var(--shadow); }
 .price-feat-check { width: 20px; height: 20px; border-radius: 50%; background: var(--cyan-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .price-feat-check svg { width: 11px; height: 11px; color: var(--cyan-dark); }
 
+/* ── Plan tagline ── */
+.price-desc { font-size: 14px; color: var(--ink-60); line-height: 1.6; margin: 2px 0 22px; min-height: 42px; }
+
+/* ── "Everything in X" inherited-tier row ── */
+.price-feat-item.inherited { font-weight: 700; color: var(--ink); padding-bottom: 10px; margin-bottom: 2px; border-bottom: 1px dashed var(--ink-10); }
+.price-feat-item.inherited .price-feat-check { background: var(--ink); }
+.price-feat-item.inherited .price-feat-check svg { color: white; }
+
+/* ── Billing toggle ── */
+.billing-toggle-wrap { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 0 auto 48px; }
+.billing-toggle {
+  display: inline-flex; align-items: center; background: var(--ink-05);
+  border: 1.5px solid var(--ink-10); border-radius: 99px; padding: 4px; position: relative;
+}
+.billing-toggle-btn {
+  border: none; background: transparent; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px; font-weight: 700; color: var(--ink-40); padding: 10px 26px;
+  border-radius: 99px; cursor: pointer; transition: all .2s; position: relative; z-index: 1;
+  display: flex; align-items: center; gap: 8px;
+}
+.billing-toggle-btn.active { color: white; }
+.billing-toggle-btn.active { background: linear-gradient(135deg, var(--cyan-dark), var(--cyan)); box-shadow: 0 4px 14px rgba(0,188,212,0.3); }
+.billing-save-chip {
+  background: var(--green-l); color: var(--green); font-size: 11px; font-weight: 800;
+  padding: 2px 9px; border-radius: 99px; letter-spacing: .01em;
+}
+.billing-toggle-btn.active .billing-save-chip { background: rgba(255,255,255,0.25); color: white; }
+
+/* ── Price row with strike-through for yearly savings ── */
+.price-amount-row { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.price-was { font-size: 16px; color: var(--ink-40); text-decoration: line-through; font-weight: 600; }
+.price-save-tag {
+  font-size: 11px; font-weight: 800; color: var(--green); background: var(--green-l);
+  padding: 3px 10px; border-radius: 99px; white-space: nowrap;
+}
+
+/* ── Enterprise band (separate custom-plan section) ── */
+.enterprise-band {
+  margin-top: 28px; background: white; border: 1.5px solid var(--ink-10); border-radius: var(--r-xl);
+  padding: 40px 44px; box-shadow: var(--shadow-sm); display: flex; align-items: center;
+  justify-content: space-between; gap: 40px;
+}
+.enterprise-band-left { flex: 1; min-width: 0; }
+.enterprise-band-plan { font-size: 12px; font-weight: 800; color: var(--cyan-dark); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 8px; }
+.enterprise-band-title { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 24px; color: var(--ink); letter-spacing: -0.5px; margin-bottom: 8px; }
+.enterprise-band-desc { font-size: 14px; color: var(--ink-60); max-width: 460px; margin-bottom: 20px; line-height: 1.7; }
+.enterprise-band-feats { display: flex; flex-wrap: wrap; gap: 10px 20px; }
+.enterprise-band-feat { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-60); font-weight: 500; }
+.enterprise-band-right { flex-shrink: 0; text-align: center; }
+.enterprise-band-price { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 28px; color: var(--ink); letter-spacing: -1px; margin-bottom: 4px; }
+.enterprise-band-price-sub { font-size: 12px; color: var(--ink-40); margin-bottom: 18px; }
+
+@media (max-width: 768px) {
+  .enterprise-band { flex-direction: column; align-items: stretch; padding: 28px 24px; text-align: center; }
+  .enterprise-band-feats { justify-content: center; }
+  .enterprise-band-right { width: 100%; }
+  .billing-toggle-wrap { margin-bottom: 36px; }
+}
+
 /* ═══════════════════════════════════════════
    TESTIMONIALS
 ═══════════════════════════════════════════ */
@@ -1190,59 +1249,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="section">
     <div class="sec-center">
       <div class="eyebrow">Pricing Plans</div>
-      <h2 class="sec-title">Simple, transparent <span>pricing</span></h2>
-      <p class="sec-sub">Start free. No credit card needed. Scale as your team grows. All plans include a 14-day free trial.</p>
+      <h2 class="sec-title">Professional support software, <span>without the enterprise complexity</span></h2>
+      <p class="sec-sub">Simple, transparent pricing that scales with your team. All plans include a 14-day free trial — no credit card required.</p>
     </div>
-    <div class="pricing-grid">
-      <div class="price-card fade-up">
-        <div class="price-plan">Basic</div>
-        <div class="price-amount"><span class="price-cur">₹</span>699</div>
-        <div class="price-per">per month · billed annually</div>
-        <div class="price-users">👥 Up to 2 users</div>
-        <hr class="price-divider">
-        <ul class="price-feats">
-          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Ticket management dashboard</li>
-          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Email channel support</li>
-          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Basic SLA tracking</li>
-          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Standard reports</li>
-          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Email support</li>
-        </ul>
-        <button class="btn btn-md btn-outline" style="width:100%;justify-content:center;" onclick="openDemo()">Start Free Trial</button>
-      </div>
-      <div class="price-card featured fade-up fade-up-d1">
-        <div class="price-popular">⭐ Most Popular</div>
-        <div class="price-plan">Standard</div>
-        <div class="price-amount"><span class="price-cur">₹</span>2,499</div>
-        <div class="price-per">per month · billed annually</div>
-        <div class="price-users">👥 Up to 10 users</div>
-        <hr class="price-divider">
-        <ul class="price-feats">
-          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Everything in Basic</li>
-          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>AI reply suggestions</li>
-          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Multi-channel inbox</li>
-          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Automation workflows</li>
-          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Advanced analytics</li>
-          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Priority support</li>
-        </ul>
-        <button class="btn btn-md btn-primary" style="width:100%;justify-content:center;" onclick="openDemo()">Start Free Trial</button>
-      </div>
-      <div class="price-card fade-up fade-up-d2">
-        <div class="price-plan">Enterprise</div>
-        <div class="price-amount" style="font-size:36px;padding-top:10px;letter-spacing:-1px">Custom</div>
-        <div class="price-per">contact us for pricing</div>
-        <div class="price-users">👥 Unlimited users</div>
-        <hr class="price-divider">
-        <ul class="price-feats">
-          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Everything in Standard</li>
-          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Dedicated AI model</li>
-          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>SSO / SAML login</li>
-          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Guaranteed SLA uptime</li>
-          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>24/7 dedicated support</li>
-          <li class="price-feat-item"><span class="price-feat-check"><svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>On-prem deployment</li>
-        </ul>
-        <button class="btn btn-md btn-ghost" style="width:100%;justify-content:center;" onclick="openDemo()">Talk to Sales</button>
+
+    <div class="billing-toggle-wrap">
+      <div class="billing-toggle" role="group" aria-label="Billing cycle">
+        <button type="button" class="billing-toggle-btn active" id="billingMonthlyBtn" onclick="setBillingCycle('monthly')">Monthly</button>
+        <button type="button" class="billing-toggle-btn" id="billingYearlyBtn" onclick="setBillingCycle('yearly')">Yearly <span class="billing-save-chip" id="billingSaveChip">Save 20%</span></button>
       </div>
     </div>
+
+    <!-- Pricing cards render here from PRICING_CONFIG via renderPricingCards() -->
+    <div class="pricing-grid" id="pricingCardsRoot"></div>
+
+    <!-- Enterprise: separate custom-plan section below the 3 main cards -->
+    <div class="enterprise-band fade-up" id="enterpriseBand"></div>
+
     <div style="text-align:center;margin-top:40px">
       <p style="font-size:14px;color:var(--ink-40);margin-bottom:16px">All plans include a 14-day free trial. No credit card required.</p>
       <button class="btn btn-lg btn-outline" onclick="openDemo()">📅 Schedule a Demo to Learn More</button>
@@ -1542,6 +1565,192 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <script>
+/* ═══════════════════════════════════════════════════════════
+   CENTRALIZED PRICING CONFIGURATION
+   Single source of truth for every plan. Pricing cards, the
+   billing toggle, and the CTA → signup/checkout hand-off all
+   read from this object — update prices/features only here.
+═══════════════════════════════════════════════════════════ */
+const PRICING_CONFIG = {
+  currency: '₹',
+  yearlyDiscountPercent: 20, // applied to monthlyPrice to get the "billed annually" monthly rate
+  plans: [
+    {
+      id: 'starter',
+      name: 'Starter',
+      tagline: 'Perfect for small teams getting started with customer support.',
+      monthlyPrice: 699,
+      users: 'For 2 users',
+      popular: false,
+      features: [
+        'Ticket Management',
+        'Email-to-Ticket',
+        'Basic SLA Management',
+        'Basic Automation',
+        'Customer Management',
+        'Basic Reports',
+        'Email Support'
+      ],
+      ctaLabel: 'Start Free Trial'
+    },
+    {
+      id: 'growth',
+      name: 'Growth',
+      tagline: 'Best for growing support teams.',
+      monthlyPrice: 1499,
+      users: 'For 5 users',
+      popular: true,
+      features: [
+        'Everything in Starter',
+        'Advanced Automation',
+        'AI-Assisted Replies',
+        'SLA Automation',
+        'Advanced Reports & Analytics',
+        'Team Collaboration',
+        'Custom Email / SMTP',
+        'Priority Support'
+      ],
+      ctaLabel: 'Start Free Trial'
+    },
+    {
+      id: 'business',
+      name: 'Business',
+      tagline: 'For businesses with larger support operations.',
+      monthlyPrice: 2999,
+      users: 'For 10 users',
+      popular: false,
+      features: [
+        'Everything in Growth',
+        'Advanced AI Features',
+        'Advanced Workflow Automation',
+        'Advanced SLA & Escalation',
+        'Advanced Analytics',
+        'Custom Branding',
+        'Multiple Teams',
+        'Priority Support'
+      ],
+      ctaLabel: 'Start Free Trial'
+    }
+  ],
+  enterprise: {
+    id: 'enterprise',
+    name: 'Enterprise',
+    tagline: 'For organizations with advanced requirements — custom users, custom workflows, and dedicated support built around how your business runs.',
+    users: 'Custom users',
+    features: [
+      'Custom users',
+      'Custom workflows',
+      'Advanced integrations',
+      'Dedicated support',
+      'Custom SLA',
+      'Custom onboarding',
+      'Enterprise security requirements'
+    ],
+    ctaLabel: 'Contact Sales'
+  }
+};
+
+let currentBillingCycle = 'monthly'; // 'monthly' | 'yearly'
+let selectedPlanId = null;
+
+function checkIcon() {
+  return '<svg viewBox="0 0 11 11" fill="none"><polyline points="1.5,5.5 4.5,8.5 9.5,2" stroke="#0097A7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+}
+
+function formatPrice(n) {
+  return n.toLocaleString('en-IN');
+}
+
+function featureListHTML(features) {
+  return features.map(function(f) {
+    var isInherited = f.indexOf('Everything in') === 0;
+    return '<li class="price-feat-item' + (isInherited ? ' inherited' : '') + '">'
+      + '<span class="price-feat-check">' + checkIcon() + '</span>' + f + '</li>';
+  }).join('');
+}
+
+function renderPricingCards() {
+  var root = document.getElementById('pricingCardsRoot');
+  if (!root) return;
+  var yearly = currentBillingCycle === 'yearly';
+  var discount = PRICING_CONFIG.yearlyDiscountPercent;
+
+  root.innerHTML = PRICING_CONFIG.plans.map(function(plan, idx) {
+    var displayPrice = yearly ? Math.round(plan.monthlyPrice * (1 - discount / 100)) : plan.monthlyPrice;
+    var priceRow = '<div class="price-amount-row">'
+      + '<div class="price-amount"><span class="price-cur">' + PRICING_CONFIG.currency + '</span>' + formatPrice(displayPrice) + '</div>'
+      + (yearly ? '<span class="price-was">' + PRICING_CONFIG.currency + formatPrice(plan.monthlyPrice) + '</span><span class="price-save-tag">Save ' + discount + '%</span>' : '')
+      + '</div>';
+
+    var perLine = yearly ? 'per month · billed annually' : 'per month';
+
+    var cardClasses = 'price-card fade-up' + (plan.popular ? ' featured' : '') + (idx === 1 ? ' fade-up-d1' : idx === 2 ? ' fade-up-d2' : '');
+
+    return '<div class="' + cardClasses + '" data-plan="' + plan.id + '">'
+      + (plan.popular ? '<div class="price-popular">⭐ Most Popular</div>' : '')
+      + '<div class="price-plan">' + plan.name + '</div>'
+      + priceRow
+      + '<div class="price-per">' + perLine + '</div>'
+      + '<div class="price-users">👥 ' + plan.users + '</div>'
+      + '<p class="price-desc">' + plan.tagline + '</p>'
+      + '<hr class="price-divider">'
+      + '<ul class="price-feats">' + featureListHTML(plan.features) + '</ul>'
+      + '<button class="btn btn-md ' + (plan.popular ? 'btn-primary' : 'btn-outline') + '" style="width:100%;justify-content:center;" onclick="selectPlan(\'' + plan.id + '\')">' + plan.ctaLabel + '</button>'
+      + '</div>';
+  }).join('');
+
+  renderEnterpriseBand();
+}
+
+function renderEnterpriseBand() {
+  var band = document.getElementById('enterpriseBand');
+  if (!band) return;
+  var ent = PRICING_CONFIG.enterprise;
+  band.innerHTML = '<div class="enterprise-band-left">'
+    + '<div class="enterprise-band-plan">' + ent.name + '</div>'
+    + '<div class="enterprise-band-title">Need something custom?</div>'
+    + '<p class="enterprise-band-desc">' + ent.tagline + '</p>'
+    + '<div class="enterprise-band-feats">' + ent.features.map(function(f) {
+        return '<span class="enterprise-band-feat"><span class="price-feat-check">' + checkIcon() + '</span>' + f + '</span>';
+      }).join('') + '</div>'
+    + '</div>'
+    + '<div class="enterprise-band-right">'
+    + '<div class="enterprise-band-price">Custom Pricing</div>'
+    + '<div class="enterprise-band-price-sub">Custom users</div>'
+    + '<button class="btn btn-md btn-ghost" style="width:100%;justify-content:center;" onclick="selectPlan(\'enterprise\')">' + ent.ctaLabel + '</button>'
+    + '</div>';
+}
+
+function setBillingCycle(cycle) {
+  currentBillingCycle = cycle;
+  document.getElementById('billingMonthlyBtn').classList.toggle('active', cycle === 'monthly');
+  document.getElementById('billingYearlyBtn').classList.toggle('active', cycle === 'yearly');
+  renderPricingCards();
+}
+
+// Maps a plan's user count to the closest option in the existing
+// "Number of Users" dropdown in the demo/signup modal, so choosing
+// a plan pre-fills context for the existing lead flow.
+function teamSizeOptionForPlan(planId) {
+  var map = { starter: '1–5 users', growth: '1–5 users', business: '6–15 users', enterprise: '200+ users' };
+  return map[planId] || '';
+}
+
+function planNameById(planId) {
+  if (!planId) return null;
+  if (planId === 'enterprise') return PRICING_CONFIG.enterprise.name;
+  var plan = PRICING_CONFIG.plans.find(function(p) { return p.id === planId; });
+  return plan ? plan.name : null;
+}
+
+// Selecting a plan passes its identifier into the existing
+// signup/checkout flow (the Schedule Demo modal + lead submission).
+function selectPlan(planId) {
+  openDemo(planId);
+}
+
+renderPricingCards();
+
 // Live 31-Day Urgent Countdown Engine
 const initialDuration = 31 * 24 * 60 * 60 * 1000;
 let countdownTarget = localStorage.getItem('tickora_timer_target_v2');
@@ -1581,7 +1790,22 @@ window.addEventListener('scroll', () => {
 });
 
 // Demo Modal Open & Close Functions
-function openDemo() {
+// planId (optional) identifies which pricing plan the person selected,
+// e.g. from a pricing card CTA — it flows through to submitDemo().
+function openDemo(planId) {
+  selectedPlanId = typeof planId !== 'undefined' ? planId : selectedPlanId;
+  var subEl = document.querySelector('#demoModal .modal-sub');
+  var planName = planNameById(selectedPlanId);
+  if (subEl) {
+    subEl.textContent = planName
+      ? "Get started with the " + planName + " plan — we'll help you set it up in minutes."
+      : "See TickoraDesk in action — we'll show you everything in 30 minutes.";
+  }
+  var teamSizeSelect = document.getElementById('modalTeamSizeSelect');
+  if (teamSizeSelect && selectedPlanId) {
+    var opt = teamSizeOptionForPlan(selectedPlanId);
+    if (opt) teamSizeSelect.value = opt;
+  }
   document.getElementById('demoModal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -1590,6 +1814,7 @@ function closeDemo() {
   document.body.style.overflow = '';
   document.getElementById('demoForm').style.display = 'block';
   document.getElementById('demoSuccess').style.display = 'none';
+  selectedPlanId = null;
   
   // Submit button text revert
   document.getElementById('modalSubmitBtn').innerHTML = `
@@ -1620,6 +1845,9 @@ function submitDemo() {
   submitBtn.disabled = true;
 
   // 3. NATIVE FETCH HIT: Transmitting separate variables cleanly to match backend columns
+  // `plan` carries the pricing-config plan id selected on the pricing section (if any),
+  // so the existing lead/checkout flow knows which plan the person wants.
+  var planName = planNameById(selectedPlanId);
   fetch('https://crm.tickoradesk.com/submit_lead.php', {
     method: 'POST',
     headers: {
@@ -1631,7 +1859,9 @@ function submitDemo() {
       phone: phoneVal,         
       company: companyVal,     
       team_size: teamSizeVal,  
-      message: "Scheduled via Demo Portal Form" 
+      plan: selectedPlanId || null,
+      billing_cycle: selectedPlanId ? currentBillingCycle : null,
+      message: planName ? ("Scheduled via Pricing Section — Plan: " + planName) : "Scheduled via Demo Portal Form"
     })
   })
   .then(response => {
