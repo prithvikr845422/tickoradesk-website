@@ -1687,7 +1687,7 @@ function renderPricingCards() {
     var cardClasses = 'price-card fade-up' + (plan.popular ? ' featured' : '') + (idx === 1 ? ' fade-up-d1' : idx === 2 ? ' fade-up-d2' : '');
 
     return '<div class="' + cardClasses + '" data-plan="' + plan.id + '">'
-      + (plan.popular ? '<div class="price-popular">⭐ Most Popular</div>' : '')
+      + (plan.popular ? '<div class="price-popular"> Popular</div>' : '')
       + '<div class="price-plan">' + plan.name + '</div>'
       + priceRow
       + '<div class="price-per">' + perLine + '</div>'
