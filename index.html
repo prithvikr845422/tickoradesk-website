@@ -465,11 +465,11 @@ nav.scrolled { box-shadow: var(--shadow); }
    PRICING (FIXED WITH RUPEES AND DURATION LIMITS)
 ═══════════════════════════════════════════ */
 .pricing-bg { background: linear-gradient(180deg, white 0%, #F0FBFF 50%, white 100%); }
-.pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; align-items: start; }
+.pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; align-items: stretch; }
 .price-card {
   background: white; border: 1.5px solid var(--ink-10); border-radius: var(--r-xl);
   padding: 38px 32px; position: relative; box-shadow: var(--shadow-sm);
-  transition: all .3s;
+  transition: all .3s; display: flex; flex-direction: column; height: 100%;
 }
 .price-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
 .price-card.featured { border-color: var(--cyan); border-width: 2px; box-shadow: var(--shadow-lg); }
@@ -486,7 +486,7 @@ nav.scrolled { box-shadow: var(--shadow); }
 .price-per { font-size: 13px; color: var(--ink-40); margin-bottom: 8px; }
 .price-users { font-size: 14px; font-weight: 600; color: var(--cyan-dark); margin-bottom: 24px; padding: 8px 14px; background: var(--cyan-light); border-radius: var(--r-sm); display: inline-block; }
 .price-divider { border: none; border-top: 1px solid var(--ink-10); margin: 20px 0; }
-.price-feats { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+.price-feats { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; flex: 1; }
 .price-feat-item { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--ink-60); }
 .price-feat-check { width: 20px; height: 20px; border-radius: 50%; background: var(--cyan-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .price-feat-check svg { width: 11px; height: 11px; color: var(--cyan-dark); }
@@ -1684,10 +1684,10 @@ function renderPricingCards() {
 
     var perLine = yearly ? 'per month · billed annually' : 'per month';
 
-    var cardClasses = 'price-card fade-up' + (plan.popular ? ' featured' : '') + (idx === 1 ? ' fade-up-d1' : idx === 2 ? ' fade-up-d2' : '');
+    var cardClasses = 'price-card' + (plan.popular ? ' featured' : '');
 
     return '<div class="' + cardClasses + '" data-plan="' + plan.id + '">'
-      + (plan.popular ? '<div class="price-popular"> Popular</div>' : '')
+      + (plan.popular ? '<div class="price-popular">Popular</div>' : '')
       + '<div class="price-plan">' + plan.name + '</div>'
       + priceRow
       + '<div class="price-per">' + perLine + '</div>'
