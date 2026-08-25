@@ -1,1 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cyan:       #00BCD4;
+  --cyan-dark:  #0097A7;
+  --cyan-light: #E0F7FA;
+  --cyan-mid:   #80DEEA;
+  --blue:       #1565C0;
+  --blue-light: #E3F2FD;
+  --ink:        #0D1B2A;
+  --ink-80:     #1E3A4C;
+  --ink-60:     #3D5A72;
+  --ink-40:     #6B8A9E;
+  --ink-20:     #B0C8D6;
+  --ink-10:     #E8F2F7;
+  --ink-05:     #F4F8FA;
+  --white:      #FFFFFF;
+  --green:      #00897B;
+  --green-l:    #E0F2F1;
+  --amber:      #F59E0B;
+  --amber-l:    #FFFBEB;
+  --red:        #E53935;
+  --red-l:      #FFEBEE;
+  --purple:     #7C3AED;
+  --purple-l:   #EDE9FE;
+  --r-sm:       8px;
+  --r:          12px;
+  --r-lg:       20px;
+  --r-xl:       28px;
+  --r-2xl:      40px;
+  --shadow-sm:  0 1px 4px rgba(0,188,212,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow:     0 4px 24px rgba(0,188,212,0.10), 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-lg:  0 16px 56px rgba(0,188,212,0.13), 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-xl:  0 32px 80px rgba(0,188,212,0.18), 0 8px 24px rgba(0,0,0,0.10);
+}
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+html, body { max-width: 100%; overflow-x: hidden; }
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--white);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--ink-05); }
+::-webkit-scrollbar-thumb { background: var(--cyan-mid); border-radius: 99px; }
 
+/* NAV */
+nav#mainNav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.97); backdrop-filter: blur(20px); border-bottom: 1px solid var(--ink-10); display:flex; flex-direction:column; align-items:center; width:100%; }
+nav#mainNav.scrolled { box-shadow: var(--shadow); }
+.nav-link { font-size: 14px; font-weight: 600; color: var(--ink-60); padding: 8px 14px; border-radius: var(--r-sm); transition: all .15s; display:flex; align-items:center; gap:5px; cursor:pointer; border:none; background:transparent; font-family:'Plus Jakarta Sans',sans-serif; position:relative; }
+.nav-link:hover { color: var(--cyan-dark); background: var(--cyan-light); }
+.nav-dropdown { position: relative; }
+.nav-dropdown-menu { display:none; position:absolute; top:calc(100% + 8px); left:0; background:white; border:1px solid var(--ink-10); border-radius: var(--r-lg); box-shadow: var(--shadow-lg); padding:10px; min-width:220px; z-index:200; }
+.nav-dropdown:hover .nav-dropdown-menu { display:block; animation: dropIn .15s ease; }
+@keyframes dropIn { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+.nav-drop-item { display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:var(--r-sm); transition:background .12s; cursor:pointer; }
+.nav-drop-item:hover { background: var(--ink-05); }
+.nav-drop-icon { width:36px; height:36px; border-radius:var(--r-sm); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; background:var(--cyan-light); }
+.nav-drop-label { font-size:13px; font-weight:600; color:var(--ink); }
+.nav-drop-sub { font-size:12px; color:var(--ink-40); margin-top:1px; }
+.btn { display:inline-flex; align-items:center; gap:7px; font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; cursor:pointer; border:none; transition:all .2s; border-radius:var(--r); }
+.btn-sm { font-size:13px; padding:8px 20px; }
+.btn-md { font-size:14px; padding:12px 26px; }
+.btn-lg { font-size:15px; padding:15px 34px; border-radius:var(--r-lg); }
+.btn-ghost { background:transparent; color:var(--ink-60); border:1.5px solid var(--ink-20); }
+.btn-ghost:hover { border-color:var(--cyan); color:var(--cyan-dark); background:var(--cyan-light); }
+.btn-primary { background:linear-gradient(135deg,var(--cyan-dark) 0%,var(--cyan) 100%); color:white; box-shadow:0 4px 16px rgba(0,188,212,0.3); }
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,188,212,0.4); filter:brightness(1.05); }
+.btn-outline { background:transparent; color:var(--cyan-dark); border:2px solid var(--cyan); }
+.btn-outline:hover { background:var(--cyan-light); transform:translateY(-1px); }
+.btn-white { background:white; color:var(--cyan-dark); box-shadow:0 4px 16px rgba(0,0,0,0.12); }
+.btn-white:hover { transform:translateY(-1px); box-shadow:0 8px 24px rgba(0,0,0,0.16); }
+
+/* OFFER BANNER */
+.offer-banner { position:relative; z-index:200; background: linear-gradient(90deg, #0D47A1 0%, #0097A7 40%, #00BCD4 70%, #0288D1 100%); overflow:hidden; }
+.timer-wrap-box { max-width:1280px; margin:0 auto; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.offer-banner-label { font-size:14px; font-weight:700; color:white; white-space:nowrap; letter-spacing:.01em; display:flex; align-items:center; gap:8px; }
+.offer-banner-label .flash { font-size:16px; animation: flashPulse 1.5s infinite; }
+@keyframes flashPulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.offer-cards { display:flex; gap:12px; flex-wrap:nowrap; }
+.offer-card { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); backdrop-filter:blur(8px); border-radius:var(--r); padding:8px 16px; display:flex; align-items:center; gap:10px; white-space:nowrap; }
+.offer-card-pkg { font-size:12px; font-weight:700; color:rgba(255,255,255,0.75); }
+.offer-card-deal { font-size:13px; font-weight:800; color:white; }
+.offer-banner-cta { flex-shrink:0; background:white; color:var(--blue); font-size:13px; font-weight:800; padding:9px 22px; border-radius:var(--r); border:none; cursor:pointer; white-space:nowrap; font-family:'Plus Jakarta Sans',sans-serif; box-shadow:0 4px 16px rgba(0,0,0,0.15); }
+.offer-close { flex-shrink:0; background:none; border:none; color:rgba(255,255,255,0.65); cursor:pointer; width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-size:18px; }
+@media (max-width: 991px) {
+  .timer-wrap-box { flex-direction:column; text-align:center; gap:12px; padding:12px 20px; }
+  .offer-cards { display:none !important; }
+  .offer-banner-cta { width:100%; max-width:280px; padding:8px 16px; font-size:12px; }
+  .offer-banner-label { font-size:13px; justify-content:center; flex-wrap:wrap; }
+}
+@media (max-width: 991px) { .nav-links-desktop, .nav-cta-desktop { display:none !important; } .mobile-menu-btn { display:block !important; } }
+
+/* FOOTER */
+footer { background: var(--ink); color:white; }
+.footer-top { max-width:1280px; margin:0 auto; padding:72px 40px 48px; display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:48px; }
+.footer-brand p { font-size:14px; color:rgba(255,255,255,0.45); line-height:1.75; margin-bottom:22px; max-width:280px; }
+.footer-social { display:flex; gap:10px; }
+.social-btn { width:38px; height:38px; border-radius:var(--r-sm); background:rgba(255,255,255,0.07); display:flex; align-items:center; justify-content:center; font-size:14px; cursor:pointer; border:1px solid rgba(255,255,255,0.08); }
+.social-btn:hover { background:var(--cyan); border-color:var(--cyan); }
+.footer-col h5 { font-family:'Manrope',sans-serif; font-weight:800; font-size:12px; color:rgba(255,255,255,0.9); text-transform:uppercase; letter-spacing:.1em; margin-bottom:18px; }
+.footer-link-list { list-style:none; display:flex; flex-direction:column; gap:11px; }
+.footer-link-list li a { font-size:14px; color:rgba(255,255,255,0.45); transition:color .15s; }
+.footer-link-list li a:hover { color:var(--cyan); }
+.footer-contact-item { display:flex; align-items:center; gap:8px; font-size:13px; color:rgba(255,255,255,0.45); margin-bottom:10px; }
+.footer-contact-item:hover { color:var(--cyan); }
+.footer-bottom { border-top:1px solid rgba(255,255,255,0.07); }
+.footer-bottom-inner { max-width:1280px; margin:0 auto; padding:22px 40px; display:flex; align-items:center; justify-content:space-between; }
+.footer-copy { font-size:13px; color:rgba(255,255,255,0.3); }
+
+/* SECTION / TYPOGRAPHY */
+.section { max-width:1280px; margin:0 auto; padding:60px 40px 100px; }
+.sec-center { text-align:center; }
+.eyebrow { font-size:12px; font-weight:800; color:var(--cyan-dark); text-transform:uppercase; letter-spacing:.14em; margin-bottom:12px; }
+.sec-title { font-family:'Manrope',sans-serif; font-weight:800; font-size:clamp(28px,3.5vw,46px); line-height:1.1; letter-spacing:-1.5px; margin-bottom:16px; }
+.sec-title span { color:var(--cyan-dark); }
+.sec-sub { font-size:17px; color:var(--ink-60); max-width:600px; margin:0 auto 56px; font-weight:400; line-height:1.8; }
+
+/* BLOG HERO */
+.blog-hero { background: linear-gradient(160deg, #F0FBFF 0%, #E8F5FD 25%, #F8FEFF 55%, white 100%); padding:70px 40px 50px; text-align:center; }
+.blog-hero h1 { font-family:'Manrope',sans-serif; font-weight:800; font-size:clamp(32px,5vw,54px); letter-spacing:-2px; margin-bottom:16px; color:var(--ink); }
+.blog-hero h1 span { color: var(--cyan-dark); }
+.blog-hero p { font-size:17px; color:var(--ink-60); max-width:600px; margin:0 auto; line-height:1.8; }
+
+/* BLOG CARDS / GRID */
+.blog-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.blog-card { background:white; border:1px solid var(--ink-10); border-radius:var(--r-xl); overflow:hidden; box-shadow:var(--shadow-sm); transition:all .25s; display:flex; flex-direction:column; }
+.blog-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); border-color:var(--cyan-mid); }
+.blog-img { height:180px; display:flex; align-items:center; justify-content:center; font-size:64px; position:relative; overflow:hidden; }
+.blog-img-overlay { position:absolute; inset:0; }
+.blog-tag { position:absolute; top:12px; left:12px; background:var(--cyan); color:white; font-size:10px; font-weight:800; padding:3px 10px; border-radius:99px; letter-spacing:.05em; }
+.blog-body { padding:24px; display:flex; flex-direction:column; flex:1; }
+.blog-date { font-size:12px; color:var(--ink-40); margin-bottom:10px; }
+.blog-title { font-family:'Manrope',sans-serif; font-weight:700; font-size:16px; line-height:1.45; margin-bottom:12px; color:var(--ink); }
+.blog-excerpt { font-size:13px; color:var(--ink-60); line-height:1.65; margin-bottom:18px; flex:1; }
+.blog-read-more { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--cyan-dark); transition:gap .15s; }
+.blog-card:hover .blog-read-more { gap:10px; }
+
+/* ARTICLE PAGE */
+.article-wrap { max-width:1280px; margin:0 auto; padding:32px 40px 90px; display:grid; grid-template-columns:1fr 320px; gap:56px; align-items:start; }
+.breadcrumb { font-size:13px; color:var(--ink-40); margin-bottom:18px; display:flex; gap:6px; flex-wrap:wrap; }
+.breadcrumb a { color:var(--ink-40); }
+.breadcrumb a:hover { color:var(--cyan-dark); }
+.article-category { display:inline-block; background:var(--cyan-light); color:var(--cyan-dark); font-size:12px; font-weight:800; padding:5px 14px; border-radius:99px; letter-spacing:.04em; margin-bottom:18px; text-transform:uppercase; }
+.article-title { font-family:'Manrope',sans-serif; font-weight:800; font-size:clamp(28px,4vw,42px); line-height:1.18; letter-spacing:-1.2px; color:var(--ink); margin-bottom:20px; }
+.article-meta { display:flex; align-items:center; gap:14px; font-size:13px; color:var(--ink-40); margin-bottom:28px; padding-bottom:28px; border-bottom:1px solid var(--ink-10); }
+.article-meta .dot { width:4px; height:4px; border-radius:50%; background:var(--ink-20); }
+.article-featured-img { width:100%; height:340px; border-radius:var(--r-xl); margin-bottom:36px; display:flex; align-items:center; justify-content:center; font-size:96px; position:relative; overflow:hidden; box-shadow:var(--shadow); }
+.article-body { font-size:16.5px; color:var(--ink-80); line-height:1.9; }
+.article-body h2 { font-family:'Manrope',sans-serif; font-weight:800; font-size:26px; letter-spacing:-0.5px; color:var(--ink); margin:42px 0 16px; }
+.article-body h3 { font-family:'Manrope',sans-serif; font-weight:700; font-size:19px; color:var(--ink); margin:28px 0 12px; }
+.article-body p { margin-bottom:18px; }
+.article-body ul, .article-body ol { margin: 0 0 20px 22px; }
+.article-body li { margin-bottom:10px; }
+.article-body a.inline-link { color:var(--cyan-dark); font-weight:700; border-bottom:1.5px solid var(--cyan-mid); }
+.article-body a.inline-link:hover { color: var(--cyan); }
+.article-table-wrap { overflow-x:auto; margin: 24px 0 32px; border-radius:var(--r-lg); border:1px solid var(--ink-10); box-shadow:var(--shadow-sm); }
+.article-table { width:100%; border-collapse:collapse; font-size:14px; min-width:640px; }
+.article-table th { background:var(--ink-05); text-align:left; padding:14px 16px; font-weight:800; color:var(--ink); font-size:12px; text-transform:uppercase; letter-spacing:.04em; border-bottom:2px solid var(--ink-10); }
+.article-table td { padding:14px 16px; border-bottom:1px solid var(--ink-10); color:var(--ink-60); }
+.article-table tr:last-child td { border-bottom:none; }
+.article-table tr.highlight td { background: var(--cyan-light); font-weight:600; color:var(--ink); }
+.takeaways { background:var(--ink-05); border:1px solid var(--ink-10); border-left:4px solid var(--cyan); border-radius:var(--r-lg); padding:26px 28px; margin:36px 0; }
+.takeaways h3 { font-family:'Manrope',sans-serif; font-weight:800; font-size:15px; text-transform:uppercase; letter-spacing:.06em; color:var(--cyan-dark); margin-bottom:14px; }
+.takeaways ul { margin:0 0 0 20px; }
+.takeaways li { font-size:14.5px; color:var(--ink-80); margin-bottom:8px; }
+.article-cta { background:linear-gradient(135deg,#0D47A1 0%,#006064 50%,#00BCD4 100%); border-radius:var(--r-xl); padding:36px 40px; margin:44px 0 8px; text-align:center; }
+.article-cta h3 { font-family:'Manrope',sans-serif; font-weight:800; font-size:24px; color:white; margin-bottom:10px; letter-spacing:-0.5px; }
+.article-cta p { color:rgba(255,255,255,0.8); font-size:14.5px; margin-bottom:20px; }
+
+/* SIDEBAR */
+.sidebar-block { background:white; border:1px solid var(--ink-10); border-radius:var(--r-lg); padding:22px; margin-bottom:22px; box-shadow:var(--shadow-sm); position:sticky; top:88px; }
+.sidebar-block h4 { font-family:'Manrope',sans-serif; font-weight:800; font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink); margin-bottom:14px; }
+.toc-list { list-style:none; display:flex; flex-direction:column; gap:10px; }
+.toc-list a { font-size:13.5px; color:var(--ink-60); display:block; padding:4px 0; border-left:2px solid var(--ink-10); padding-left:12px; }
+.toc-list a:hover { color:var(--cyan-dark); border-left-color:var(--cyan); }
+.sidebar-related-item { display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--ink-10); }
+.sidebar-related-item:last-child { border-bottom:none; }
+.sidebar-related-thumb { width:52px; height:52px; border-radius:10px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:22px; }
+.sidebar-related-title { font-size:13px; font-weight:700; color:var(--ink); line-height:1.4; }
+.sidebar-cta-btn { width:100%; justify-content:center; margin-top:6px; }
+
+/* RELATED ARTICLES BAND */
+.related-band { background:var(--ink-05); }
+
+@media (max-width: 1024px) {
+  .article-wrap { grid-template-columns:1fr; }
+  .sidebar-block { position:static; }
+  .footer-top { grid-template-columns:1fr 1fr; gap:32px; }
+}
+@media (max-width: 768px) {
+  .nav-links-desktop, .nav-cta-desktop { display:none; }
+  .blog-hero { padding:56px 20px 40px; }
+  .section { padding:40px 20px 70px; }
+  .blog-grid { grid-template-columns:1fr; gap:20px; }
+  .article-wrap { padding:24px 20px 60px; gap:32px; }
+  .article-featured-img { height:220px; font-size:64px; }
+  .footer-top { grid-template-columns:1fr; }
+  .footer-bottom-inner { flex-direction:column; gap:12px; text-align:center; }
+}
+</style>
+<title>AI Helpdesk Software: How AI Is Changing Customer Support (2026)</title>
+<meta name="description" content="AI is moving from chatbots to genuinely useful support automation. Here's how AI helpdesk software actually works in 2026, and what it means for small support teams.">
+<link rel="canonical" href="https://tickoradesk.com/blogs/ai-helpdesk-software/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI Helpdesk Software: How AI Is Changing Customer Support (2026)">
+<meta property="og:description" content="AI is moving from chatbots to genuinely useful support automation. Here's how AI helpdesk software actually works in 2026, and what it means for small support teams.">
+<meta property="og:url" content="https://tickoradesk.com/blogs/ai-helpdesk-software/">
+<meta property="og:image" content="https://tickoradesk.com/assets/images/blog/ai-helpdesk-software.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Helpdesk Software: How AI Is Changing Customer Support (2026)">
+<meta name="twitter:description" content="AI is moving from chatbots to genuinely useful support automation. Here's how AI helpdesk software actually works in 2026, and what it means for small support teams.">
+<meta name="twitter:image" content="https://tickoradesk.com/assets/images/blog/ai-helpdesk-software.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "AI Helpdesk Software: How AI Is Changing Customer Support",
+  "description": "AI is moving from chatbots to genuinely useful support automation. Here's how AI helpdesk software actually works in 2026, and what it means for small support teams.",
+  "datePublished": "2026-08-20",
+  "dateModified": "2026-08-20",
+  "author": { "@type": "Organization", "name": "TickoraDesk" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "TickoraDesk",
+    "logo": { "@type": "ImageObject", "url": "https://tickoradesk.com/logo.png" }
+  },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://tickoradesk.com/blogs/ai-helpdesk-software/" }
+}
+</script>
+</head>
+<body>
+
+<div class="offer-banner" id="offerBanner">
+  <div class="timer-wrap-box">
+    <div class="offer-banner-label">
+      <span class="flash">⚡</span>
+      Special Discount ends in: <span id="bannerCountdown" style="margin-left:4px;display:inline-flex;align-items:center;gap:2px;">15d 00h 00m 00s</span>
+    </div>
+    <div class="offer-cards">
+      <div class="offer-card"><div><div class="offer-card-pkg">1 Year Package</div><div class="offer-card-deal">Get 6 Months Extra FREE</div></div></div>
+      <div class="offer-card"><div><div class="offer-card-pkg">6 Months Package</div><div class="offer-card-deal">Get 2 Months Extra FREE</div></div></div>
+      <div class="offer-card"><div><div class="offer-card-pkg">3 Months Package</div><div class="offer-card-deal">Get 1 Month Extra FREE</div></div></div>
+    </div>
+    <button class="offer-banner-cta" onclick="openDemo()">Grab the Offer Now →</button>
+    <button class="offer-close" onclick="document.getElementById('offerBanner').style.display='none'">✕</button>
+  </div>
+</div>
+
+<nav id="mainNav">
+  <div style="max-width:1280px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:68px;">
+    <a href="/" class="nav-logo" style="display:flex;align-items:center;flex-shrink:0;">
+      <img src="/logo.png" alt="TickoraDesk" style="height:55px;width:auto;object-fit:contain;">
+    </a>
+    <div class="nav-links-desktop" style="display:flex;align-items:center;gap:24px;margin-left:auto;margin-right:auto;">
+      <a href="/#features" class="nav-link">Product</a>
+      <a href="/#pricing" class="nav-link">Pricing</a>
+      <div class="nav-dropdown">
+        <a class="nav-link">Resources ▾</a>
+        <div class="nav-dropdown-menu">
+          <a href="/blogs/" class="nav-drop-item">
+            <div class="nav-drop-icon">📝</div>
+            <div><div class="nav-drop-label">Blogs</div><div class="nav-drop-sub">Expert support insights</div></div>
+          </a>
+          <a href="/#" class="nav-drop-item">
+            <div class="nav-drop-icon">🚀</div>
+            <div><div class="nav-drop-label">Guides</div><div class="nav-drop-sub">How to use TickoraDesk</div></div>
+          </a>
+        </div>
+      </div>
+      <a href="/#team" class="nav-link">About</a>
+      <a href="/#contact" class="nav-link">Contact</a>
+    </div>
+    <div class="nav-cta-desktop" style="display:flex;align-items:center;gap:14px;flex-shrink:0;">
+      <a href="https://app.tickoradesk.com" class="btn btn-sm btn-outline" style="font-size:13px;font-weight:700;">Login</a>
+      <button class="btn btn-sm btn-outline" onclick="openDemo()">Sign Up</button>
+      <button class="btn btn-sm btn-primary" onclick="openDemo()">Schedule Demo</button>
+    </div>
+    <button class="mobile-menu-btn" style="display:none;background:none;border:none;font-size:28px;cursor:pointer;color:var(--ink);padding:8px;" onclick="toggleMobileMenu()">☰</button>
+  </div>
+  <div id="mobileMenuPanel" style="display:none;width:100%;background:#fff;border-top:1px solid var(--ink-10);padding:16px 24px;flex-direction:column;gap:14px;box-shadow:0 8px 24px rgba(0,0,0,0.05);">
+    <a href="/#features" class="nav-link" onclick="toggleMobileMenu()" style="padding:6px 0;display:block;font-size:15px;">Product</a>
+    <a href="/#pricing" class="nav-link" onclick="toggleMobileMenu()" style="padding:6px 0;display:block;font-size:15px;">Pricing</a>
+    <a href="/blogs/" class="nav-link" onclick="toggleMobileMenu()" style="padding:6px 0;display:block;font-size:15px;">Resources</a>
+    <a href="/#team" class="nav-link" onclick="toggleMobileMenu()" style="padding:6px 0;display:block;font-size:15px;">About</a>
+    <a href="/#contact" class="nav-link" onclick="toggleMobileMenu()" style="padding:6px 0;display:block;font-size:15px;">Contact</a>
+    <a href="/faq/" class="nav-link" onclick="toggleMobileMenu()" style="padding:6px 0;display:block;font-size:15px;">FAQ</a>
+    <hr style="border:none;border-top:1px solid var(--ink-10);margin:6px 0;">
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <a href="https://app.tickoradesk.com" class="btn btn-outline" style="width:100%;display:flex;justify-content:center;align-items:center;padding:6px;">Login</a>
+      <button class="btn btn-outline" style="width:100%;justify-content:center;padding:10px;" onclick="toggleMobileMenu();openDemo();">Sign Up</button>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;padding:10px;" onclick="toggleMobileMenu();openDemo();">Schedule Demo</button>
+    </div>
+  </div>
+</nav>
+
+
+<div class="article-wrap">
+  <div class="article-main">
+    <div class="breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/blogs/">Blog</a> <span>/</span> <span style="color:var(--ink-60)">AI & Automation</span></div>
+    <div class="article-category">AI & Automation</div>
+    <h1 class="article-title">AI Helpdesk Software: How AI Is Changing Customer Support</h1>
+    <div class="article-meta">
+      <span>By TickoraDesk Team</span><span class="dot"></span><span>August 20, 2026</span><span class="dot"></span><span>4 min read</span>
+    </div>
+    <div class="article-featured-img" style="background:linear-gradient(135deg,#F3E5F5,#E1BEE7)">
+      <span>🤖</span>
+      <img src="" alt="AI Helpdesk Software: How AI Is Changing Customer Support — featured image" style="display:none">
+    </div>
+    <div class="article-body">
+      
+<p>"AI helpdesk" used to mean a chatbot that answered three FAQs and then dumped the customer into a queue anyway. That's changed. The more useful shift in 2026 isn't AI replacing agents — it's AI handling the repetitive 80% of support work so agents can focus on the 20% that actually needs a human.</p>
+
+<h2 id="evolution">From chatbots to AI-assisted support</h2>
+<p>Early AI support tools were customer-facing and rules-based: if the message contains "refund," show the refund policy. Modern AI helpdesk software works differently — it reads incoming tickets, understands intent and sentiment, classifies priority, and drafts a response an agent can review and send in seconds rather than writing from scratch. That's a meaningfully different workflow: AI as a co-pilot for agents, not a wall between the customer and a human.</p>
+
+<h2 id="what-it-does">What AI helpdesk software actually does well</h2>
+<ul>
+<li><strong>Auto-classification:</strong> Reading a ticket and assigning priority, category, and routing without manual tagging.</li>
+<li><strong>Draft replies:</strong> Generating a first-pass response based on the ticket content and your knowledge base, which an agent edits and sends.</li>
+<li><strong>Sentiment detection:</strong> Flagging frustrated or urgent customers for faster human attention.</li>
+<li><strong>Pattern recognition:</strong> Surfacing recurring issues so you can fix root causes instead of answering the same question 200 times.</li>
+</ul>
+
+<h2 id="where-humans-matter">Where humans still matter</h2>
+<p>AI is genuinely good at drafting and classifying — it's much weaker at judgment calls: refund exceptions, de-escalating an angry enterprise customer, or handling anything outside a well-documented policy. The teams getting the most value from AI helpdesk software treat it as a speed multiplier for agents, not a replacement for them. That distinction also matters for customer trust — most customers still want to know a human reviewed their case, especially for anything involving money or account access.</p>
+
+<h2 id="choosing">Choosing an AI-enabled helpdesk</h2>
+<p>Not all "AI-powered" claims mean the same thing. When evaluating a platform, ask specifically: does AI draft replies you can edit, or just auto-send canned responses? Does it learn from your team's actual tone and past resolutions, or use a generic model with no context? TickoraDesk's AI auto-reply engine, for instance, is available from the entry-level plan and drafts responses your agents review before sending — it's built as an assist layer, not an autopilot.</p>
+<p>AI works best alongside solid fundamentals — SLA tracking, clear automation rules, and good reporting. See our guide to <a class="inline-link" href="/blogs/customer-support-automation-guide/">customer support automation</a> for how AI fits into a broader automation strategy, or explore options built for early-stage teams in our <a class="inline-link" href="/blogs/best-customer-support-software-startups/">customer support software for startups</a> roundup.</p>
+
+<h2 id="measuring-impact">How to measure whether AI is actually helping</h2>
+<p>It's easy to assume AI is saving time without checking. Track a few concrete metrics before and after enabling AI features: average handle time per ticket, first-response time, and the percentage of AI-drafted replies agents send with little or no editing. If agents are heavily rewriting most AI drafts, the tool likely needs better context (a more complete knowledge base) rather than being abandoned outright.</p>
+
+<h2 id="data-privacy">A note on data and privacy</h2>
+<p>AI features typically process your ticket content — including customer information — to generate drafts and classifications. Before adopting an AI helpdesk tool, it's worth understanding how your vendor handles that data: whether it's used to train models beyond your own account, how long it's retained, and whether it complies with relevant data protection requirements for your customers' region.</p>
+
+<h2 id="getting-ai-ready">Getting your team ready for AI-assisted support</h2>
+<p>AI-drafted replies improve significantly with a well-maintained knowledge base and a history of past resolutions to learn from — a brand-new account with no documentation will see much weaker draft quality than one with a few months of resolved tickets behind it. If you're adopting an AI helpdesk tool from scratch, invest early in documenting your most common resolutions; it pays off quickly in both AI draft quality and general team efficiency.</p>
+
+<h2 id="faq">Frequently asked questions</h2>
+<h3>Will AI replace human support agents?</h3>
+<p>For the foreseeable future, no — AI is strongest at drafting and classification, while judgment calls, exceptions, and emotionally sensitive conversations still need a human. Most teams use AI to make existing agents faster, not to reduce headcount.</p>
+<h3>How accurate are AI-drafted replies?</h3>
+<p>Accuracy depends heavily on how well-documented your knowledge base and past resolutions are — AI performs better with more context. Most tools are designed for agents to review and edit drafts before sending, rather than auto-sending them.</p>
+<h3>Is AI helpdesk software expensive?</h3>
+<p>Pricing varies widely. Some vendors bundle AI features into standard plans; others charge per AI-generated response or gate it behind a premium tier. It's worth confirming exactly how a vendor prices AI usage before assuming it's included.</p>
+
+      <div class="takeaways"><h3>Key Takeaways</h3><ul><li>Modern AI helpdesk software drafts replies and classifies tickets — it works best as a co-pilot for agents, not a replacement.</li>
+<li>Sentiment detection and pattern recognition help teams catch urgent issues and fix root causes faster.</li>
+<li>When evaluating 'AI-powered' claims, ask whether AI drafts editable responses or just auto-sends generic replies.</li></ul></div>
+      <div class="article-cta">
+        <h3>Looking for a simpler way to manage customer support?</h3>
+        <p>TickoraDesk brings ticketing, SLA tracking, and AI-assisted replies together — built for small and growing teams.</p>
+        <button class="btn btn-lg btn-white" onclick="openDemo()">Schedule a Demo</button>
+      </div>
+    </div>
+  </div>
+  <aside class="article-sidebar">
+    <div class="sidebar-block">
+      <h4>On This Page</h4>
+      <ul class="toc-list" style="list-style:none"><li><a href="#evolution">From chatbots to AI-assisted support</a></li>
+<li><a href="#what-it-does">What AI helpdesk software actually does</a></li>
+<li><a href="#where-humans-matter">Where humans still matter</a></li>
+<li><a href="#choosing">Choosing an AI-enabled helpdesk</a></li>
+<li><a href="#getting-ai-ready">Getting AI-Ready</a></li>
+<li><a href="#faq">FAQ</a></li></ul>
+    </div>
+    <div class="sidebar-block">
+      <h4>Related Articles</h4>
+      
+<a href="/blogs/customer-support-automation-guide/" class="sidebar-related-item" style="text-decoration:none">
+  <div class="sidebar-related-thumb" style="background:linear-gradient(135deg,#F3E5F5,#E1BEE7)">⚙️</div>
+  <div class="sidebar-related-title">Customer Support Automation: A Complete Guide for Small Businesses</div>
+</a>
+
+<a href="/blogs/best-customer-support-software-startups/" class="sidebar-related-item" style="text-decoration:none">
+  <div class="sidebar-related-thumb" style="background:linear-gradient(135deg,#F3E5F5,#E1BEE7)">🚀</div>
+  <div class="sidebar-related-title">Top Customer Support Software for Startups in 2026</div>
+</a>
+
+<a href="/blogs/top-ticket-management-software-small-businesses/" class="sidebar-related-item" style="text-decoration:none">
+  <div class="sidebar-related-thumb" style="background:linear-gradient(135deg,#E0F7FA,#B2EBF2)">🎫</div>
+  <div class="sidebar-related-title">Top 10 Ticket Management Software for Small Businesses in 2026</div>
+</a>
+    </div>
+    <div class="sidebar-block">
+      <h4>Get Started</h4>
+      <p style="font-size:13px;color:var(--ink-60);margin-bottom:14px;line-height:1.6">See how TickoraDesk can simplify your support workflow.</p>
+      <button class="btn btn-primary sidebar-cta-btn" onclick="openDemo()">Schedule a Demo</button>
+    </div>
+  </aside>
+</div>
+
+<div class="related-band">
+  <div class="section" style="padding-top:60px">
+    <div class="sec-center">
+      <div class="eyebrow">Keep Reading</div>
+      <h2 class="sec-title">Related <span>Articles</span></h2>
+    </div>
+    <div class="blog-grid">
+      
+<a href="/blogs/customer-support-automation-guide/" class="blog-card fade-up" style="display:flex;flex-direction:column;">
+  <div class="blog-img" style="background:linear-gradient(135deg,#F3E5F5,#E1BEE7)">
+    <div class="blog-img-overlay" style="background:linear-gradient(135deg,rgba(0,188,212,0.15),rgba(21,101,192,0.1))"></div>
+    <span>⚙️</span>
+    <div class="blog-tag" style="background:var(--purple)">Automation</div>
+  </div>
+  <div class="blog-body">
+    <div class="blog-date">📅 August 21, 2026</div>
+    <h3 class="blog-title">Customer Support Automation: A Complete Guide for Small Businesses</h3>
+    <p class="blog-excerpt">Automation done well saves your team hours a week. Done poorly, it frustrates customers and buries real issues under bad rules. Here's how to get it right.</p>
+    <div class="blog-read-more">Read More <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  </div>
+</a>
+
+<a href="/blogs/best-customer-support-software-startups/" class="blog-card fade-up" style="display:flex;flex-direction:column;">
+  <div class="blog-img" style="background:linear-gradient(135deg,#F3E5F5,#E1BEE7)">
+    <div class="blog-img-overlay" style="background:linear-gradient(135deg,rgba(0,188,212,0.15),rgba(21,101,192,0.1))"></div>
+    <span>🚀</span>
+    <div class="blog-tag" style="background:var(--purple)">Customer Support</div>
+  </div>
+  <div class="blog-body">
+    <div class="blog-date">📅 August 18, 2026</div>
+    <h3 class="blog-title">Top Customer Support Software for Startups in 2026</h3>
+    <p class="blog-excerpt">Startups can't afford enterprise price tags or weeks of onboarding. Here's what to look for in customer support software at the early stage, and which tools fit.</p>
+    <div class="blog-read-more">Read More <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  </div>
+</a>
+
+<a href="/blogs/top-ticket-management-software-small-businesses/" class="blog-card fade-up" style="display:flex;flex-direction:column;">
+  <div class="blog-img" style="background:linear-gradient(135deg,#E0F7FA,#B2EBF2)">
+    <div class="blog-img-overlay" style="background:linear-gradient(135deg,rgba(0,188,212,0.15),rgba(21,101,192,0.1))"></div>
+    <span>🎫</span>
+    <div class="blog-tag" style="background:var(--cyan)">Ticket Management</div>
+  </div>
+  <div class="blog-body">
+    <div class="blog-date">📅 August 12, 2026</div>
+    <h3 class="blog-title">Top 10 Ticket Management Software for Small Businesses in 2026</h3>
+    <p class="blog-excerpt">A practical, no-fluff comparison of the ticket management platforms actually worth considering if you're a small business in 2026 — what they cost, what they're good at, and where they fall short.</p>
+    <div class="blog-read-more">Read More <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  </div>
+</a>
+    </div>
+  </div>
+</div>
+
+
+<footer id="contact">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-brand-logo" style="margin-bottom:14px;">
+        <a href="/"><img src="/logo.png" alt="TickoraDesk" style="height:55px;width:auto;object-fit:contain;"></a>
+      </div>
+      <p>Modern ticketing system designed for small businesses. Streamline your customer support with powerful tools that don't break the bank.</p>
+      <div class="footer-social">
+        <a href="https://www.linkedin.com/company/apptickoradesk" target="_blank" class="social-btn" title="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.78a1.62 1.62 0 1 0 0 3.24 1.62 1.62 0 0 0 0-3.24z"/></svg></a>
+        <a href="https://x.com/TickoraDesk" target="_blank" class="social-btn" title="Twitter"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="https://www.youtube.com/channel/UCYnD9xA7r6Edngug1p56InA" target="_blank" class="social-btn" title="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+        <a href="https://facebook.com/TickoraDesk" target="_blank" class="social-btn" title="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Product</h5>
+      <ul class="footer-link-list">
+        <li><a href="/#features">Features</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/#">Integrations</a></li>
+        <li><a href="/faq/">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul class="footer-link-list">
+        <li><a href="/#team">About Us</a></li>
+        <li><a href="/blogs/">Blog</a></li>
+        <li><a href="/#">Careers</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact Us</h5>
+      <div class="footer-contact-item"><span>📧</span><a href="mailto:support@tickoradesk.com" style="color:inherit">support@tickoradesk.com</a></div>
+      <div class="footer-contact-item"><span>📞</span><a href="tel:7004293858" style="color:inherit">7004293858</a></div>
+      <div class="footer-contact-item"><span>🏢</span><span>Gurugram Haryana</span></div>
+      <div style="margin-top:16px"><button class="btn btn-sm btn-primary" onclick="openDemo()" style="width:100%;justify-content:center">Schedule Demo</button></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <div class="footer-copy">© 2026 TickoraDesk · All Rights Reserved.</div>
+      <div class="footer-badges"></div>
+    </div>
+  </div>
+</footer>
+
+
+<div class="modal-overlay" id="demoModal" onclick="if(event.target===this)closeDemo()">
+  <div class="modal">
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeDemo()">✕</button>
+      <div class="modal-title">📅 Schedule a Demo</div>
+      <div class="modal-sub">See TickoraDesk in action — we'll show you everything in 30 minutes.</div>
+    </div>
+    <div class="modal-body" id="demoForm">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" type="text" id="modalNameInput" placeholder="Rahul Singh" required></div>
+        <div class="form-group"><label class="form-label">Mobile Number *</label><input class="form-input" type="tel" id="modalPhoneInput" placeholder="+91 98765 43210" required></div>
+      </div>
+      <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" type="email" id="modalEmailInput" placeholder="rahul@company.com" required></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Company Name *</label><input class="form-input" type="text" id="modalCompanyInput" placeholder="Acme Corp" required></div>
+        <div class="form-group"><label class="form-label">Number of Users</label>
+          <select class="form-input form-select" id="modalTeamSizeSelect">
+            <option value="">Select team size</option>
+            <option>1–5 users</option><option>6–15 users</option><option>16–50 users</option><option>51–200 users</option><option>200+ users</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-md modal-submit" id="modalSubmitBtn" onclick="submitDemo()" style="width:100%;justify-content:center;margin-top:24px;border-radius:var(--r-lg);font-size:16px;padding:15px;">📅 Schedule Demo</button>
+      <p style="text-align:center;font-size:12px;color:var(--ink-40);margin-top:14px">🔒 Your data is safe. We never spam.</p>
+    </div>
+    <div class="modal-success" id="demoSuccess" style="display:none;text-align:center;padding:48px 36px;">
+      <div style="font-size:56px;margin-bottom:16px;">🎉</div>
+      <div style="font-family:'Manrope',sans-serif;font-weight:800;font-size:24px;margin-bottom:8px;color:var(--ink);">Demo Scheduled!</div>
+      <p style="font-size:15px;color:var(--ink-60);">Thank you! Our team will contact you within 24 hours to confirm your demo slot.</p>
+      <button class="btn btn-md btn-primary" style="margin-top:24px;justify-content:center" onclick="closeDemo()">Close</button>
+    </div>
+  </div>
+</div>
+<style>
+.modal-overlay { display:none; position:fixed; inset:0; z-index:1000; background:rgba(13,27,42,0.6); backdrop-filter:blur(8px); align-items:center; justify-content:center; padding:20px; }
+.modal-overlay.open { display:flex; }
+.modal { background:white; border-radius:var(--r-2xl); width:100%; max-width:560px; box-shadow:var(--shadow-xl); overflow:hidden; }
+.modal-header { background:linear-gradient(135deg,var(--cyan-dark) 0%,var(--cyan) 100%); padding:32px 36px 28px; position:relative; }
+.modal-title { font-family:'Manrope',sans-serif; font-weight:800; font-size:26px; color:white; margin-bottom:6px; }
+.modal-sub { font-size:14px; color:rgba(255,255,255,0.8); }
+.modal-close { position:absolute; top:20px; right:20px; background:rgba(255,255,255,0.2); border:none; width:32px; height:32px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; color:white; font-size:18px; }
+.modal-body { padding:32px 36px; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.form-group { margin-bottom:18px; }
+.form-label { display:block; font-size:12px; font-weight:700; color:var(--ink-60); text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
+.form-input { width:100%; padding:12px 14px; font-size:14px; font-family:'Plus Jakarta Sans',sans-serif; background:var(--ink-05); color:var(--ink); border:1.5px solid var(--ink-10); border-radius:var(--r); outline:none; }
+.form-input:focus { border-color:var(--cyan); background:white; box-shadow:0 0 0 3px rgba(0,188,212,0.1); }
+@media (max-width:768px){ .form-row{ grid-template-columns:1fr; } }
+</style>
+<script>
+function toggleMobileMenu(){var p=document.getElementById("mobileMenuPanel");p.style.display=(p.style.display==="none"||p.style.display==="")?"flex":"none";}
+window.addEventListener('scroll',()=>{var n=document.getElementById('mainNav');if(n)n.classList.toggle('scrolled',window.scrollY>30);});
+function openDemo(){document.getElementById('demoModal').classList.add('open');document.body.style.overflow='hidden';}
+function closeDemo(){document.getElementById('demoModal').classList.remove('open');document.body.style.overflow='';document.getElementById('demoForm').style.display='block';document.getElementById('demoSuccess').style.display='none';}
+function submitDemo(){
+  const nameVal=document.getElementById('modalNameInput').value.trim();
+  const phoneVal=document.getElementById('modalPhoneInput').value.trim();
+  const emailVal=document.getElementById('modalEmailInput').value.trim();
+  const companyVal=document.getElementById('modalCompanyInput').value.trim();
+  const teamSizeVal=document.getElementById('modalTeamSizeSelect').value;
+  if(!nameVal||!phoneVal||!emailVal||!companyVal){alert("Please fill in all mandatory fields marked with an asterisk (*).");return;}
+  const submitBtn=document.getElementById('modalSubmitBtn');
+  submitBtn.innerText="Scheduling... Please Wait...";submitBtn.disabled=true;
+  fetch('https://crm.tickoradesk.com/submit_lead.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:nameVal,email:emailVal,phone:phoneVal,company:companyVal,team_size:teamSizeVal,message:"Scheduled via Blog Page Form"})})
+  .then(r=>{if(!r.ok)throw new Error('net');return r.json();})
+  .then(data=>{
+    if(data.status==='success'){
+      document.getElementById('demoForm').style.display='none';
+      document.getElementById('demoSuccess').style.display='block';
+    } else {
+      alert("Submission Failed: "+data.message);submitBtn.disabled=false;submitBtn.innerText="📅 Schedule Demo";
+    }
+  })
+  .catch(()=>{alert("Connection error. Please check your network and try again.");submitBtn.disabled=false;submitBtn.innerText="📅 Schedule Demo";});
+}
+const bannerCountdownEl=document.getElementById('bannerCountdown');
+if(bannerCountdownEl){
+  const initialDuration=31*24*60*60*1000;
+  let countdownTarget=localStorage.getItem('tickora_timer_target_v2');
+  if(!countdownTarget){countdownTarget=new Date().getTime()+initialDuration;localStorage.setItem('tickora_timer_target_v2',countdownTarget);}else{countdownTarget=parseInt(countdownTarget,10);}
+  setInterval(function(){
+    const now=new Date().getTime();const diff=countdownTarget-now;
+    if(diff<0){bannerCountdownEl.innerHTML="OFFER EXPIRED";return;}
+    const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
+    bannerCountdownEl.innerHTML=[[d,'d'],[h,'h'],[m,'m'],[s,'s']].map(function(x){return '<span style="background:#0084FF;color:white;padding:4px 8px;border-radius:6px;font-weight:800;font-size:12px;margin:0 1px;">'+x[0]+'<span style="font-size:9px;font-weight:500;opacity:.85;margin-left:2px;">'+x[1]+'</span></span>';}).join('');
+  },1000);
+}
+const _observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');_observer.unobserve(e.target);}})},{threshold:.12});
+document.querySelectorAll('.fade-up').forEach(el=>_observer.observe(el));
+</script>
+
+</body>
+</html>
