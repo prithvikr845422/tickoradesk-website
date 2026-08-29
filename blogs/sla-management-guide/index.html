@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cyan:       #00BCD4;
+  --cyan-dark:  #0097A7;
+  --cyan-light: #E0F7FA;
+  --cyan-mid:   #80DEEA;
+  --blue:       #1565C0;
+  --blue-light: #E3F2FD;
+  --ink:        #0D1B2A;
+  --ink-80:     #1E3A4C;
+  --ink-60:     #3D5A72;
+  --ink-40:     #6B8A9E;
+  --ink-20:     #B0C8D6;
+  --ink-10:     #E8F2F7;
+  --ink-05:     #F4F8FA;
+  --white:      #FFFFFF;
+  --green:      #00897B;
+  --green-l:    #E0F2F1;
+  --amber:      #F59E0B;
+  --amber-l:    #FFFBEB;
+  --red:        #E53935;
+  --red-l:      #FFEBEE;
+  --purple:     #7C3AED;
+  --purple-l:   #EDE9FE;
+  --r-sm:       8px;
+  --r:          12px;
+  --r-lg:       20px;
+  --r-xl:       28px;
+  --r-2xl:      40px;
+  --shadow-sm:  0 1px 4px rgba(0,188,212,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow:     0 4px 24px rgba(0,188,212,0.10), 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-lg:  0 16px 56px rgba(0,188,212,0.13), 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-xl:  0 32px 80px rgba(0,188,212,0.18), 0 8px 24px rgba(0,0,0,0.10);
+}
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+html, body { max-width: 100%; overflow-x: hidden; }
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--white);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--ink-05); }
+::-webkit-scrollbar-thumb { background: var(--cyan-mid); border-radius: 99px; }
+
+/* NAV */
+nav#mainNav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.97); backdrop-filter: blur(20px); border-bottom: 1px solid var(--ink-10); display:flex; flex-direction:column; align-items:center; width:100%; }
+nav#mainNav.scrolled { box-shadow: var(--shadow); }
+.nav-link { font-size: 14px; font-weight: 600; color: var(--ink-60); padding: 8px 14px; border-radius: var(--r-sm); transition: all .15s; display:flex; align-items:center; gap:5px; cursor:pointer; border:none; background:transparent; font-family:'Plus Jakarta Sans',sans-serif; position:relative; }
+.nav-link:hover { color: var(--cyan-dark); background: var(--cyan-light); }
+.nav-dropdown { position: relative; }
+.nav-dropdown-menu { display:none; position:absolute; top:calc(100% + 8px); left:0; background:white; border:1px solid var(--ink-10); border-radius: var(--r-lg); box-shadow: var(--shadow-lg); padding:10px; min-width:220px; z-index:200; }
+.nav-dropdown:hover .nav-dropdown-menu { display:block; animation: dropIn .15s ease; }
+@keyframes dropIn { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+.nav-drop-item { display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:var(--r-sm); transition:background .12s; cursor:pointer; }
+.nav-drop-item:hover { background: var(--ink-05); }
+.nav-drop-icon { width:36px; height:36px; border-radius:var(--r-sm); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; background:var(--cyan-light); }
+.nav-drop-label { font-size:13px; font-weight:600; color:var(--ink); }
+.nav-drop-sub { font-size:12px; color:var(--ink-40); margin-top:1px; }
+.btn { display:inline-flex; align-items:center; gap:7px; font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; cursor:pointer; border:none; transition:all .2s; border-radius:var(--r); }
+.btn-sm { font-size:13px; padding:8px 20px; }
+.btn-md { font-size:14px; padding:12px 26px; }
+.btn-lg { font-size:15px; padding:15px 34px; border-radius:var(--r-lg); }
+.btn-ghost { background:transparent; color:var(--ink-60); border:1.5px solid var(--ink-20); }
+.btn-ghost:hover { border-color:var(--cyan); color:var(--cyan-dark); background:var(--cyan-light); }
+.btn-primary { background:linear-gradient(135deg,var(--cyan-dark) 0%,var(--cyan) 100%); color:white; box-shadow:0 4px 16px rgba(0,188,212,0.3); }
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,188,212,0.4); filter:brightness(1.05); }
+.btn-outline { background:transparent; color:var(--cyan-dark); border:2px solid var(--cyan); }
+.btn-outline:hover { background:var(--cyan-light); transform:translateY(-1px); }
+.btn-white { background:white; color:var(--cyan-dark); box-shadow:0 4px 16px rgba(0,0,0,0.12); }
+.btn-white:hover { transform:translateY(-1px); box-shadow:0 8px 24px rgba(0,0,0,0.16); }
+
+/* NOTE: the promotional offer banner is intentionally NOT included on
+   blog pages (removed per request) — only the nav below is shared. */
+@media (max-width: 991px) { .nav-links-desktop, .nav-cta-desktop { display:none !important; } .mobile-menu-btn { display:block !important; } }
+
+/* FOOTER */
+footer { background: var(--ink); color:white; }
+.footer-top { max-width:1280px; margin:0 auto; padding:72px 40px 48px; display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:48px; }
+.footer-brand p { font-size:14px; color:rgba(255,255,255,0.45); line-height:1.75; margin-bottom:22px; max-width:280px; }
+.footer-social { display:flex; gap:10px; }
+.social-btn { width:38px; height:38px; border-radius:var(--r-sm); background:rgba(255,255,255,0.07); display:flex; align-items:center; justify-content:center; font-size:14px; cursor:pointer; border:1px solid rgba(255,255,255,0.08); }
+.social-btn:hover { background:var(--cyan); border-color:var(--cyan); }
+.footer-col h5 { font-family:'Manrope',sans-serif; font-weight:800; font-size:12px; color:rgba(255,255,255,0.9); text-transform:uppercase; letter-spacing:.1em; margin-bottom:18px; }
+.footer-link-list { list-style:none; display:flex; flex-direction:column; gap:11px; }
+.footer-link-list li a { font-size:14px; color:rgba(255,255,255,0.45); transition:color .15s; }
+.footer-link-list li a:hover { color:var(--cyan); }
+.footer-contact-item { display:flex; align-items:center; gap:8px; font-size:13px; color:rgba(255,255,255,0.45); margin-bottom:10px; }
+.footer-contact-item:hover { color:var(--cyan); }
+.footer-bottom { border-top:1px solid rgba(255,255,255,0.07); }
+.footer-bottom-inner { max-width:1280px; margin:0 auto; padding:22px 40px; display:flex; align-items:center; justify-content:space-between; }
+.footer-copy { font-size:13px; color:rgba(255,255,255,0.3); }
+
+/* SECTION / TYPOGRAPHY */
+.section { max-width:1280px; margin:0 auto; padding:60px 40px 100px; }
+.sec-center { text-align:center; }
+.eyebrow { font-size:12px; font-weight:800; color:var(--cyan-dark); text-transform:uppercase; letter-spacing:.14em; margin-bottom:12px; }
+.sec-title { font-family:'Manrope',sans-serif; font-weight:800; font-size:clamp(28px,3.5vw,46px); line-height:1.1; letter-spacing:-1.5px; margin-bottom:16px; }
+.sec-title span { color:var(--cyan-dark); }
+.sec-sub { font-size:17px; color:var(--ink-60); max-width:600px; margin:0 auto 56px; font-weight:400; line-height:1.8; }
+
+/* BLOG HERO */
+.blog-hero { background: linear-gradient(160deg, #F0FBFF 0%, #E8F5FD 25%, #F8FEFF 55%, white 100%); padding:70px 40px 50px; text-align:center; }
+.blog-hero h1 { font-family:'Manrope',sans-serif; font-weight:800; font-size:clamp(32px,5vw,54px); letter-spacing:-2px; margin-bottom:16px; color:var(--ink); }
+.blog-hero h1 span { color: var(--cyan-dark); }
+.blog-hero p { font-size:17px; color:var(--ink-60); max-width:600px; margin:0 auto; line-height:1.8; }
+
+/* BLOG CARDS / GRID */
+.blog-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; width:100%; }
+.blog-card { background:white; border:1px solid var(--ink-10); border-radius:var(--r-xl); overflow:hidden; box-shadow:var(--shadow-sm); transition:all .25s; display:flex; flex-direction:column; min-width:0; max-width:100%; }
+.blog-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); border-color:var(--cyan-mid); }
+.blog-img { width:100%; height:180px; display:flex; align-items:center; justify-content:center; font-size:64px; position:relative; overflow:hidden; }
+.blog-img-overlay { position:absolute; inset:0; }
+.blog-tag { position:absolute; top:12px; left:12px; background:var(--cyan); color:white; font-size:10px; font-weight:800; padding:3px 10px; border-radius:99px; letter-spacing:.05em; }
+.blog-body { padding:24px; display:flex; flex-direction:column; flex:1; min-width:0; }
+.blog-date { font-size:12px; color:var(--ink-40); margin-bottom:10px; }
+.blog-title { font-family:'Manrope',sans-serif; font-weight:700; font-size:16px; line-height:1.45; margin-bottom:12px; color:var(--ink); overflow-wrap:break-word; word-break:break-word; }
+.blog-excerpt { font-size:13px; color:var(--ink-60); line-height:1.65; margin-bottom:18px; flex:1; overflow-wrap:break-word; word-break:break-word; }
+.blog-read-more { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--cyan-dark); transition:gap .15s; flex-wrap:nowrap; white-space:nowrap; }
+.blog-card:hover .blog-read-more { gap:10px; }
+
+/* ARTICLE PAGE */
+.article-wrap { max-width:1280px; margin:0 auto; padding:32px 40px 90px; display:grid; grid-template-columns:1fr 320px; gap:56px; align-items:start; width:100%; box-sizing:border-box; }
+.article-main { min-width:0; }
+.breadcrumb { font-size:13px; color:var(--ink-40); margin-bottom:18px; display:flex; gap:6px; flex-wrap:wrap; word-break:break-word; }
+.breadcrumb a { color:var(--ink-40); }
+.breadcrumb a:hover { color:var(--cyan-dark); }
+.article-category { display:inline-block; background:var(--cyan-light); color:var(--cyan-dark); font-size:12px; font-weight:800; padding:5px 14px; border-radius:99px; letter-spacing:.04em; margin-bottom:18px; text-transform:uppercase; }
+.article-title { font-family:'Manrope',sans-serif; font-weight:800; font-size:clamp(26px,4vw,42px); line-height:1.2; letter-spacing:-1.2px; color:var(--ink); margin-bottom:20px; overflow-wrap:break-word; word-break:break-word; }
+.article-meta { display:flex; align-items:center; gap:14px; font-size:13px; color:var(--ink-40); margin-bottom:28px; padding-bottom:28px; border-bottom:1px solid var(--ink-10); flex-wrap:wrap; row-gap:8px; }
+.article-meta .dot { width:4px; height:4px; border-radius:50%; background:var(--ink-20); flex-shrink:0; }
+.article-featured-img { width:100%; max-width:100%; height:340px; border-radius:var(--r-xl); margin-bottom:36px; display:flex; align-items:center; justify-content:center; font-size:96px; position:relative; overflow:hidden; box-shadow:var(--shadow); box-sizing:border-box; }
+.article-body { font-size:16.5px; color:var(--ink-80); line-height:1.9; max-width:100%; overflow-wrap:break-word; word-break:break-word; }
+.article-body h2 { font-family:'Manrope',sans-serif; font-weight:800; font-size:clamp(20px,3.2vw,26px); letter-spacing:-0.5px; color:var(--ink); margin:42px 0 16px; overflow-wrap:break-word; }
+.article-body h3 { font-family:'Manrope',sans-serif; font-weight:700; font-size:clamp(16px,2.6vw,19px); color:var(--ink); margin:28px 0 12px; overflow-wrap:break-word; }
+.article-body p { margin-bottom:18px; max-width:100%; }
+.article-body ul, .article-body ol { margin: 0 0 20px 22px; max-width:100%; }
+.article-body li { margin-bottom:10px; overflow-wrap:break-word; }
+.article-body a.inline-link { color:var(--cyan-dark); font-weight:700; border-bottom:1.5px solid var(--cyan-mid); overflow-wrap:break-word; }
+.article-body a.inline-link:hover { color: var(--cyan); }
+.article-body img, .article-body svg, .article-body iframe, .article-featured-img img { max-width:100%; height:auto; }
+.article-body pre, .article-body code { overflow-x:auto; max-width:100%; display:block; }
+.article-table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; margin: 24px 0 32px; border-radius:var(--r-lg); border:1px solid var(--ink-10); box-shadow:var(--shadow-sm); max-width:100%; }
+.article-table { width:100%; border-collapse:collapse; font-size:14px; min-width:640px; }
+.article-table th { background:var(--ink-05); text-align:left; padding:14px 16px; font-weight:800; color:var(--ink); font-size:12px; text-transform:uppercase; letter-spacing:.04em; border-bottom:2px solid var(--ink-10); white-space:nowrap; }
+.article-table td { padding:14px 16px; border-bottom:1px solid var(--ink-10); color:var(--ink-60); }
+.article-table tr:last-child td { border-bottom:none; }
+.article-table tr.highlight td { background: var(--cyan-light); font-weight:600; color:var(--ink); }
+.takeaways { background:var(--ink-05); border:1px solid var(--ink-10); border-left:4px solid var(--cyan); border-radius:var(--r-lg); padding:26px 28px; margin:36px 0; max-width:100%; box-sizing:border-box; }
+.takeaways h3 { font-family:'Manrope',sans-serif; font-weight:800; font-size:15px; text-transform:uppercase; letter-spacing:.06em; color:var(--cyan-dark); margin-bottom:14px; }
+.takeaways ul { margin:0 0 0 20px; }
+.takeaways li { font-size:14.5px; color:var(--ink-80); margin-bottom:8px; overflow-wrap:break-word; }
+.article-cta { background:linear-gradient(135deg,#0D47A1 0%,#006064 50%,#00BCD4 100%); border-radius:var(--r-xl); padding:36px 40px; margin:44px 0 8px; text-align:center; max-width:100%; box-sizing:border-box; }
+.article-cta h3 { font-family:'Manrope',sans-serif; font-weight:800; font-size:clamp(19px,3.4vw,24px); color:white; margin-bottom:10px; letter-spacing:-0.5px; overflow-wrap:break-word; }
+.article-cta p { color:rgba(255,255,255,0.8); font-size:14.5px; margin-bottom:20px; overflow-wrap:break-word; }
+
+/* SIDEBAR */
+.article-sidebar { min-width:0; max-width:100%; }
+.sidebar-block { background:white; border:1px solid var(--ink-10); border-radius:var(--r-lg); padding:22px; margin-bottom:22px; box-shadow:var(--shadow-sm); position:sticky; top:88px; max-width:100%; box-sizing:border-box; }
+.sidebar-block h4 { font-family:'Manrope',sans-serif; font-weight:800; font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink); margin-bottom:14px; }
+.toc-list { list-style:none; display:flex; flex-direction:column; gap:10px; }
+.toc-list a { font-size:13.5px; color:var(--ink-60); display:block; padding:4px 0; border-left:2px solid var(--ink-10); padding-left:12px; overflow-wrap:break-word; }
+.toc-list a:hover { color:var(--cyan-dark); border-left-color:var(--cyan); }
+.sidebar-related-item { display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--ink-10); min-width:0; }
+.sidebar-related-item:last-child { border-bottom:none; }
+.sidebar-related-thumb { width:52px; height:52px; border-radius:10px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:22px; }
+.sidebar-related-title { font-size:13px; font-weight:700; color:var(--ink); line-height:1.4; overflow-wrap:break-word; min-width:0; }
+.sidebar-cta-btn { width:100%; justify-content:center; margin-top:6px; }
+
+/* RELATED ARTICLES BAND */
+.related-band { background:var(--ink-05); max-width:100%; overflow-x:hidden; }
+
+/* ─── RESPONSIVE: TABLET (≤1024px, matches homepage's existing breakpoint) ─── */
+@media (max-width: 1024px) {
+  .article-wrap { grid-template-columns:1fr; }
+  .article-sidebar { display:flex; flex-direction:column; }
+  .sidebar-block { position:static; }
+  .footer-top { grid-template-columns:1fr 1fr; gap:32px; }
+  .blog-grid { grid-template-columns:repeat(2,1fr); }
+}
+
+/* ─── RESPONSIVE: TABLET/MOBILE (≤768px, matches homepage's existing breakpoint) ─── */
+@media (max-width: 768px) {
+  .nav-links-desktop, .nav-cta-desktop { display:none; }
+  .blog-hero { padding:56px 20px 40px; }
+  .section { padding:40px 20px 70px; }
+  .blog-grid { grid-template-columns:1fr; gap:20px; }
+  .article-wrap { padding:24px 20px 60px; gap:32px; }
+  .article-featured-img { height:220px; font-size:64px; }
+  .article-body { font-size:15.5px; }
+  .article-body h2 { margin:32px 0 14px; }
+  .article-cta { padding:28px 22px; }
+  .article-meta { gap:10px; margin-bottom:22px; padding-bottom:22px; }
+  .takeaways { padding:20px 20px; }
+  .footer-top { grid-template-columns:1fr; }
+  .footer-bottom-inner { flex-direction:column; gap:12px; text-align:center; }
+}
+
+/* ─── RESPONSIVE: SMALL MOBILE (≤480px, matches homepage's existing breakpoint) ─── */
+@media (max-width: 480px) {
+  .blog-hero { padding:48px 16px 32px; }
+  .blog-hero p { font-size:15px; }
+  .section { padding:32px 16px 56px; }
+  .blog-img { height:150px; font-size:48px; }
+  .blog-body { padding:18px; }
+  .article-wrap { padding:20px 16px 48px; gap:24px; }
+  .article-title { margin-bottom:14px; }
+  .article-featured-img { height:170px; font-size:44px; border-radius:var(--r-lg); margin-bottom:26px; }
+  .article-body { font-size:15px; line-height:1.75; }
+  .article-body h2 { margin:26px 0 12px; }
+  .article-body h3 { margin:22px 0 10px; }
+  .article-table th, .article-table td { padding:11px 12px; font-size:13px; }
+  .article-cta { padding:24px 18px; border-radius:var(--r-lg); }
+  .sidebar-block { padding:18px; }
+  .takeaways { padding:18px 16px; }
+}
+</style>
+<title>SLA Management Guide: What It Is and Why You Need It (2026)</title>
+<meta name="description" content="A clear explanation of SLA management for customer support teams — what SLAs are, how to set realistic ones, and how to track compliance without manual effort.">
+<link rel="canonical" href="https://tickoradesk.com/blogs/sla-management-guide/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SLA Management Guide: What It Is and Why You Need It (2026)">
+<meta property="og:description" content="A clear explanation of SLA management for customer support teams — what SLAs are, how to set realistic ones, and how to track compliance without manual effort.">
+<meta property="og:url" content="https://tickoradesk.com/blogs/sla-management-guide/">
+<meta property="og:image" content="https://tickoradesk.com/assets/images/blog/sla-management-guide.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SLA Management Guide: What It Is and Why You Need It (2026)">
+<meta name="twitter:description" content="A clear explanation of SLA management for customer support teams — what SLAs are, how to set realistic ones, and how to track compliance without manual effort.">
+<meta name="twitter:image" content="https://tickoradesk.com/assets/images/blog/sla-management-guide.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "SLA Management: What It Is and Why Customer Support Teams Need It",
+  "description": "A clear explanation of SLA management for customer support teams \u2014 what SLAs are, how to set realistic ones, and how to track compliance without manual effort.",
+  "datePublished": "2026-08-22",
+  "dateModified": "2026-08-22",
+  "author": { "@type": "Organization", "name": "TickoraDesk" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "TickoraDesk",
+    "logo": { "@type": "ImageObject", "url": "https://tickoradesk.com/logo.png" }
+  },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://tickoradesk.com/blogs/sla-management-guide/" }
+}
+</script>
+</head>
+<body>
+
+<nav id="mainNav">
+  <div style="max-width:1280px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:68px;">
+    <a href="/" class="nav-logo" style="display:flex;align-items:center;flex-shrink:0;">
+      <img src="/logo.png" alt="TickoraDesk" style="height:55px;width:auto;object-fit:contain;">
+    </a>
+    <div class="nav-links-desktop" style="display:flex;align-items:center;gap:24px;margin-left:auto;margin-right:auto;">
+      <a href="/#features" class="nav-link">Product</a>
+      <a href="/#pricing" class="nav-link">Pricing</a>
+      <div class="nav-dropdown">
+        <a class="nav-link">Resources ▾</a>
+        <div class="nav-dropdown-menu">
+          <a href="/blogs/" class="nav-drop-item">
+            <div class="nav-drop-icon">📝</div>
+            <div><div class="nav-drop-label">Blogs</div><div class="nav-drop-sub">Expert support insights</div></div>
+          </a>
+          <a href="/#" class="nav-drop-item">
+            <div class="nav-drop-icon">🚀</div>
+            <div><div class="nav-drop-label">Guides</div><div class="nav-drop-sub">How to use TickoraDesk</div></div>
+          </a>
+        </div>
+      </div>
+      <a href="/#team" class="nav-link">About</a>
+      <a href="/#contact" class="nav-link">Contact</a>
+    </div>
+    <div class="nav-cta-desktop" style="display:flex;align-items:center;gap:14px;flex-shrink:0;">
+      <a href="https://app.tickoradesk.com" class="btn btn-sm btn-outline" style="font-size:13px;font-weight:700;">Login</a>
+      <button class="btn btn-sm btn-outline" onclick="openDemo()">Sign Up</button>
+      <button class="btn btn-sm btn-primary" onclick="openDemo()">Schedule Demo</button>
+    </div>
+    <button class="mobile-menu-btn" style="display:none;background:none;border:none;font-size:28px;cursor:pointer;color:var(--ink);padding:8px;" onclick="toggleMobileMenu()">☰</button>
+  </div>
+  <div id="mobileMenuPanel" style="display:none;width:100%;background:#fff;border-top:1px solid var(--ink-10);padding:16px 24px;flex-direction:column;gap:14px;box-shadow:0 8px 24px rgba(0,0,0,0.05);">
+    <a href="/#features" class="nav-link" onclick="toggleMobileMenu()" style="padding:6px 0;display:block;font-size:15px;">Product</a>
+    <a href="/#pricing" class="nav-link" onclick="toggleMobileMenu()" style="padding:6px 0;display:block;font-size:15px;">Pricing</a>
+    <a href="/blogs/" class="nav-link" onclick="toggleMobileMenu()" style="padding:6px 0;display:block;font-size:15px;">Resources</a>
+    <a href="/#team" class="nav-link" onclick="toggleMobileMenu()" style="padding:6px 0;display:block;font-size:15px;">About</a>
+    <a href="/#contact" class="nav-link" onclick="toggleMobileMenu()" style="padding:6px 0;display:block;font-size:15px;">Contact</a>
+    <a href="/faq/" class="nav-link" onclick="toggleMobileMenu()" style="padding:6px 0;display:block;font-size:15px;">FAQ</a>
+    <hr style="border:none;border-top:1px solid var(--ink-10);margin:6px 0;">
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <a href="https://app.tickoradesk.com" class="btn btn-outline" style="width:100%;display:flex;justify-content:center;align-items:center;padding:6px;">Login</a>
+      <button class="btn btn-outline" style="width:100%;justify-content:center;padding:10px;" onclick="toggleMobileMenu();openDemo();">Sign Up</button>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;padding:10px;" onclick="toggleMobileMenu();openDemo();">Schedule Demo</button>
+    </div>
+  </div>
+</nav>
+
+
+<div class="article-wrap">
+  <div class="article-main">
+    <div class="breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/blogs/">Blog</a> <span>/</span> <span style="color:var(--ink-60)">SLA & Ops</span></div>
+    <div class="article-category">SLA & Ops</div>
+    <h1 class="article-title">SLA Management: What It Is and Why Customer Support Teams Need It</h1>
+    <div class="article-meta">
+      <span>By TickoraDesk Team</span><span class="dot"></span><span>August 22, 2026</span><span class="dot"></span><span>4 min read</span>
+    </div>
+    <div class="article-featured-img" style="background:linear-gradient(135deg,#FFF8E1,#FFECB3)">
+      <span>⏱️</span>
+      <img src="" alt="SLA Management: What It Is and Why Customer Support Teams Need It — featured image" style="display:none">
+    </div>
+    <div class="article-body">
+      
+<p>An SLA (service level agreement) in customer support is simply a promise about response and resolution time — "we'll reply within 4 business hours," "we'll resolve high-priority issues within 24 hours." It sounds simple, but SLA management — actually setting, tracking, and enforcing these promises consistently — is where most small teams fall short, usually not from lack of effort but from lack of visibility.</p>
+
+<h2 id="what-is-sla">What is an SLA in customer support</h2>
+<p>SLAs typically cover two separate metrics: <strong>first response time</strong> (how long until a customer hears from a human) and <strong>resolution time</strong> (how long until their issue is actually solved). Good SLA structures also vary by priority — a billing outage affecting many customers should have a tighter SLA than a minor cosmetic bug report.</p>
+
+<h2 id="why-it-matters">Why SLA management matters</h2>
+<p>Customers rarely complain loudly about a slow response — they just quietly lose trust and, eventually, churn. SLA tracking gives you an early warning system: if a ticket is about to breach its promised response time, your team gets notified before the customer notices, not after. Over time, SLA data also reveals structural problems — recurring breaches in one category usually point to a documentation gap or a process bottleneck worth fixing at the root.</p>
+
+<h2 id="setting-slas">Setting realistic SLAs</h2>
+<ul>
+<li><strong>Base SLAs on your real capacity</strong>, not aspirational numbers. An SLA you consistently miss is worse than a longer one you consistently hit.</li>
+<li><strong>Tier by priority.</strong> Urgent/high/medium/low tickets should each have distinct response and resolution targets.</li>
+<li><strong>Account for business hours.</strong> A 4-hour SLA means something different for a 24/7 team versus a 9-to-6 team.</li>
+<li><strong>Review quarterly.</strong> As your team and ticket volume change, your SLAs should be re-calibrated, not set once and forgotten.</li>
+</ul>
+
+<h2 id="tracking">Tracking and enforcing SLAs without manual effort</h2>
+<p>Manually tracking SLA compliance in a spreadsheet doesn't scale past a handful of tickets a day. Purpose-built SLA monitoring — visible dashboards, automated breach alerts, and per-priority compliance reporting — is one of the clearest cases where the right software pays for itself quickly. TickoraDesk's SLA monitoring, for example, tracks first-response, resolution, and escalation compliance automatically and flags at-risk tickets before they breach, rather than after.</p>
+<p>SLA tracking works best alongside broader automation — see our <a class="inline-link" href="/blogs/customer-support-automation-guide/">customer support automation guide</a> — and ties directly into how you evaluate <a class="inline-link" href="/blogs/best-ticket-management-systems-growing-businesses/">ticket management systems as you scale</a>.</p>
+
+<h2 id="common-sla-mistakes">Common SLA mistakes to avoid</h2>
+<ul>
+<li><strong>Setting one SLA for all ticket types</strong> instead of tiering by priority — this either makes urgent issues wait too long or makes low-priority tickets an unnecessary rush.</li>
+<li><strong>Ignoring time zones and business hours</strong> when calculating SLA deadlines, which can make compliance reporting misleading.</li>
+<li><strong>Never revisiting SLA targets</strong> as team size or ticket volume changes, leading to consistently missed targets that erode team morale as much as customer trust.</li>
+<li><strong>Treating SLA compliance as a vanity metric</strong> instead of using breach patterns to identify and fix root causes.</li>
+</ul>
+
+<h2 id="example-sla-tiers">Example SLA structure for a small support team</h2>
+<div class="article-table-wrap">
+<table class="article-table">
+<tr><th>Priority</th><th>First Response</th><th>Resolution Target</th></tr>
+<tr><td>Urgent (service down, billing failure)</td><td>30 minutes</td><td>4 hours</td></tr>
+<tr><td>High (major feature broken)</td><td>2 hours</td><td>1 business day</td></tr>
+<tr><td>Medium (general issue, non-blocking)</td><td>4 hours</td><td>2 business days</td></tr>
+<tr><td>Low (question, feature request)</td><td>1 business day</td><td>5 business days</td></tr>
+</table>
+</div>
+<p>Treat these as a starting template, not a fixed standard — calibrate against your team's actual capacity and adjust after your first full quarter of data.</p>
+
+<h2 id="sla-and-team-morale">SLAs and team morale</h2>
+<p>SLA tracking done well protects your team as much as your customers — clear, achievable targets prevent the ambiguity that leads to burnout ("was I supposed to answer that already?"). SLA tracking done poorly, with unrealistic targets set by someone disconnected from day-to-day ticket handling, becomes a source of constant, avoidable stress. Involve the agents who'll be held to your SLAs when setting them, not just leadership.</p>
+
+<h2 id="faq">Frequently asked questions</h2>
+<h3>What's a good SLA compliance target to aim for?</h3>
+<p>Most well-run support teams aim for 90%+ compliance on first response and resolution SLAs. Consistently hitting 100% can actually indicate your SLAs are set too loosely.</p>
+<h3>Do SLAs need to be shared with customers?</h3>
+<p>Not always — many small businesses track SLAs internally as an operational standard without formally publishing them, though B2B contracts sometimes require documented, customer-facing SLAs.</p>
+<h3>What should happen when an SLA is breached?</h3>
+<p>At minimum, the assigned agent and their manager should be notified automatically. Some teams also auto-escalate priority or reassign the ticket to ensure it gets immediate attention.</p>
+
+      <div class="takeaways"><h3>Key Takeaways</h3><ul><li>SLAs typically cover first response time and resolution time, tiered by ticket priority.</li>
+<li>SLA breaches quietly erode customer trust well before customers complain about them directly.</li>
+<li>Automated SLA tracking and breach alerts scale far better than manual spreadsheet tracking.</li></ul></div>
+      <div class="article-cta">
+        <h3>Looking for a simpler way to manage customer support?</h3>
+        <p>TickoraDesk brings ticketing, SLA tracking, and AI-assisted replies together — built for small and growing teams.</p>
+        <button class="btn btn-lg btn-white" onclick="openDemo()">Schedule a Demo</button>
+      </div>
+    </div>
+  </div>
+  <aside class="article-sidebar">
+    <div class="sidebar-block">
+      <h4>On This Page</h4>
+      <ul class="toc-list" style="list-style:none"><li><a href="#what-is-sla">What is an SLA in customer support</a></li>
+<li><a href="#why-it-matters">Why SLA management matters</a></li>
+<li><a href="#setting-slas">Setting realistic SLAs</a></li>
+<li><a href="#tracking">Tracking and enforcing SLAs</a></li>
+<li><a href="#sla-and-team-morale">SLAs & Team Morale</a></li>
+<li><a href="#faq">FAQ</a></li></ul>
+    </div>
+    <div class="sidebar-block">
+      <h4>Related Articles</h4>
+      
+<a href="/blogs/customer-support-automation-guide/" class="sidebar-related-item" style="text-decoration:none">
+  <div class="sidebar-related-thumb" style="background:linear-gradient(135deg,#F3E5F5,#E1BEE7)">⚙️</div>
+  <div class="sidebar-related-title">Customer Support Automation: A Complete Guide for Small Businesses</div>
+</a>
+
+<a href="/blogs/best-ticket-management-systems-growing-businesses/" class="sidebar-related-item" style="text-decoration:none">
+  <div class="sidebar-related-thumb" style="background:linear-gradient(135deg,#E0F7FA,#B2EBF2)">📈</div>
+  <div class="sidebar-related-title">Best Ticket Management Systems for Growing Businesses</div>
+</a>
+
+<a href="/blogs/best-helpdesk-software-small-businesses/" class="sidebar-related-item" style="text-decoration:none">
+  <div class="sidebar-related-thumb" style="background:linear-gradient(135deg,#E8F5E9,#C8E6C9)">🛎️</div>
+  <div class="sidebar-related-title">Best Helpdesk Software for Small Businesses in 2026</div>
+</a>
+    </div>
+    <div class="sidebar-block">
+      <h4>Get Started</h4>
+      <p style="font-size:13px;color:var(--ink-60);margin-bottom:14px;line-height:1.6">See how TickoraDesk can simplify your support workflow.</p>
+      <button class="btn btn-primary sidebar-cta-btn" onclick="openDemo()">Schedule a Demo</button>
+    </div>
+  </aside>
+</div>
+
+<div class="related-band">
+  <div class="section" style="padding-top:60px">
+    <div class="sec-center">
+      <div class="eyebrow">Keep Reading</div>
+      <h2 class="sec-title">Related <span>Articles</span></h2>
+    </div>
+    <div class="blog-grid">
+      
+<a href="/blogs/customer-support-automation-guide/" class="blog-card fade-up" style="display:flex;flex-direction:column;">
+  <div class="blog-img" style="background:linear-gradient(135deg,#F3E5F5,#E1BEE7)">
+    <div class="blog-img-overlay" style="background:linear-gradient(135deg,rgba(0,188,212,0.15),rgba(21,101,192,0.1))"></div>
+    <span>⚙️</span>
+    <div class="blog-tag" style="background:var(--purple)">Automation</div>
+  </div>
+  <div class="blog-body">
+    <div class="blog-date">📅 August 21, 2026</div>
+    <h3 class="blog-title">Customer Support Automation: A Complete Guide for Small Businesses</h3>
+    <p class="blog-excerpt">Automation done well saves your team hours a week. Done poorly, it frustrates customers and buries real issues under bad rules. Here's how to get it right.</p>
+    <div class="blog-read-more">Read More <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  </div>
+</a>
+
+<a href="/blogs/best-ticket-management-systems-growing-businesses/" class="blog-card fade-up" style="display:flex;flex-direction:column;">
+  <div class="blog-img" style="background:linear-gradient(135deg,#E0F7FA,#B2EBF2)">
+    <div class="blog-img-overlay" style="background:linear-gradient(135deg,rgba(0,188,212,0.15),rgba(21,101,192,0.1))"></div>
+    <span>📈</span>
+    <div class="blog-tag" style="background:var(--cyan)">Ticket Management</div>
+  </div>
+  <div class="blog-body">
+    <div class="blog-date">📅 August 19, 2026</div>
+    <h3 class="blog-title">Best Ticket Management Systems for Growing Businesses</h3>
+    <p class="blog-excerpt">Outgrowing your first ticketing tool is a good problem — but choosing the wrong upgrade can slow your team down right when you need it to move fastest.</p>
+    <div class="blog-read-more">Read More <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  </div>
+</a>
+
+<a href="/blogs/best-helpdesk-software-small-businesses/" class="blog-card fade-up" style="display:flex;flex-direction:column;">
+  <div class="blog-img" style="background:linear-gradient(135deg,#E8F5E9,#C8E6C9)">
+    <div class="blog-img-overlay" style="background:linear-gradient(135deg,rgba(0,188,212,0.15),rgba(21,101,192,0.1))"></div>
+    <span>🛎️</span>
+    <div class="blog-tag" style="background:#4CAF50">Helpdesk</div>
+  </div>
+  <div class="blog-body">
+    <div class="blog-date">📅 August 16, 2026</div>
+    <h3 class="blog-title">Best Helpdesk Software for Small Businesses in 2026</h3>
+    <p class="blog-excerpt">Not every business needs an enterprise CX platform. Here's how to think about helpdesk software as a small business, and which tools consistently deliver the best value.</p>
+    <div class="blog-read-more">Read More <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  </div>
+</a>
+    </div>
+  </div>
+</div>
+
+
+<footer id="contact">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-brand-logo" style="margin-bottom:14px;">
+        <a href="/"><img src="/logo.png" alt="TickoraDesk" style="height:55px;width:auto;object-fit:contain;"></a>
+      </div>
+      <p>Modern ticketing system designed for small businesses. Streamline your customer support with powerful tools that don't break the bank.</p>
+      <div class="footer-social">
+        <a href="https://www.linkedin.com/company/apptickoradesk" target="_blank" class="social-btn" title="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.78a1.62 1.62 0 1 0 0 3.24 1.62 1.62 0 0 0 0-3.24z"/></svg></a>
+        <a href="https://x.com/TickoraDesk" target="_blank" class="social-btn" title="Twitter"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="https://www.youtube.com/channel/UCYnD9xA7r6Edngug1p56InA" target="_blank" class="social-btn" title="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+        <a href="https://facebook.com/TickoraDesk" target="_blank" class="social-btn" title="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Product</h5>
+      <ul class="footer-link-list">
+        <li><a href="/#features">Features</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/#">Integrations</a></li>
+        <li><a href="/faq/">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul class="footer-link-list">
+        <li><a href="/#team">About Us</a></li>
+        <li><a href="/blogs/">Blog</a></li>
+        <li><a href="/#">Careers</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact Us</h5>
+      <div class="footer-contact-item"><span>📧</span><a href="mailto:support@tickoradesk.com" style="color:inherit">support@tickoradesk.com</a></div>
+      <div class="footer-contact-item"><span>📞</span><a href="tel:7004293858" style="color:inherit">7004293858</a></div>
+      <div class="footer-contact-item"><span>🏢</span><span>Gurugram Haryana</span></div>
+      <div style="margin-top:16px"><button class="btn btn-sm btn-primary" onclick="openDemo()" style="width:100%;justify-content:center">Schedule Demo</button></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <div class="footer-copy">© 2026 TickoraDesk · All Rights Reserved.</div>
+      <div class="footer-badges"></div>
+    </div>
+  </div>
+</footer>
+
+
+<div class="modal-overlay" id="demoModal" onclick="if(event.target===this)closeDemo()">
+  <div class="modal">
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeDemo()">✕</button>
+      <div class="modal-title">📅 Schedule a Demo</div>
+      <div class="modal-sub">See TickoraDesk in action — we'll show you everything in 30 minutes.</div>
+    </div>
+    <div class="modal-body" id="demoForm">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" type="text" id="modalNameInput" placeholder="Rahul Singh" required></div>
+        <div class="form-group"><label class="form-label">Mobile Number *</label><input class="form-input" type="tel" id="modalPhoneInput" placeholder="+91 98765 43210" required></div>
+      </div>
+      <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" type="email" id="modalEmailInput" placeholder="rahul@company.com" required></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Company Name *</label><input class="form-input" type="text" id="modalCompanyInput" placeholder="Acme Corp" required></div>
+        <div class="form-group"><label class="form-label">Number of Users</label>
+          <select class="form-input form-select" id="modalTeamSizeSelect">
+            <option value="">Select team size</option>
+            <option>1–5 users</option><option>6–15 users</option><option>16–50 users</option><option>51–200 users</option><option>200+ users</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-md modal-submit" id="modalSubmitBtn" onclick="submitDemo()" style="width:100%;justify-content:center;margin-top:24px;border-radius:var(--r-lg);font-size:16px;padding:15px;">📅 Schedule Demo</button>
+      <p style="text-align:center;font-size:12px;color:var(--ink-40);margin-top:14px">🔒 Your data is safe. We never spam.</p>
+    </div>
+    <div class="modal-success" id="demoSuccess" style="display:none;text-align:center;padding:48px 36px;">
+      <div style="font-size:56px;margin-bottom:16px;">🎉</div>
+      <div style="font-family:'Manrope',sans-serif;font-weight:800;font-size:24px;margin-bottom:8px;color:var(--ink);">Demo Scheduled!</div>
+      <p style="font-size:15px;color:var(--ink-60);">Thank you! Our team will contact you within 24 hours to confirm your demo slot.</p>
+      <button class="btn btn-md btn-primary" style="margin-top:24px;justify-content:center" onclick="closeDemo()">Close</button>
+    </div>
+  </div>
+</div>
+<style>
+.modal-overlay { display:none; position:fixed; inset:0; z-index:1000; background:rgba(13,27,42,0.6); backdrop-filter:blur(8px); align-items:center; justify-content:center; padding:20px; }
+.modal-overlay.open { display:flex; }
+.modal { background:white; border-radius:var(--r-2xl); width:100%; max-width:560px; box-shadow:var(--shadow-xl); overflow:hidden; }
+.modal-header { background:linear-gradient(135deg,var(--cyan-dark) 0%,var(--cyan) 100%); padding:32px 36px 28px; position:relative; }
+.modal-title { font-family:'Manrope',sans-serif; font-weight:800; font-size:26px; color:white; margin-bottom:6px; }
+.modal-sub { font-size:14px; color:rgba(255,255,255,0.8); }
+.modal-close { position:absolute; top:20px; right:20px; background:rgba(255,255,255,0.2); border:none; width:32px; height:32px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; color:white; font-size:18px; }
+.modal-body { padding:32px 36px; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.form-group { margin-bottom:18px; }
+.form-label { display:block; font-size:12px; font-weight:700; color:var(--ink-60); text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
+.form-input { width:100%; padding:12px 14px; font-size:14px; font-family:'Plus Jakarta Sans',sans-serif; background:var(--ink-05); color:var(--ink); border:1.5px solid var(--ink-10); border-radius:var(--r); outline:none; }
+.form-input:focus { border-color:var(--cyan); background:white; box-shadow:0 0 0 3px rgba(0,188,212,0.1); }
+@media (max-width:768px){ .form-row{ grid-template-columns:1fr; } }
+</style>
+<script>
+function toggleMobileMenu(){var p=document.getElementById("mobileMenuPanel");p.style.display=(p.style.display==="none"||p.style.display==="")?"flex":"none";}
+window.addEventListener('scroll',()=>{var n=document.getElementById('mainNav');if(n)n.classList.toggle('scrolled',window.scrollY>30);});
+function openDemo(){document.getElementById('demoModal').classList.add('open');document.body.style.overflow='hidden';}
+function closeDemo(){document.getElementById('demoModal').classList.remove('open');document.body.style.overflow='';document.getElementById('demoForm').style.display='block';document.getElementById('demoSuccess').style.display='none';}
+function submitDemo(){
+  const nameVal=document.getElementById('modalNameInput').value.trim();
+  const phoneVal=document.getElementById('modalPhoneInput').value.trim();
+  const emailVal=document.getElementById('modalEmailInput').value.trim();
+  const companyVal=document.getElementById('modalCompanyInput').value.trim();
+  const teamSizeVal=document.getElementById('modalTeamSizeSelect').value;
+  if(!nameVal||!phoneVal||!emailVal||!companyVal){alert("Please fill in all mandatory fields marked with an asterisk (*).");return;}
+  const submitBtn=document.getElementById('modalSubmitBtn');
+  submitBtn.innerText="Scheduling... Please Wait...";submitBtn.disabled=true;
+  fetch('https://crm.tickoradesk.com/submit_lead.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:nameVal,email:emailVal,phone:phoneVal,company:companyVal,team_size:teamSizeVal,message:"Scheduled via Blog Page Form"})})
+  .then(r=>{if(!r.ok)throw new Error('net');return r.json();})
+  .then(data=>{
+    if(data.status==='success'){
+      document.getElementById('demoForm').style.display='none';
+      document.getElementById('demoSuccess').style.display='block';
+    } else {
+      alert("Submission Failed: "+data.message);submitBtn.disabled=false;submitBtn.innerText="📅 Schedule Demo";
+    }
+  })
+  .catch(()=>{alert("Connection error. Please check your network and try again.");submitBtn.disabled=false;submitBtn.innerText="📅 Schedule Demo";});
+}
+const _observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');_observer.unobserve(e.target);}})},{threshold:.12});
+document.querySelectorAll('.fade-up').forEach(el=>_observer.observe(el));
+</script>
+
+</body>
+</html>
